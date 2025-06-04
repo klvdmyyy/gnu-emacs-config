@@ -28,8 +28,11 @@
     (concat user-init-dir (prin1-to-string ,module) ".el")))
 
 (require! 'features/core)
+
 (require! 'features/elpaca)
+
 (require! 'features/appearance)
+(require! 'features/gcmh)
 (require! 'features/completion)
 (require! 'features/vertico)
 (require! 'features/git)
