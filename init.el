@@ -57,6 +57,9 @@
 
 (require! 'features/lsp)
 
+(require! 'features/display-wttr)
+(require! 'features/klvdmyyy-time)
+
 ;; Languages
 
 (require! 'languages/cc)
