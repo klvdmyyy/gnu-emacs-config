@@ -71,7 +71,10 @@
   (tool-bar-mode 0)
   (scroll-bar-mode 0)
   (fringe-mode '(8 . 8))
-  (column-number-mode 1))
+  (column-number-mode 1)
+
+  (recentf-mode 1)
+  (which-key-mode 1))
 
 (provide 'features/core)
 
