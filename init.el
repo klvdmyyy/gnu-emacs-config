@@ -55,6 +55,8 @@
 
 (require! 'features/company)
 
+(require! 'features/lsp)
+
 ;; Languages
 
 (require! 'languages/cc)

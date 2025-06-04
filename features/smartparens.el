@@ -20,6 +20,10 @@
     (sp-local-pair mode "'" nil :when '(sp-in-string-p))
     (sp-local-pair mode "`" nil :when '(sp-in-string-p)))
 
+  ;; Fix indentation between pairs
+  (dolist (char '("{" "(" "["))
+    (sp-local-pair 'prog-mode char nil :post-handlers '((indent-between-pair "RET"))))
+
   (show-paren-mode 1))
 
 (use-package smartparens-config
@@ -29,6 +33,13 @@
 	 smartparens-mode-map
 	 ("M-s" . nil)
 	 ("M-S" . sp-forward-slurp-sexp)))
+
+(defun indent-between-pair (&rest _ignored)
+  "Insert indentation between pairs. Used with smartparens"
+  (newline)
+  (indent-according-to-mode)
+  (forward-line -1)
+  (indent-according-to-mode))
 
 (provide 'features/smartparens)
 
