@@ -18,6 +18,8 @@
 	   :tag "v0.9.1"))
 
 (use-package magit
+  :commands (magit
+	     magit-diff-unstaged)
   :bind ("C-x g" . magit))
 
 (provide 'features/git)

@@ -50,6 +50,9 @@
 
 (require! 'features/productivity)
 
+(require! 'features/esh)
+(require! 'features/eat)
+
 ;; Languages
 
 (require! 'languages/cc)

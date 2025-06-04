@@ -54,6 +54,7 @@
    )
 
   :custom
+  (make-backup-files nil)
   (frame-title-format "### %b --- GNU Emacs ###")
   (cursor-type 'box)
   (default-input-method "russian-computer")

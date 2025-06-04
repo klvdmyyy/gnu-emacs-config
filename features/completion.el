@@ -33,7 +33,9 @@
   :bind (("C-c a" . consult-org-agenda)
 	 ("C-s" . consult-line)
 	 ("C-x b" . consult-buffer)
-	 ("s-B" . consult-buffer)))
+	 ("s-B" . consult-buffer)
+	 :map eshell-hist-mode-map
+	 ("M-r" . consult-history)))
 
 (provide 'features/completion)
 
