@@ -38,10 +38,16 @@
 ;; Other features
 
 (require! 'features/appearance)
+
 (require! 'features/gcmh)
+
 (require! 'features/completion)
 (require! 'features/vertico)
+
 (require! 'features/git)
+
+(require! 'features/smartparens)
+
 (require! 'features/productivity)
 
 ;; Languages
