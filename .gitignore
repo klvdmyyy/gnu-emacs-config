@@ -1,8 +1,15 @@
+### Emacs garbage ###
 auto-save-list
 eshell
 recentf
 elpaca
 eln-cache
+projects
+transient
+
+### Emacs auto-save/backup files ###
+*~
+
+### My Configuration files ###
 customs.el
 .startup-lock
-*~
