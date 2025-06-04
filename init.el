@@ -64,5 +64,6 @@
 (require! 'languages/proto)
 (require! 'languages/docker)
 (require! 'languages/yaml)
+(require! 'languages/markdown)
 
 ;;; init.el ends here
