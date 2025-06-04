@@ -53,6 +53,8 @@
 (require! 'features/esh)
 (require! 'features/eat)
 
+(require! 'features/company)
+
 ;; Languages
 
 (require! 'languages/cc)
