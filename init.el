@@ -35,6 +35,15 @@
 
 (require! 'features/elpaca)
 
+;; Benchmark
+
+(use-package benchmark-init
+  :demand t
+  :init (benchmark-init/activate)
+  :bind (("C-c b" . benchmark-init/show-durations-tabulated))
+  :hook ((after-init . benchmark-init/deactivate)
+         (benchmark-init/tabulated-mode . hl-line-mode)))
+
 ;; Other features
 
 (require! 'features/appearance)
