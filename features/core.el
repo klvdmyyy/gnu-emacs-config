@@ -56,6 +56,7 @@
   :custom
   (frame-title-format "### %b --- GNU Emacs ###")
   (cursor-type 'box)
+  (default-input-method "russian-computer")
 
   (custom-file (expand-file-name "customs.el" user-init-dir))
   (gc-cons-threshold (* 128 1024 1024))
