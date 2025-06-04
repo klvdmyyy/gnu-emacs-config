@@ -4,16 +4,6 @@
 ;;
 ;;; Code:
 
-(defun tab-indent-or-complete ()
-  (interactive)
-  (if (minibufferp)
-      (minibuffer-complete)
-    (if (or (not yas-minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
-            (company-complete-common)
-          (indent-for-tab-command)))))
-
 (use-package company
   :hook (prog-mode . company-mode)
   :bind (("<TAB>" . company-indent-or-complete-common)
