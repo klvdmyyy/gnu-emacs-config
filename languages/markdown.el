@@ -8,8 +8,7 @@
   :bind (:map
 	     markdown-mode-map
 	     ("C-s" . consult-outline))
-  :mode (("\\.md\\'" . markdown-mode)
-         ("README\\'" . markdown-mode)))
+  :mode (("\\.md\\'" . markdown-mode)))
 
 (provide 'languages/markdown)
 
