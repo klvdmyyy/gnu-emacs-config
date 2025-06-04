@@ -6,6 +6,7 @@ elpaca
 eln-cache
 projects
 transient
+tramp
 
 ### Emacs auto-save/backup files ###
 *~
