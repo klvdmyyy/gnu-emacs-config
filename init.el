@@ -27,9 +27,15 @@
     ,module
     (concat user-init-dir (prin1-to-string ,module) ".el")))
 
+;; Core
+
 (require! 'features/core)
 
+;; Package manager
+
 (require! 'features/elpaca)
+
+;; Other features
 
 (require! 'features/appearance)
 (require! 'features/gcmh)
@@ -37,5 +43,13 @@
 (require! 'features/vertico)
 (require! 'features/git)
 (require! 'features/productivity)
+
+;; Languages
+
+(require! 'languages/cc)
+(require! 'languages/go)
+(require! 'languages/proto)
+(require! 'languages/docker)
+(require! 'languages/yaml)
 
 ;;; init.el ends here
