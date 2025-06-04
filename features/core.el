@@ -39,6 +39,7 @@
   :ensure nil
   :init
   (require 'dired)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
   
   :hook
   ((elpaca-after-init
