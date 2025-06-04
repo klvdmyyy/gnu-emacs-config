@@ -11,13 +11,15 @@
 
 (defun eglot-cc-ensure ()
   (let ((language-server (executable-find "clangd")))
-    (when language-server
-      (eglot-ensure))))
+    (if language-server
+        (eglot-ensure)
+      (message "No language server for C/C++"))))
 
 (defun eglot-go-ensure ()
   (let ((language-server (executable-find "gopls")))
-    (when language-server
-      (eglot-ensure))))
+    (if language-server
+        (eglot-ensure)
+      (message "No language server for Golang"))))
 
 (provide 'features/lsp)
 
