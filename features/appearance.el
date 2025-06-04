@@ -63,6 +63,12 @@
 
 (use-package doom-modeline
   :demand t
+  :custom
+  (doom-modeline-height 30)
+  (doom-modeline-bar-width 3)
+  (doom-modeline-hud nil)
+  (doom-modeline-percent-position '(-3 "%p"))
+  
   :config
   (when (is-first-startup)
     (nerd-icons-install-fonts))
