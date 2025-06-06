@@ -39,7 +39,7 @@ Heavily inspired from GNU Guix RDE's `feature-emacs-eshell'"
 	    (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
 	  (setenv "PAGER" ""))
 
-	(eshell/alias "l" "ls -al")
+	(eshell/alias "l" "ls -al $1")
 	(eshell/alias "e" "find-file $1")
 	(eshell/alias "ee" "find-file-other-window $1")
 	(eshell/alias "d" "dired $1")
