@@ -70,6 +70,7 @@
   (read-process-output-max (* 4 1024 1024))
 
   :config
+  (fset #'jsonrpc--log-event #'ignore)
   (tab-bar-mode 0)			; [TODO] Setup `tab-bar-mode'
   
   (menu-bar-mode 0)
