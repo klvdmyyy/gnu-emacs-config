@@ -18,6 +18,7 @@
   (lsp-idle-delay 0.500))
 
 (use-package lsp-ui
+  :disabled t
   :after lsp-mode
   :hook (lsp-mode . lsp-ui-mode))
 
