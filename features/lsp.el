@@ -4,22 +4,28 @@
 ;;
 ;;; Code:
 
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  ;; or `lsp-deferred'
+  :hook ((c-mode . lsp)
+         (c++-mode . lsp)
+         (go-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :custom
+  (lsp-log-io nil)
+  (lsp-idle-delay 0.500))
+
+(use-package lsp-ui
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode))
+
 (use-package eglot
+  :disabled t
   :ensure nil
   :hook ((cc-mode . eglot-ensure)
          (go-mode . eglot-ensure)))
-
-(defun eglot-cc-ensure ()
-  (let ((language-server (executable-find "clangd")))
-    (if language-server
-        (eglot-ensure)
-      (message "No language server for C/C++"))))
-
-(defun eglot-go-ensure ()
-  (let ((language-server (executable-find "gopls")))
-    (if language-server
-        (eglot-ensure)
-      (message "No language server for Golang"))))
 
 (provide 'features/lsp)
 

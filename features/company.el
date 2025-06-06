@@ -13,7 +13,8 @@
 	 ([backtab] . nil))
   :config
   (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0.01)
+  (setq company-idle-delay 0.0) ;; or 0.001/0.01 (default is 0.2)
+  (setq company-minimum-prefix-length 1)
   (setq ess-r--no-company-meta t))
 
 ;; Don't use it

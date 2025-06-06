@@ -15,6 +15,9 @@
 
 (setq native-comp-async-report-warning-errors 'silent)
 
+;; `lsp-mode' use `plists' for deserialization
+(setenv "LSP_USE_PLISTS" "true")
+
 (provide 'early-init)
 
 ;;; early-init.el ends here
