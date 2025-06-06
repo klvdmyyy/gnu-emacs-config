@@ -9,8 +9,8 @@
   :commands (eshell)
   :hook ((eshell-mode . klvdmyyy-eshell-mode-setup))
   :bind (("s-e" . project-eshell-or-eshell)
-	 :map eshell-mode-map
-	 ("s-e" . switch-to-prev-buffer-or-eshell))
+	     :map eshell-mode-map
+	     ("s-e" . switch-to-prev-buffer-or-eshell))
   :init
   (require 'em-alias)
   (require 'em-hist)
