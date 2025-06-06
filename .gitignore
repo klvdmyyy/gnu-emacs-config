@@ -8,6 +8,7 @@ projects
 transient
 tramp
 .lsp-session-v1
+bookmarks
 
 ### Emacs auto-save/backup files ###
 *~
