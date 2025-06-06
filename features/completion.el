@@ -31,11 +31,21 @@
 
 (use-package consult
   :bind (("C-c a" . consult-org-agenda)
-	 ("C-s" . consult-line)
-	 ("C-x b" . consult-buffer)
-	 ("s-B" . consult-buffer)
-	 :map eshell-hist-mode-map
-	 ("M-r" . consult-history)))
+	     ("C-s" . consult-line)
+	     ("C-x b" . nil)
+         ("C-x r b" . consult-bookmark)
+	     ("s-B" . consult-buffer)
+         ("M-g i" . consult-imenu)
+         ;;("M-g M-i" . consult-imenu)
+         ;;("M-g M-i" . consult-imenu-multi)
+         ("M-g f" . consult-flymake)
+         ("M-g g" . consult-goto-line)
+         ("M-g M-g" . consult-goto-line)
+	     :map eshell-hist-mode-map
+	     ("M-r" . consult-history)))
+
+(use-package mini-frame
+  :demand t)
 
 (provide 'features/completion)
 
