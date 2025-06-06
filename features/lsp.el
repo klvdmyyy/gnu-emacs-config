@@ -6,8 +6,8 @@
 
 (use-package eglot
   :ensure nil
-  :hook ((cc-mode . eglot-cc-ensure)
-	 (go-mode . eglot-go-ensure)))
+  :hook ((cc-mode . eglot-ensure)
+         (go-mode . eglot-ensure)))
 
 (defun eglot-cc-ensure ()
   (let ((language-server (executable-find "clangd")))
