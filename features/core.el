@@ -70,6 +70,8 @@
   (read-process-output-max (* 4 1024 1024))
 
   :config
+  ;; MAYBE make frame more transparent ?!
+  (add-to-list 'default-frame-alist '(alpha-background . 100))
   (fset #'jsonrpc--log-event #'ignore)
   (tab-bar-mode 0)			; [TODO] Setup `tab-bar-mode'
   
