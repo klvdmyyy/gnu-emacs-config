@@ -12,10 +12,13 @@
   :bind (("C-c o t s" . org-timer-start)
          ("C-c o t e" . org-timer-stop)
          ("C-c o t p" . org-timer-pause-or-continue)
+         ("C-c o t t" . org-timer-set-timer)
          :map org-mode-map
 	     ;; or `consult-outline'
 	     ("C-s" . consult-org-heading))
   :custom
+  (org-clock-sound
+   (concat user-init-dir "org-clock-sound.wav"))
   (org-directory "~/org"))
 
 (use-package org-agenda
