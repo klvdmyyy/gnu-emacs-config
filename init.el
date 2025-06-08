@@ -73,6 +73,7 @@
 
 (require! 'languages/cc)
 (require! 'languages/go)
+(require! 'languages/zig)
 (require! 'languages/proto)
 (require! 'languages/docker)
 (require! 'languages/yaml)

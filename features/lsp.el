@@ -9,9 +9,11 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   ;; or `lsp-deferred'
-  :hook ((c-mode . lsp)
-         (c++-mode . lsp)
-         (go-mode . lsp)
+  :hook ((c-mode . lsp-deferred)
+         (c++-mode . lsp-deferred)
+         (go-mode . lsp-deferred)
+         (zig-mode . lsp-deferred)
+         (python-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :custom
   (lsp-log-io nil)
