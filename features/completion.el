@@ -30,19 +30,24 @@
   (all-the-icons-completion-mode 1))
 
 (use-package consult
-  :bind (("C-c a" . consult-org-agenda)
-	     ("C-s" . consult-line)
-	     ("C-x b" . nil)
-         ("C-x r b" . consult-bookmark)
-	     ("s-B" . consult-buffer)
-         ("M-g i" . consult-imenu)
-         ;;("M-g M-i" . consult-imenu)
-         ;;("M-g M-i" . consult-imenu-multi)
-         ("M-g f" . consult-flymake)
+  :bind (;; Without `C-c c' prefix
+         ("C-s" . consult-line)
+         ("s-B" . consult-buffer)
          ("M-g g" . consult-goto-line)
-         ("M-g M-g" . consult-goto-line)
-	     :map eshell-hist-mode-map
-	     ("M-r" . consult-history)))
+         ("C-x r b" . consult-bookmark)
+
+         ;; With `C-c c' prefix
+         ("C-c c d" . consult-flymake)
+         ("C-c c i" . consult-imenu)
+         ("C-c c g" . consult-git-grep)
+         ("C-c c r" . consult-ripgrep)
+         ("C-c c f" . project-find-file) ; Use project find file instead of `consult-find' or other consult file related things
+
+         ;; Specific maps
+         :map eshell-hist-mode-map
+         ("M-r" . consult-history))
+  :custom
+  (consult-narrow-key "<"))
 
 (use-package mini-frame
   :demand t)
