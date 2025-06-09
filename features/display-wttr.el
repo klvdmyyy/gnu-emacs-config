@@ -5,6 +5,7 @@
 ;;; Code:
 
 (use-package display-wttr
+  :disabled t
   :defer 0.2
   :custom
   ;; (display-wttr-locations '("Buzuluk"

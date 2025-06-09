@@ -9,6 +9,7 @@ transient
 tramp
 .lsp-session-v1
 bookmarks
+var
 
 ### Emacs auto-save/backup files ###
 *~

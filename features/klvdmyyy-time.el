@@ -5,6 +5,7 @@
 ;;; Code:
 
 (use-package time
+  :disabled t
   :ensure nil
   :defer 0.3
   :custom

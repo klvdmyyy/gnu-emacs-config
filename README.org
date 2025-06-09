@@ -1,0 +1,17 @@
+#+TITLE: My GNU Emacs Configuration/Distribution
+
+* Development
+
+Languages:
+- Zig
+- Go
+- Emacs Lisp
+- Dockerfile
+- Protobuf
+- Yaml
+
+* modules conflict
+
+| *lsp-mode* | lsp           |
+| *time*     | klvdmyyy-time |
+| *eshell*   | esh           |

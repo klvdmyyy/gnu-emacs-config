@@ -41,6 +41,9 @@
   (require 'dired)
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   
+  ;; MAYBE make frame more transparent ?!
+  (add-to-list 'default-frame-alist '(alpha-background . 100))
+  
   :hook
   ((elpaca-after-init
     . (lambda () (load custom-file 'noerror)))
@@ -52,8 +55,7 @@
 	(message "Emacs ready in %.2f seconds with %d garbage collections"
 		 (float-time (time-subtract after-init-time before-init-time))
 		 gcs-done)))
-   (prog-mode . hl-line-mode)
-   )
+   (prog-mode . hl-line-mode))
 
   :custom
   (make-backup-files nil)
@@ -70,19 +72,38 @@
   (read-process-output-max (* 4 1024 1024))
 
   :config
-  ;; MAYBE make frame more transparent ?!
-  (add-to-list 'default-frame-alist '(alpha-background . 100))
-  (fset #'jsonrpc--log-event #'ignore)
-  (tab-bar-mode 0)			; [TODO] Setup `tab-bar-mode'
+  (use-package menu-bar
+    :ensure nil
+    :config (menu-bar-mode 0))
   
-  (menu-bar-mode 0)
-  (tool-bar-mode 0)
-  (scroll-bar-mode 0)
-  (fringe-mode '(8 . 8))
-  (column-number-mode 1)
+  (use-package tool-bar
+    :ensure nil
+    :config (tool-bar-mode 0))
 
-  (recentf-mode 1)
-  (which-key-mode 1))
+  (use-package scroll-bar
+    :ensure nil
+    :config (scroll-bar-mode 0))
+
+  (use-package fringe
+    :ensure nil
+    :config (fringe-mode '(8 . 8)))
+
+  (use-package tab-bar
+    :disabled t                         ; TODO Setup `tab-bar-mode'
+    :ensure nil
+    :config (tab-bar-mode 1))
+
+  (use-package which-key
+    :ensure nil
+    :config (which-key-mode 1))
+
+  (use-package recentf
+    :ensure nil
+    :config (recentf-mode 1))
+  
+  (fset #'jsonrpc--log-event #'ignore)
+
+  (column-number-mode 1))
 
 (provide 'features/core)
 

@@ -51,7 +51,6 @@
 (require! 'features/gcmh)
 
 (require! 'features/completion)
-(require! 'features/vertico)
 
 (require! 'features/git)
 
@@ -68,6 +67,9 @@
 
 (require! 'features/display-wttr)
 (require! 'features/klvdmyyy-time)
+
+;; NOTE You shouldn't use it
+;;(require! 'features/all-the-icons)
 
 ;; Languages
 
