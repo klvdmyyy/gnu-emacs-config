@@ -18,6 +18,27 @@
 ;; `lsp-mode' use `plists' for deserialization
 (setenv "LSP_USE_PLISTS" "true")
 
+
+;; Setup user init directory
+(defconst user-init-dir
+  (cond ((boundp 'user-emacs-directory)
+         user-emacs-directory)
+        ((boundp 'user-init-directory)
+         user-init-directory)
+        (t "~/.emacs.d/")))
+
+(defmacro register-user-lp (lp)
+  `(add-to-list
+    'load-path
+    (concat user-init-dir ,lp)))
+
+(register-user-lp "features")
+
+(defmacro require! (module)
+  `(require
+    ,module
+    (concat user-init-dir (prin1-to-string ,module) ".el")))
+
 (provide 'early-init)
 
 ;;; early-init.el ends here

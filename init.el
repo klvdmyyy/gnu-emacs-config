@@ -7,26 +7,6 @@
 ;; (setq safe-local-variable-values
 ;;       '((dired-omit-files . "auto-save-list\\'")))
 
-;; Setup user init directory
-(defconst user-init-dir
-  (cond ((boundp 'user-emacs-directory)
-         user-emacs-directory)
-        ((boundp 'user-init-directory)
-         user-init-directory)
-        (t "~/.emacs.d/")))
-
-(defmacro register-user-lp (lp)
-  `(add-to-list
-    'load-path
-    (concat user-init-dir ,lp)))
-
-(register-user-lp "features")
-
-(defmacro require! (module)
-  `(require
-    ,module
-    (concat user-init-dir (prin1-to-string ,module) ".el")))
-
 ;; Core
 
 (require! 'features/core)
@@ -68,8 +48,7 @@
 (require! 'features/display-wttr)
 (require! 'features/klvdmyyy-time)
 
-;; NOTE You shouldn't use it
-;;(require! 'features/all-the-icons)
+(require! 'features/all-the-icons)
 
 ;; Languages
 

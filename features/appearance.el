@@ -62,7 +62,6 @@
   (load-theme 'doom-one t nil))
 
 (use-package doom-modeline
-  :disabled t
   :demand t
   :custom
   (doom-modeline-height 30)
