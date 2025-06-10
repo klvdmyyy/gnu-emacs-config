@@ -18,7 +18,6 @@
 ;; `lsp-mode' use `plists' for deserialization
 (setenv "LSP_USE_PLISTS" "true")
 
-
 ;; Setup user init directory
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
@@ -32,7 +31,11 @@
     'load-path
     (concat user-init-dir ,lp)))
 
+;; MAYBE Use `load' instead of `require' for features/modules
 (register-user-lp "features")
+
+;; TODO Setup `lisp/' separated directory
+(register-user-lp "lisp")
 
 (defmacro require! (module)
   `(require

@@ -2,6 +2,9 @@
 ;;
 ;;; Commentary:
 ;;
+;; TODO Separated package management in all features
+;; TODO Separated `lisp/' directory for my functions, macroses, packages and etc
+;;
 ;;; Code:
 
 ;; (setq safe-local-variable-values
@@ -13,7 +16,9 @@
 
 ;; Package manager
 
-(require! 'features/elpaca)
+;; NOTE Setup `NO_EPM' environment variable if you need to disable any Emacs Package Management
+(unless (getenv "NO_EPM")
+  (require! 'features/elpaca))
 
 ;; Benchmark
 

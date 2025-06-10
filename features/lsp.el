@@ -24,12 +24,6 @@
   :after lsp-mode
   :hook (lsp-mode . lsp-ui-mode))
 
-(use-package eglot
-  :disabled t
-  :ensure nil
-  :hook ((cc-mode . eglot-ensure)
-         (go-mode . eglot-ensure)))
-
 (provide 'features/lsp)
 
 ;;; lsp.el ends here

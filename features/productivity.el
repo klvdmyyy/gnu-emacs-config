@@ -48,8 +48,6 @@
   (org-clock-sound
    (concat user-init-dir "org-clock-sound.wav")))
 
-(upcase (file-name-base "~/org/minds.org"))
-
 ;; TODO Setup `org-roam'
 (use-package org-roam
   :disabled t)
