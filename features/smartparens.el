@@ -21,7 +21,9 @@
     (sp-local-pair mode "`" nil :when '(sp-in-string-p)))
 
   (define-key prog-mode-map (kbd "RET") (lambda () (interactive) (indent-between-pairs)))
-  (define-key zig-mode-map (kbd ";") (lambda () (interactive) (semicolon-after-pairs)))
+  
+  (with-eval-after-load 'zig-mode
+    (define-key zig-mode-map (kbd ";") (lambda () (interactive) (semicolon-after-pairs))))
 
   (sp-with-modes '(prog-mode)
     (sp-local-pair "(" nil :post-handlers '(:add indent-between-pairs))
