@@ -33,10 +33,10 @@
 
       (shell-command
        (concat "curl -L -o /tmp/FiraCode.zip "
-	       "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip"
-	       " && "
-	       "unzip -o /tmp/FiraCode.zip -d " font-dir " && "
-	       "rm /tmp/FiraCode.zip && fc-cache -f")))) ; or `fc-cache -fv'
+	           "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip"
+	           " && "
+	           "unzip -o /tmp/FiraCode.zip -d " font-dir " && "
+	           "rm /tmp/FiraCode.zip && fc-cache -f")))) ; or `fc-cache -fv'
   
   ;; Just return font-name
   "Fira Code")
