@@ -20,10 +20,12 @@
     (sp-local-pair mode "'" nil :when '(sp-in-string-p))
     (sp-local-pair mode "`" nil :when '(sp-in-string-p)))
 
-  ;; Fix indentation between pairs
-  (dolist (char '("{" "(" "["))
-    (sp-local-pair 'prog-mode char nil :post-handlers '((indent-between-pair "RET"))))
+  (define-key prog-mode-map (kbd "RET") (lambda () (interactive) (indent-between-pairs)))
 
+  (sp-with-modes '(prog-mode)
+    (sp-local-pair "(" nil :post-handlers '(:add indent-between-pairs))
+    (sp-local-pair "{" nil :post-handlers '(:add indent-between-pairs))
+    (sp-local-pair "[" nil :post-handlers '(:add indent-between-pairs)))
   (show-paren-mode 1))
 
 (use-package smartparens-config
@@ -34,12 +36,16 @@
 	 ("M-s" . nil)
 	 ("M-S" . sp-forward-slurp-sexp)))
 
-(defun indent-between-pair (&rest _ignored)
-  "Insert indentation between pairs. Used with smartparens"
-  (newline)
-  (indent-according-to-mode)
-  (forward-line -1)
-  (indent-according-to-mode))
+(defun indent-between-pairs ()
+  "Open a new brace or bracket expression, with relevant newlines and indent. "
+  (if (and (member (char-before) (list ?\( ?\[ ?\{))
+           (member (char-after) (list ?\) ?\] ?\})))
+      (progn (newline)
+             (newline)
+             (indent-according-to-mode)
+             (forward-line -1)
+             (indent-according-to-mode))
+    (newline-and-indent)))
 
 (provide 'features/smartparens)
 
