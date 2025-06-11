@@ -15,13 +15,9 @@
   (define-key prog-mode-map (kbd "RET") (cmd! (indent-between-pairs)))
   
   :config
-  (sp-with-modes '(emacs-lisp-mode
-                   lisp-mode
-                   common-lisp-mode
-                   scheme-mode)
-    (sp-local-pair "'" nil :when '(sp-in-string-p))
-    (sp-local-pair "`" "'" :when '(sp-in-comment-p))
-    (sp-local-pair "`" "'" :when '(:add sp-in-string-p)))
+  (sp-with-modes '(emacs-lisp-mode)
+    (sp-local-pair "'" nil :when '(sp-in-string-p sp-in-comment-p) :actions '(forward-char))
+    (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p)))
   (show-paren-mode 1))
 
 (use-package smartparens-config

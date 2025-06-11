@@ -14,7 +14,10 @@
 ;; ~/org/roam - Roam directory
 ;;
 ;; MAYBE `org-trello' extension
-;; TODO `org-roam' configuration
+;; MAYBE configure `denote'
+;; MAYBE configure `noter'
+;; TODO configure `calibredb' for calibre e-books library
+;; TODO configure `nov.el' for epub reading
 ;;
 ;;; Code:
 
