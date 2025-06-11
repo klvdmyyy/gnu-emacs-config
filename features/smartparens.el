@@ -22,10 +22,10 @@
 
   (define-key prog-mode-map (kbd "RET") (lambda () (interactive) (indent-between-pairs)))
 
-  (sp-with-modes '(prog-mode)
-    (sp-local-pair "(" nil :post-handlers '(:add indent-between-pairs))
-    (sp-local-pair "{" nil :post-handlers '(:add indent-between-pairs))
-    (sp-local-pair "[" nil :post-handlers '(:add indent-between-pairs)))
+  ;; (sp-with-modes '(prog-mode)
+  ;;   (sp-local-pair "(" nil :post-handlers '(:add indent-between-pairs))
+  ;;   (sp-local-pair "{" nil :post-handlers '(:add indent-between-pairs))
+  ;;   (sp-local-pair "[" nil :post-handlers '(:add indent-between-pairs)))
   (show-paren-mode 1))
 
 (use-package smartparens-config

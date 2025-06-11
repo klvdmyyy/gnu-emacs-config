@@ -12,11 +12,6 @@
 (defvar is-first-startup nil
   "`t' --- First startup of GNU Emacs
 `nil' --- Not first startup of GNU Emacs")
-(defun is-first-startup ()
-  "DEPRECATED !!!
-
-Use `is-first-startup' variable instead"
-  is-first-startup)
 
 (defun lock-startup (&optional lock-file)
   (let ((lock-file (or lock-file (concat user-init-dir ".startup-lock"))))
