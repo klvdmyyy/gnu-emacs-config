@@ -47,6 +47,7 @@
   (read-process-output-max (* 4 1024 1024))
 
   :config
+  (blink-cursor-mode 0)
   (use-package menu-bar
     :ensure nil
     :config (menu-bar-mode 0))

@@ -1,5 +1,9 @@
 ;;; productivity.el
 ;;
+;; The core of my GNU Emacs configuration.
+;;
+;; I trying to learn Org, Org Agenda and Org Roam for using it everywhere.
+;;
 ;;; Commentary:
 ;;
 ;; Org related things which boost my productivity.
@@ -23,9 +27,9 @@
   :ensure nil
   :init
   (unless (file-exists-p "~/org")
-    (make-directory "~/org"))
+    (make-directory "~/org" t))
   (unless (file-exists-p "~/org/cache")
-    (make-directory "~/org/cache"))'
+    (make-directory "~/org/cache" t))
   
   (setq org-directory "~/org")
 
@@ -48,7 +52,7 @@
   (org-id-locations-file (concat org-directory "/cache/.org-id-locations"))
   (org-deadline-warning-days 60)
   (org-clock-sound
-   (concat user-init-dir "org-clock-sound.wav")))
+   (concat user-init-dir "assets/org-clock-sound.wav")))
 
 ;; TODO Setup `org-roam'
 (use-package org-roam
@@ -67,17 +71,48 @@
          ;; ("C-c r O" . rde-org-roam-open-ref)
          :map
          mode-specific-map
+         ("n t" . org-roam-dailies-capture-today)
          ("n n" . org-roam-buffer-toggle)
          ("n f" . org-roam-node-find)
          ("n i" . org-roam-node-insert)
          ("n r" . org-roam-ref-find)
          ("n C" . org-roam-capture))
   :custom
+  (org-roam-dailies-directory "daily/")
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry
+      "* %?"
+      :target (file+head
+               "%<%Y-%m-%d>.org"
+               "#+TITLE: %<%Y-%m-%d>\n#+ROAM_TAGS: daily dailies %<%Y-%m-%d>\n\n"))))
+  (org-roam-capture-templates
+   '(("y" "Yandex" plain
+      "%?"
+      :target (file+head "yandex/${slug}.org"
+                         "#+TITLE: ${title}\n#+ROAM_TAGS: yandex\n\n")
+      :unarrowed t)
+     ("p" "Programming" plain
+      "* %?"
+      :target (file+head "programming/${slug}.org"
+                         "#+TITLE: ${title}\n#+ROAM_TAGS: programming\n\n")
+      :unarrowed t)
+     ("b" "Business" plain
+      "** Description\n%?\n** Advantages\n**Risks\n"
+      :target (file+head "business/${slug}.org"
+                         "#+TITLE: ${title}\n#+ROAM_TAGS: business\n\n")
+      :unarrowed t)))
   (org-roam-db-location (concat org-directory "/cache/org-roam.db"))
   (org-roam-db-update-on-save t)
   :init
   (unless (file-exists-p "~/org/roam")
-    (make-directory "~/org/roam"))
+    (make-directory "~/org/roam/" t))
+
+  (dolist (dir '("yandex"
+                 "programming"
+                 "business"
+                 "daily"))
+    (unless (file-exists-p (concat "~/org/roam/" dir))
+      (make-directory (concat "~/org/roam/" dir))))
   :config
   (setq org-roam-directory (file-truename "~/org/roam"))
   (add-to-list 'org-agenda-files org-roam-directory)
@@ -89,7 +124,7 @@
   :bind (("C-c a" . org-agenda))
   :init
   (unless (file-exists-p "~/org/agenda")
-    (make-directory "~/org/agenda"))
+    (make-directory "~/org/agenda" t))
   :custom
   ;; (org-agenda-files
   ;;  (directory-files-recursively

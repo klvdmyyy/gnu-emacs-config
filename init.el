@@ -27,7 +27,7 @@
 (load-feature company)
 (load-feature lsp)
 ;; (load-feature display-wttr)
-(load-feature klvdmyyy-time)
+(load-feature time)
 (load-feature all-the-icons)
 
 (load-language cc)
