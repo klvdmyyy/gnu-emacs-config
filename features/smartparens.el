@@ -28,9 +28,11 @@
   :ensure nil
   :after smartparens
   :bind (:map
-	 smartparens-mode-map
-	 ("M-s" . nil)
-	 ("M-S" . sp-forward-slurp-sexp)))
+	     smartparens-mode-map
+	     ("M-s" . nil)
+         ("M-DEL" . sp-backward-unwrap-sexp)
+         ("C-<left>" . sp-forward-barf-sexp)
+	     ("C-<right>" . sp-forward-slurp-sexp)))
 
 (defun indent-between-pairs ()
   "Open a new brace or bracket expression, with relevant newlines and indent. "
