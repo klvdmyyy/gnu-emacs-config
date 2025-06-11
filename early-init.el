@@ -32,18 +32,6 @@
 
 (lock-startup)
 
-(defmacro load-feature (name)
-  `(load ,(concat user-init-dir
-                  "features/"
-                  (prin1-to-string name)
-                  ".el")))
-
-(defmacro load-language (name)
-  `(load ,(concat user-init-dir
-                  "languages/"
-                  (prin1-to-string name)
-                  ".el")))
-
 (provide 'early-init)
 
 ;;; early-init.el ends here

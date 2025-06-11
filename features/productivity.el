@@ -26,12 +26,10 @@
 (use-package org
   :ensure nil
   :init
-  (unless (file-exists-p "~/org")
-    (make-directory "~/org" t))
-  (unless (file-exists-p "~/org/cache")
-    (make-directory "~/org/cache" t))
+  (make-directory klv/org-directory t)
+  (make-directory klv/org-cache-directory t)
   
-  (setq org-directory "~/org")
+  (setq org-directory klv/org-directory)
 
   :hook ((org-mode . org-indent-mode))
   :bind (("C-c o t s" . org-timer-start)
@@ -49,10 +47,9 @@
          ("C-s" . consult-org-heading)  ; MAYBE `consult-outline'
          )
   :custom
-  (org-id-locations-file (concat org-directory "/cache/.org-id-locations"))
+  (org-id-locations-file klv/org-id-locations-file)
   (org-deadline-warning-days 60)
-  (org-clock-sound
-   (concat user-init-dir "assets/org-clock-sound.wav")))
+  (org-clock-sound (get-user-asset "org-clock-sound.wav")))
 
 ;; TODO Setup `org-roam'
 (use-package org-roam
@@ -101,21 +98,14 @@
       :target (file+head "business/${slug}.org"
                          "#+TITLE: ${title}\n#+ROAM_TAGS: business\n\n")
       :unarrowed t)))
-  (org-roam-db-location (concat org-directory "/cache/org-roam.db"))
+  (org-roam-db-location klv/org-roam-db-location)
   (org-roam-db-update-on-save t)
   :init
-  (unless (file-exists-p "~/org/roam")
-    (make-directory "~/org/roam/" t))
-
-  (dolist (dir '("yandex"
-                 "programming"
-                 "business"
-                 "daily"))
-    (unless (file-exists-p (concat "~/org/roam/" dir))
-      (make-directory (concat "~/org/roam/" dir))))
+  (make-directory klv/org-roam-directory t)
+  (dolist (dir klv/org-roam-subdirectories)
+    (make-directory (concat klv/org-roam-directory "/" dir) t))
   :config
-  (setq org-roam-directory (file-truename "~/org/roam"))
-  (add-to-list 'org-agenda-files org-roam-directory)
+  (setq org-roam-directory klv/org-roam-directory)
   (org-roam-db-autosync-mode))
 
 (use-package org-agenda
@@ -125,14 +115,22 @@
   :init
   (unless (file-exists-p "~/org/agenda")
     (make-directory "~/org/agenda" t))
+  :config
+  (with-eval-after-load 'org-roam
+    (add-to-list 'org-agenda-files klv/org-roam-directory)
+    (dolist (dir klv/org-roam-subdirectories)
+      (add-to-list 'org-agenda-files (concat klv/org-roam-directory "/" dir))))
   :custom
   ;; (org-agenda-files
   ;;  (directory-files-recursively
   ;;   org-directory
   ;;   ;; *.agenda.org
   ;;   "\\.agenda.org\\'"))
+  
+  ;; (org-agenda-files
+  ;;  (file-expand-wildcards
+  ;;   (concat org-directory "/agenda/*.org") nil))
   (org-agenda-files
-   (file-expand-wildcards
-    (concat org-directory "/agenda/*.org") nil)))
+   (directory-files-recursively klv/org-agenda-directory "\\.org\\'")))
 
 ;;; productivity.el ends here
