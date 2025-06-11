@@ -16,7 +16,7 @@
 
 (defconst klv/org-roam-directory "~/org/roam")
 
-(defconst klv/org-roam-subdirectories '("yandex" "programming" "business" "daily")
+(defconst klv/org-roam-subdirectories '("yandex" "yandex/algorithms" "programming" "business" "daily")
   "A lot of directories are hard-coded in `org-roam' configuration with
 `use-package'")
 

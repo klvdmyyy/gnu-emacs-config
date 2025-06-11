@@ -88,6 +88,11 @@
       :target (file+head "yandex/${slug}.org"
                          "#+TITLE: ${title}\n#+ROAM_TAGS: yandex\n\n")
       :unarrowed t)
+     ("a" "Yandex Algorithms" plain
+      "#+begin_src go :imports '(\"fmt\")%?\n#+end_src\n"
+      :target (file+head "yandex/algorithms/${slug}.org"
+                         "#+TITLE: ${title}\n#+ROAM_TAGS: yandex algorithms\n\n")
+      :unarrowed t)
      ("p" "Programming" plain
       "* %?"
       :target (file+head "programming/${slug}.org"
