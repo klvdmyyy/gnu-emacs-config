@@ -43,4 +43,10 @@
   :custom
   (consult-narrow-key "<"))
 
+;; TODO Setup it maybe
+(use-package consult-org-roam
+  :disabled t
+  :after org-roam
+  :demand t)
+
 ;;; completion.el ends here
