@@ -80,7 +80,7 @@
   :custom
   (org-roam-node-display-template
    (concat "${title:*} "
-           (propertize "${tags:10}" 'face 'org-tag)))
+           (propertize "${tags:30}" 'face 'org-tag)))
   (org-roam-dailies-directory "daily/")
   (org-roam-dailies-capture-templates
    '(("d" "default" entry
