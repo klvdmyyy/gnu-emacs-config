@@ -5,15 +5,15 @@
 ;;; Code:
 
 (use-package smartparens
-  :bind (:map
-         prog-mode-map
-         ("RET" . (cmd! (indent-between-pairs))))
   :hook ((prog-mode . smartparens-mode)
 	     ;; Strict mode only in lisp/scheme
 	     (emacs-lisp-mode . smartparens-strict-mode)
 	     (lisp-mode . smartparens-strict-mode)
 	     (common-lisp-mode . smartparens-strict-mode)
 	     (scheme-mode . smartparens-strict-mode))
+  :init
+  (define-key prog-mode-map (kbd "RET") (cmd! (indent-between-pairs)))
+  
   :config
   (sp-with-modes '(emacs-lisp-mode
                    lisp-mode
