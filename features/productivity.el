@@ -51,7 +51,6 @@
   (org-deadline-warning-days 60)
   (org-clock-sound (get-user-asset "org-clock-sound.wav")))
 
-;; TODO Setup `org-roam'
 (use-package org-roam
   ;; FIXME Why `:demand' is `t' ?!?!
   :demand t
