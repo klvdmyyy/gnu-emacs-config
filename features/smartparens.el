@@ -5,27 +5,23 @@
 ;;; Code:
 
 (use-package smartparens
+  :bind (:map
+         prog-mode-map
+         ("RET" . (cmd! (indent-between-pairs))))
   :hook ((prog-mode . smartparens-mode)
-	 ;; Strict mode only in lisp/scheme
-	 (emacs-lisp-mode . smartparens-strict-mode)
-	 (lisp-mode . smartparens-strict-mode)
-	 (common-lisp-mode . smartparens-strict-mode)
-	 (scheme-mode . smartparens-strict-mode))
+	     ;; Strict mode only in lisp/scheme
+	     (emacs-lisp-mode . smartparens-strict-mode)
+	     (lisp-mode . smartparens-strict-mode)
+	     (common-lisp-mode . smartparens-strict-mode)
+	     (scheme-mode . smartparens-strict-mode))
   :config
-  ;; Ignore "'" and "`" in lisp/scheme mode
-  (dolist (mode '(emacs-lisp-mode
-		  lisp-mode
-		  common-lisp-mode
-		  scheme-mode))
-    (sp-local-pair mode "'" nil :when '(sp-in-string-p))
-    (sp-local-pair mode "`" nil :when '(sp-in-string-p)))
-
-  (define-key prog-mode-map (kbd "RET") (lambda () (interactive) (indent-between-pairs)))
-
-  ;; (sp-with-modes '(prog-mode)
-  ;;   (sp-local-pair "(" nil :post-handlers '(:add indent-between-pairs))
-  ;;   (sp-local-pair "{" nil :post-handlers '(:add indent-between-pairs))
-  ;;   (sp-local-pair "[" nil :post-handlers '(:add indent-between-pairs)))
+  (sp-with-modes '(emacs-lisp-mode
+                   lisp-mode
+                   common-lisp-mode
+                   scheme-mode)
+    (sp-local-pair "'" nil)
+    (sp-local-pair "`" "'" :when '(sp-in-comment-p))
+    (sp-local-pair "`" "'" :when '(:add sp-in-string-p)))
   (show-paren-mode 1))
 
 (use-package smartparens-config
