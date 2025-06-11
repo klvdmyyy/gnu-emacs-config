@@ -37,6 +37,8 @@
          ("C-c o t p" . org-timer-pause-or-continue)
          ("C-c o t t" . org-timer-set-timer)
 
+         ("C-c o e" . org-babel-execute-src-block-maybe)
+
          ;; TEMP Dummy keybindings and functions
          ;; MAYBE Remove/change
          ("C-c o o" . my-org-open-file)
@@ -47,13 +49,12 @@
          ("C-s" . consult-org-heading)  ; MAYBE `consult-outline'
          )
   :custom
+  (org-confirm-babel-evaluate nil)
   (org-id-locations-file klv/org-id-locations-file)
   (org-deadline-warning-days 60)
   (org-clock-sound (get-user-asset "org-clock-sound.wav")))
 
 (use-package org-roam
-  ;; FIXME Why `:demand' is `t' ?!?!
-  :demand t
   :bind (:map
          org-mode-map
          ("C-c r r" . org-roam-ref-add)
