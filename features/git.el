@@ -10,15 +10,16 @@
 	     (".gitattributes\\'" . gitattributes-mode)))
 
 (use-package diff-hl
+  :disabled t
   ;; Using diff-hl only with window system
-  :if (window-system)
+  ;; :if (window-system)
   :hook (prog-mode . diff-hl-mode)
   :custom
   (diff-hl-bmp-max-width 4))
 
 (use-package git-gutter
   ;; Using git-gutter only in Terminal
-  :unless (window-system)
+  ;; :unless (window-system)
   :hook (prog-mode . git-gutter-mode)
   :custom
   (git-gutter:modified-sign "=")
