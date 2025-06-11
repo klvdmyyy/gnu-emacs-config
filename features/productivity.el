@@ -78,33 +78,36 @@
          ("n r" . org-roam-ref-find)
          ("n C" . org-roam-capture))
   :custom
+  (org-roam-node-display-template
+   (concat "${title:*} "
+           (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-dailies-directory "daily/")
   (org-roam-dailies-capture-templates
    '(("d" "default" entry
       "* %?"
       :target (file+head
                "%<%Y-%m-%d>.org"
-               "#+TITLE: %<%Y-%m-%d>\n#+ROAM_TAGS: daily dailies %<%Y-%m-%d>\n\n"))))
+               "#+TITLE: %<%Y-%m-%d>\n#+filetags: :daily:dailies: %<%Y-%m-%d>\n\n"))))
   (org-roam-capture-templates
    '(("y" "Yandex" plain
       "%?"
       :target (file+head "yandex/${slug}.org"
-                         "#+TITLE: ${title}\n#+ROAM_TAGS: yandex\n\n")
+                         "#+TITLE: ${title}\n#+filetags: :yandex:\n\n")
       :unarrowed t)
      ("a" "Yandex Algorithms" plain
       "#+begin_src go :imports '(\"fmt\")%?\n#+end_src\n"
       :target (file+head "yandex/algorithms/${slug}.org"
-                         "#+TITLE: ${title}\n#+ROAM_TAGS: yandex algorithms\n\n")
+                         "#+TITLE: ${title}\n#+filetags: :yandex:algorithms:\n\n")
       :unarrowed t)
      ("p" "Programming" plain
       "* %?"
       :target (file+head "programming/${slug}.org"
-                         "#+TITLE: ${title}\n#+ROAM_TAGS: programming\n\n")
+                         "#+TITLE: ${title}\n#+filetags: :programming:\n\n")
       :unarrowed t)
      ("b" "Business" plain
       "** Description\n%?\n** Advantages\n**Risks\n"
       :target (file+head "business/${slug}.org"
-                         "#+TITLE: ${title}\n#+ROAM_TAGS: business\n\n")
+                         "#+TITLE: ${title}\n#+filetags: :business:\n\n")
       :unarrowed t)))
   (org-roam-db-location klv/org-roam-db-location)
   (org-roam-db-update-on-save t)
