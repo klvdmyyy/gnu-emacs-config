@@ -19,7 +19,7 @@
                    lisp-mode
                    common-lisp-mode
                    scheme-mode)
-    (sp-local-pair "'" nil)
+    (sp-local-pair "'" nil :when '(sp-in-string-p))
     (sp-local-pair "`" "'" :when '(sp-in-comment-p))
     (sp-local-pair "`" "'" :when '(:add sp-in-string-p)))
   (show-paren-mode 1))
