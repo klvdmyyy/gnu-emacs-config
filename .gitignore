@@ -10,6 +10,7 @@ tramp
 .lsp-session-v1
 bookmarks
 var
+.org-id-locations
 
 ### Emacs auto-save/backup files ###
 *~

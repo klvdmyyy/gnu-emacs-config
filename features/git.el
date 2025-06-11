@@ -9,7 +9,16 @@
 	     (".gitconfig\\'" . gitconfig-mode)
 	     (".gitattributes\\'" . gitattributes-mode)))
 
+(use-package diff-hl
+  ;; Using diff-hl only with window system
+  :if (window-system)
+  :hook (prog-mode . diff-hl-mode)
+  :custom
+  (diff-hl-bmp-max-width 4))
+
 (use-package git-gutter
+  ;; Using git-gutter only in Terminal
+  :unless (window-system)
   :hook (prog-mode . git-gutter-mode)
   :custom
   (git-gutter:modified-sign "=")
@@ -17,12 +26,9 @@
   (git-gutter:deleted-sign "-")
   (git-gutter:window-width 1)
   :config
-  (set-face-background 'git-gutter:modified nil)
-  (set-face-foreground 'git-gutter:modified "orange")
-  (set-face-background 'git-gutter:added nil)
-  (set-face-foreground 'git-gutter:added "green")
-  (set-face-background 'git-gutter:deleted nil)
-  (set-face-foreground 'git-gutter:deleted "red"))
+  (set-face-background 'git-gutter:modified (face-foreground 'git-gutter:modified))
+  (set-face-background 'git-gutter:added (face-foreground 'git-gutter:added))
+  (set-face-background 'git-gutter:deleted (face-foreground 'git-gutter:deleted)))
 
 ;; Magit from elpaca need latest version of transient
 ;; which is not in repo (lower than minimum required)
@@ -36,7 +42,5 @@
   :commands (magit
 	         magit-diff-unstaged)
   :bind ("C-x g" . magit))
-
-(provide 'features/git)
 
 ;;; git.el ends here

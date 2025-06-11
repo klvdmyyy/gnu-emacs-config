@@ -23,6 +23,4 @@
   :after company
   :hook (company-mode . company-box-mode))
 
-(provide 'features/company)
-
 ;;; company.el ends here

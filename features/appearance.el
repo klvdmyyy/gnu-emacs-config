@@ -21,13 +21,14 @@
 [TODO] Сделать установку асинхронной. После установки шрифт подгрузится
 автоматически."
   (when (and (or (eq system-type 'gnu/linux)
-		 (eq system-type 'darwin))
-	     (or (is-first-startup)
-		 (not
-		  (find-font (font-spec :name "Fira Code")))))
+		         (eq system-type 'darwin))
+	         (or is-first-startup
+		         (not
+		          (find-font (font-spec :name "Fira Code"))))
+             (window-system))
     (let ((font-dir "~/.local/share/fonts/"))
       (unless (file-exists-p font-dir)
-	(make-directory font-dir t))
+	    (make-directory font-dir t))
       
       (message "Installing Fira Code...")
 
@@ -63,6 +64,9 @@
 
 (use-package doom-modeline
   :demand t
+  :init
+  (when is-first-startup
+    (nerd-icons-install-fonts))
   :custom
   (doom-modeline-height 30)
   (doom-modeline-bar-width 3)
@@ -70,10 +74,6 @@
   (doom-modeline-percent-position '(-3 "%p"))
   
   :config
-  (when (is-first-startup)
-    (nerd-icons-install-fonts))
   (doom-modeline-mode 1))
-
-(provide 'features/appearance)
 
 ;;; appearance.el ends here

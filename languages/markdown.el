@@ -10,6 +10,4 @@
 	     ("C-s" . consult-outline))
   :mode (("\\.md\\'" . markdown-mode)))
 
-(provide 'languages/markdown)
-
 ;;; markdown.el ends here

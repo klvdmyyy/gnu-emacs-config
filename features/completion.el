@@ -43,6 +43,4 @@
   :custom
   (consult-narrow-key "<"))
 
-(provide 'features/completion)
-
 ;;; completion.el ends here

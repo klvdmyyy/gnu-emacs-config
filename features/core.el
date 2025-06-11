@@ -4,31 +4,6 @@
 ;;
 ;;; Code:
 
-(defvar locked-first-startup nil
-  "Вспомогательная переменная используемая для хранения
-значания о первом запуске GNU Emacs. Используется в
-функции `is-first-startup'.
-
-`nil' --- GNU Emacs запущен не в первый раз.
-  `t' --- GNU Emacs запущен в первый раз.")
-
-(defun is-first-startup ()
-  "Функция использующаяся для определения первого запуска GNU Emacs.
-
-При первом запуске GNU Emacs в директории с конфигурацией создаётся
-файл `.startup-lock', а так же переменная `locked-first-startup' устанавливается
-как `t' (по умолчанию `nil')."
-  (let ((lock-file (concat user-init-dir ".startup-lock")))
-    (if (file-exists-p lock-file)
-	(if locked-first-startup
-	    t
-	  nil)
-      (progn
-	(require 'dired)
-	(dired-create-empty-file lock-file)
-	(setq locked-first-startup t)
-	t))))
-
 (use-package dired
   :ensure nil
   :custom
@@ -86,7 +61,7 @@
 
   (use-package fringe
     :ensure nil
-    :config (fringe-mode '(8 . 8)))
+    :config (fringe-mode '(4 . 4)))
 
   (use-package tab-bar
     :disabled t                         ; TODO Setup `tab-bar-mode'
@@ -104,7 +79,5 @@
   (fset #'jsonrpc--log-event #'ignore)
 
   (column-number-mode 1))
-
-(provide 'features/core)
 
 ;;; core.el ends here

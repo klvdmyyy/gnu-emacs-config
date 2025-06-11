@@ -24,6 +24,4 @@
   :after lsp-mode
   :hook (lsp-mode . lsp-ui-mode))
 
-(provide 'features/lsp)
-
 ;;; lsp.el ends here

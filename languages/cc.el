@@ -21,6 +21,4 @@
 	 ("RET" . c-context-line-break)
 	 ("<TAB>" . indent-for-tab-command)))
 
-(provide 'languages/cc)
-
 ;;; cc.el ends here

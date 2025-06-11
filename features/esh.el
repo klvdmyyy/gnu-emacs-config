@@ -60,6 +60,4 @@ Heavily inspired from GNU Guix RDE's `feature-emacs-eshell'"
       (project-eshell)
     (eshell arg)))
 
-(provide 'features/esh)
-
 ;;; eshell.el ends here

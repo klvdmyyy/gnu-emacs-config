@@ -15,6 +15,4 @@
   :config
   (display-wttr-mode 1))
 
-(provide 'features/display-wttr)
-
 ;;; display-wttr.el

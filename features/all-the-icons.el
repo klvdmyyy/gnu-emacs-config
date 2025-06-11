@@ -7,7 +7,7 @@
 (use-package all-the-icons
   :demand t
   :config
-  (when (is-first-startup)
+  (when is-first-startup
     (all-the-icons-install-fonts)))
 
 (use-package all-the-icons-completion
@@ -16,7 +16,5 @@
   :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
   :config
   (all-the-icons-completion-mode 1))
-
-(provide 'features/all-the-icons)
 
 ;;; all-the-icons.el ends here

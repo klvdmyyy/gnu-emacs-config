@@ -23,6 +23,4 @@
       (eat-project arg)
     (eat)))
 
-(provide 'features/eat)
-
 ;;; eat.el ends here

@@ -26,21 +26,23 @@
          user-init-directory)
         (t "~/.emacs.d/")))
 
-(defmacro register-user-lp (lp)
-  `(add-to-list
-    'load-path
-    (concat user-init-dir ,lp)))
+(add-to-list 'load-path (concat user-init-dir "lisp"))
 
-;; MAYBE Use `load' instead of `require' for features/modules
-(register-user-lp "features")
+(require 'klv)
 
-;; TODO Setup `lisp/' separated directory
-(register-user-lp "lisp")
+(lock-startup)
 
-(defmacro require! (module)
-  `(require
-    ,module
-    (concat user-init-dir (prin1-to-string ,module) ".el")))
+(defmacro load-feature (name)
+  `(load ,(concat user-init-dir
+                  "features/"
+                  (prin1-to-string name)
+                  ".el")))
+
+(defmacro load-language (name)
+  `(load ,(concat user-init-dir
+                  "languages/"
+                  (prin1-to-string name)
+                  ".el")))
 
 (provide 'early-init)
 

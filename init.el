@@ -1,26 +1,13 @@
-;;; init.el
+;;; init.el -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
-;; TODO Separated package management in all features
-;; TODO Separated `lisp/' directory for my functions, macroses, packages and etc
-;;
 ;;; Code:
 
-;; (setq safe-local-variable-values
-;;       '((dired-omit-files . "auto-save-list\\'")))
+(load-feature core)
 
-;; Core
-
-(require! 'features/core)
-
-;; Package manager
-
-;; NOTE Setup `NO_EPM' environment variable if you need to disable any Emacs Package Management
 (unless (getenv "NO_EPM")
-  (require! 'features/elpaca))
-
-;; Benchmark
+  (load-feature elpaca))
 
 (use-package benchmark-init
   :demand t
@@ -29,40 +16,26 @@
   :hook ((after-init . benchmark-init/deactivate)
          (benchmark-init/tabulated-mode . hl-line-mode)))
 
-;; Other features
+(load-feature appearance)
+(load-feature gcmh)
+(load-feature completion)
+(load-feature git)
+(load-feature smartparens)
+(load-feature productivity)
+(load-feature esh)
+(load-feature eat)
+(load-feature company)
+(load-feature lsp)
+;; (load-feature display-wttr)
+(load-feature klvdmyyy-time)
+(load-feature all-the-icons)
 
-(require! 'features/appearance)
-
-(require! 'features/gcmh)
-
-(require! 'features/completion)
-
-(require! 'features/git)
-
-(require! 'features/smartparens)
-
-(require! 'features/productivity)
-
-(require! 'features/esh)
-(require! 'features/eat)
-
-(require! 'features/company)
-
-(require! 'features/lsp)
-
-(require! 'features/display-wttr)
-(require! 'features/klvdmyyy-time)
-
-(require! 'features/all-the-icons)
-
-;; Languages
-
-(require! 'languages/cc)
-(require! 'languages/go)
-(require! 'languages/zig)
-(require! 'languages/proto)
-(require! 'languages/docker)
-(require! 'languages/yaml)
-(require! 'languages/markdown)
+(load-language cc)
+(load-language go)
+(load-language zig)
+(load-language proto)
+(load-language docker)
+(load-language yaml)
+(load-language markdown)
 
 ;;; init.el ends here

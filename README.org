@@ -10,8 +10,3 @@ Languages:
 - Protobuf
 - Yaml
 
-* modules conflict
-
-| *lsp-mode* | lsp           |
-| *time*     | klvdmyyy-time |
-| *eshell*   | esh           |

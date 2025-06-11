@@ -12,6 +12,4 @@
   :config
   (gcmh-mode 1))
 
-(provide 'features/gcmh)
-
 ;;; gcmh.el ends here

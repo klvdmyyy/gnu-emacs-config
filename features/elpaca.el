@@ -46,9 +46,11 @@
 (elpaca elpaca-use-package (elpaca-use-package-mode))
 
 (setq use-package-always-ensure t
-      use-package-always-defer t
       elpaca-use-package-by-default t)
 
-(provide 'features/elpaca)
+;; No lazy-loading in daemon mode
+(if (daemonp)
+    (setq use-package-always-demand t)
+  (setq use-package-always-defer t))
 
 ;;; elpaca.el ends here
