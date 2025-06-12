@@ -97,7 +97,7 @@
      ("a" "Yandex Algorithms" plain
       "#+begin_src go :imports '(\"fmt\")%?\n#+end_src\n"
       :target (file+head "yandex/algorithms/${slug}.org"
-                         "#+TITLE: ${title}\n#+filetags: :yandex:algorithms:\n\n")
+                         "#+TITLE: ${title}\n#+filetags: :algorithms:yandex:\n\n")
       :unarrowed t)
      ("p" "Programming" plain
       "* %?"
