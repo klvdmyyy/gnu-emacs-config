@@ -87,7 +87,7 @@
       "* %?"
       :target (file+head
                "%<%Y-%m-%d>.org"
-               "#+TITLE: %<%Y-%m-%d>\n#+filetags: :daily:dailies: %<%Y-%m-%d>\n\n"))))
+               "#+TITLE: %<%Y-%m-%d>\n#+filetags: :dailies:daily: %<%Y-%m-%d>\n\n"))))
   (org-roam-capture-templates
    '(("y" "Yandex" plain
       "%?"
