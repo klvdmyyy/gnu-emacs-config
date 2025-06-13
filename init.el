@@ -40,4 +40,6 @@
 (load-language yaml)
 (load-language markdown)
 
+(load-language nix)                     ; TODO Я думаю об использовании NixOS (или GNU Guix) в качестве основной ОС
+
 ;;; init.el ends here
