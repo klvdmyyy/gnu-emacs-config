@@ -143,7 +143,7 @@ work and just return Unknown."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;; Org Roam ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun roam-make-header (&key tags title date?)
+(defun roam-make-header (&key tags)
   "Make a header for Org Roam capture
 
 #+title: ${title}
