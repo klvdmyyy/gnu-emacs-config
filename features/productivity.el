@@ -18,11 +18,12 @@
 ;; MAYBE configure `noter'
 ;; TODO configure `calibredb' for calibre e-books library
 ;; TODO configure `nov.el' for epub reading
+;; TODO Separate `org', `org-agenda' and `org-roam' (also `hl-todo')
 ;;
 ;;; Code:
 
 (use-package hl-todo
-  :defer 0.5
+  :defer 0.3
   :config
   (global-hl-todo-mode 1))
 
@@ -58,6 +59,7 @@
   (org-clock-sound (get-user-asset "org-clock-sound.wav")))
 
 (use-package org-roam
+  :hook ((after-init . org-roam-db-autosync-mode))
   :bind (:map
          org-mode-map
          ("C-c r r" . org-roam-ref-add)
@@ -78,16 +80,27 @@
          ("n r" . org-roam-ref-find)
          ("n C" . org-roam-capture))
   :custom
+  (org-roam-directory klv/org-roam-directory)
+  (org-roam-db-location klv/org-roam-db-location)
+  (org-roam-db-update-on-save t)
+
+  ;; Display template (display tags in vertico)
   (org-roam-node-display-template
    (concat "${title:*} "
            (propertize "${tags:30}" 'face 'org-tag)))
+
+  ;; Dailies directory
   (org-roam-dailies-directory "daily/")
+  
+  ;; Dailies templates
   (org-roam-dailies-capture-templates
    '(("d" "default" entry
       "* %?"
       :target (file+head
                "%<%Y-%m-%d>.org"
                "#+TITLE: %<%Y-%m-%d>\n#+filetags: :dailies:daily: %<%Y-%m-%d>\n\n"))))
+
+  ;; Templates
   (org-roam-capture-templates
    '(("y" "Yandex" plain
       "%?"
@@ -109,15 +122,10 @@
       :target (file+head "business/${slug}.org"
                          "#+TITLE: ${title}\n#+filetags: :business:\n\n")
       :unarrowed t)))
-  (org-roam-db-location klv/org-roam-db-location)
-  (org-roam-db-update-on-save t)
   :init
   (make-directory klv/org-roam-directory t)
   (dolist (dir klv/org-roam-subdirectories)
-    (make-directory (concat klv/org-roam-directory "/" dir) t))
-  :config
-  (setq org-roam-directory klv/org-roam-directory)
-  (org-roam-db-autosync-mode))
+    (make-directory (concat klv/org-roam-directory "/" dir) t)))
 
 (use-package org-agenda
   :ensure nil

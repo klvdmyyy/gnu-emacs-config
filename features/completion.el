@@ -25,6 +25,7 @@
   (marginalia-max-relative-age 0)
   (marginalia-align 'left))
 
+;; TODO More convinient consult keybindings
 (use-package consult
   :bind (;; Without `C-c c' prefix
          ("C-s" . consult-line)
@@ -33,13 +34,11 @@
          ("C-x r b" . consult-bookmark)
 
          ;; With `C-c c' prefix
-         ("C-c c a" . consult-org-agenda)
-         ("C-c c d" . consult-flymake)
-         ("C-c c i" . consult-imenu)
-         ("C-c c g" . consult-git-grep)
-         ("C-c c r" . consult-ripgrep)
-         ("C-c c f" . project-find-file) ; Use project find file instead of `consult-find' or other consult file related things
-         )
+         :map mode-specific-map
+         ("c d" . consult-flymake)
+         ("c i" . consult-imenu)
+         ("c g" . consult-git-grep)
+         ("c r" . consult-ripgrep))
   :custom
   (consult-narrow-key "<"))
 
