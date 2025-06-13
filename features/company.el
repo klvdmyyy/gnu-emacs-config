@@ -17,7 +17,7 @@
          (lambda (b)
            (cond
             ((listp b) (cons 'company-yasnippet b))
-            ;; ((eq 'company-capf b) '(company-capf :with company-yasnippet))
+            ((eq 'company-capf b) '(company-capf :with company-yasnippet))
             (t b)))
          company-backends))
   :custom
