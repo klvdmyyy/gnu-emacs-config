@@ -19,7 +19,16 @@
     (add-hook 'after-make-frame-functions #'load-face-attributes-to-frame)
   (load-face-attributes))
 
+;; Two best themes for GNU Emacs is:
+;; 1. Modus Operandi
+;; 2. Modus Vivendi
+(use-package modus-themes
+  :ensure nil
+  :config
+  (load-theme 'modus-operandi t nil))
+
 (use-package doom-themes
+  :disabled t
   :demand t
   :config
   (load-theme 'doom-one t nil))
