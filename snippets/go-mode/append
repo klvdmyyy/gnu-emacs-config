@@ -3,5 +3,4 @@
 # key: append
 # expand-env: ((yas-indent-line 'fixed))
 # --
-
 $1 = append($1, $0)
