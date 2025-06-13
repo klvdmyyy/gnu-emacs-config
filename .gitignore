@@ -11,6 +11,7 @@ tramp
 bookmarks
 var
 .org-id-locations
+.cache
 
 ### Emacs auto-save/backup files ###
 *~

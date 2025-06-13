@@ -33,6 +33,7 @@
 ;; (load-feature display-wttr)
 (load-feature time)
 (load-feature all-the-icons)
+;; (load-feature treemacs)
 
 (load-language cc)
 (load-language go)
