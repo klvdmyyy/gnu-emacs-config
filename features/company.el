@@ -22,7 +22,7 @@
          company-backends))
   :custom
   (company-dabbrev-downcase 0)
-  (company-idle-delay 0.0) ;; or 0.001/0.01 (default is 0.2)
+  (company-idle-delay 0.001) ;; or 0.001/0.01 (default is 0.2)
   (company-minimum-prefix-length 2)
   (ess-r--no-company-meta t))
 
