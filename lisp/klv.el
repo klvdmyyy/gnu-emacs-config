@@ -149,15 +149,15 @@ work and just return Unknown."
 #+title: ${title}
 #+author: `user-full-name'
 #+email: `user-mail-address'
-#+language: Russian
-#+license: CC BY-SA 4.0
 #+date: %<%Y-%m-%d>
-#+filetags: <tags>"
+#+filetags: <tags>
+
+Following fields doesn't mean anything:
+#+language: Russian
+#+license: CC BY-SA 4.0"
   (let* ((klv/roam-headers `("#+title: ${title}"
                              ,(concat "#+author: " user-full-name)
                              ,(concat "#+email: " user-mail-address)
-                             "#+language: Russian"
-                             "#+license: CC BY-SA 4.0"
                              "#+date: %<%Y-%m-%d>"))
          (headers (seq-map (lambda (h) (concat h "\n")) klv/roam-headers))
          (tags (or tags '()))
@@ -176,14 +176,14 @@ work and just return Unknown."
 #+title: %<%Y-%m-%d>
 #+author: `user-full-name'
 #+email: `user-mail-address'
+#+filetags: dailies:%<%Y-%m-%d>:daily
+
+Following fields doesn't mean anything:
 #+language: Russian
-#+license: CC BY-SA 4.0
-#+filetags: dailies:%<%Y-%m-%d>:daily"
+#+license: CC BY-SA 4.0"
   (let* ((klv/roam-headers `("#+title: %<%Y-%m-%d>"
                              ,(concat "#+author: " user-full-name)
-                             ,(concat "#+email: " user-mail-address)
-                             "#+language: Russian"
-                             "#+license: CC BY-SA 4.0"))
+                             ,(concat "#+email: " user-mail-address)))
          (headers (seq-map (lambda (h) (concat h "\n")) klv/roam-headers))
          (tags '("dailies" "%<%Y-%m-%d>" "daily"))
          (with-tags (append headers
@@ -197,7 +197,7 @@ work and just return Unknown."
 
 (defconst klv/roam-dailies-capture-templates
   `(("d" "default" entry
-     "%?"
+     "* %?"
      :target (file+head "%<%Y-%m-%d>.org"
                         ,(roam-make-daily-header)))))
 
