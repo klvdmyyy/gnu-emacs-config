@@ -4,6 +4,9 @@
 ;;
 ;;; Code:
 
+(setq user-full-name "Dmitry Klementiev"
+      user-mail-address "klementievd08@yandex.ru")
+
 (load-feature core)
 
 (unless (getenv "NO_EPM")
