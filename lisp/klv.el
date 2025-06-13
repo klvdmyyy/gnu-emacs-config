@@ -8,6 +8,10 @@
 
 (defconst klv/assets-directory (concat user-init-dir "assets"))
 
+(defconst klv/snippets
+  (seq-map (apply-partially 'concat user-init-dir)
+           '("snippets")))
+
 (defconst klv/org-directory "~/org")
 
 (defconst klv/org-cache-directory "~/org/cache")

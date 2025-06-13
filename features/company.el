@@ -12,10 +12,19 @@
 	  . company-complete-selection)
 	 ([backtab] . nil))
   :config
-  (setq company-dabbrev-downcase 0)
-  (setq company-idle-delay 0.0) ;; or 0.001/0.01 (default is 0.2)
-  (setq company-minimum-prefix-length 2)
-  (setq ess-r--no-company-meta t))
+  (setq company-backends
+        (seq-map
+         (lambda (b)
+           (cond
+            ((listp b) (cons 'company-yasnippet b))
+            ;; ((eq 'company-capf b) '(company-capf :with company-yasnippet))
+            (t b)))
+         company-backends))
+  :custom
+  (company-dabbrev-downcase 0)
+  (company-idle-delay 0.0) ;; or 0.001/0.01 (default is 0.2)
+  (company-minimum-prefix-length 2)
+  (ess-r--no-company-meta t))
 
 ;; Don't use it
 (use-package company-box

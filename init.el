@@ -26,6 +26,7 @@
 (load-feature eat)
 (load-feature company)
 (load-feature lsp)
+(load-feature yasnippet)
 ;; (load-feature display-wttr)
 (load-feature time)
 (load-feature all-the-icons)
