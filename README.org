@@ -10,3 +10,10 @@ Languages:
 - Protobuf
 - Yaml
 
+* Удалённые модули
+
+Если захочу вернуть что-то из этого мне будет намного проще найти старый код
+
+- [[https://github.com/klvdmyyy/gnu-emacs-config/blob/c2f63e27de0e0c5386939454b611a303691bf72d/features/treemacs.el][treemacs]]
+- [[https://github.com/klvdmyyy/gnu-emacs-config/blob/c2f63e27de0e0c5386939454b611a303691bf72d/features/eat.el][eat]]
+- [[https://github.com/klvdmyyy/gnu-emacs-config/blob/c2f63e27de0e0c5386939454b611a303691bf72d/features/display-wttr.el][display-wttr]]

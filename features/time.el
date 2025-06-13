@@ -6,11 +6,11 @@
 
 (use-package time
   :ensure nil
-  :defer 0.3
+  :after doom-modeline
+  :hook (doom-modeline-mode . display-time-mode)
   :custom
   (display-time-interval 1)
-  (display-time-format "%A %Y-%m-%d %R:%S %Z")
-  :config
-  (display-time-mode 1))
+  ;; (display-time-format "%A %Y-%m-%d %R:%S %Z")
+  (display-time-format "%a %d %R:%S"))
 
 ;;; time.el ends here
