@@ -33,8 +33,6 @@
 (load-feature time)
 (load-feature all-the-icons)
 
-(load-feature telega)
-
 (load-language cc)
 (load-language go)
 (load-language zig)

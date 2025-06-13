@@ -4,23 +4,13 @@
 ;;
 ;;; Code:
 
-;; TEMP Fix for telega
-(defun newline-maybe-telega ()
-  (interactive)
-  (if (eq major-mode 'telega-chat-mode)
-      (telega-chatbuf-newline-or-input-send)
-    (indent-between-pairs)))
-
 (use-package company
-  :hook ((prog-mode . company-mode)
-         (telega-chat-mode . company-mode))
+  :hook (prog-mode . company-mode)
   :bind (("<TAB>" . company-indent-or-complete-common)
-	     :map company-active-map
-         ([remap company-complete-selection]
-          . newline-maybe-telega)
-	     ([remap company-complete-common-or-cycle]
-	      . company-complete-selection)
-	     ([backtab] . nil))
+	 :map company-active-map
+	 ([remap company-complete-common-or-cycle]
+	  . company-complete-selection)
+	 ([backtab] . nil))
   :config
   (setq company-backends
         (seq-map
