@@ -4,6 +4,8 @@
 ;;
 ;;; Code:
 
+;;testing
+
 ;; MAYBE Move it to early initialization
 (setq user-full-name "Dmitry Klementiev"
       user-mail-address "klementievd08@yandex.ru")
