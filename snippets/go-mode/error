@@ -3,6 +3,6 @@
 # key: err
 # expand-env: ((yas-indent-line 'fixed) (yas-wrap-around-region '\t'))
 # --
-if err != nil {
+if err == nil {
  $0
 }
