@@ -93,36 +93,12 @@
   (org-roam-dailies-directory "daily/")
   
   ;; Dailies templates
-  (org-roam-dailies-capture-templates
-   '(("d" "default" entry
-      "* %?"
-      :target (file+head
-               "%<%Y-%m-%d>.org"
-               "#+TITLE: %<%Y-%m-%d>\n#+filetags: :dailies:daily: %<%Y-%m-%d>\n\n"))))
+  (org-roam-dailies-capture-templates klv/roam-dailies-capture-templates)
 
   ;; Templates
-  (org-roam-capture-templates
-   '(("y" "Yandex" plain
-      "%?"
-      :target (file+head "yandex/${slug}.org"
-                         "#+TITLE: ${title}\n#+filetags: :yandex:\n\n")
-      :unarrowed t)
-     ("a" "Yandex Algorithms" plain
-      "#+begin_src go :imports '(\"fmt\")%?\n#+end_src\n"
-      :target (file+head "yandex/algorithms/${slug}.org"
-                         "#+TITLE: ${title}\n#+filetags: :algorithms:yandex:\n\n")
-      :unarrowed t)
-     ("p" "Programming" plain
-      "* %?"
-      :target (file+head "programming/${slug}.org"
-                         "#+TITLE: ${title}\n#+filetags: :programming:\n\n")
-      :unarrowed t)
-     ("b" "Business" plain
-      "** Description\n%?\n** Advantages\n**Risks\n"
-      :target (file+head "business/${slug}.org"
-                         "#+TITLE: ${title}\n#+filetags: :business:\n\n")
-      :unarrowed t)))
+  (org-roam-capture-templates klv/roam-capture-templates)
   :init
+  (setq org-roam-v2-ack t)
   (make-directory klv/org-roam-directory t)
   (dolist (dir klv/org-roam-subdirectories)
     (make-directory (concat klv/org-roam-directory "/" dir) t)))

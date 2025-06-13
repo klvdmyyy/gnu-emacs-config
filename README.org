@@ -10,6 +10,10 @@ Languages:
 - Protobuf
 - Yaml
 
+* Добавить в дальнейшем
+
+- [[https://github.com/novoid/Memacs][Memacs]] - /Visualize your (digital) life in Org-mode/
+
 * Удалённые модули
 
 Если захочу вернуть что-то из этого мне будет намного проще найти старый код

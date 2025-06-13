@@ -140,6 +140,88 @@ work and just return Unknown."
     `(setq klv/font ,name
            klv/font-src ,src)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;; Org Roam ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun roam-make-header (&key tags title date?)
+  "Make a header for Org Roam capture
+
+#+title: ${title}
+#+author: `user-full-name'
+#+email: `user-mail-address'
+#+language: Russian
+#+license: CC BY-SA 4.0
+#+date: %<%Y-%m-%d>
+#+filetags: <tags>"
+  (let* ((klv/roam-headers `("#+title: ${title}"
+                             ,(concat "#+author: " user-full-name)
+                             ,(concat "#+email: " user-mail-address)
+                             "#+language: Russian"
+                             "#+license: CC BY-SA 4.0"
+                             "#+date: %<%Y-%m-%d>"))
+         (headers (seq-map (lambda (h) (concat h "\n")) klv/roam-headers))
+         (tags (or tags '()))
+         (with-tags (append headers
+                            (list
+                             (concat "#+filetags: :"
+                                     (apply #'concat (seq-map
+                                                      (lambda (t)
+                                                        (concat t ":"))
+                                                      tags)))))))
+    (apply #'concat (append with-tags '("\n")))))
+
+(defun roam-make-daily-header ()
+  "Make a header for daily Org Roam capture
+
+#+title: %<%Y-%m-%d>
+#+author: `user-full-name'
+#+email: `user-mail-address'
+#+language: Russian
+#+license: CC BY-SA 4.0
+#+filetags: dailies:%<%Y-%m-%d>:daily"
+  (let* ((klv/roam-headers `("#+title: %<%Y-%m-%d>"
+                             ,(concat "#+author: " user-full-name)
+                             ,(concat "#+email: " user-mail-address)
+                             "#+language: Russian"
+                             "#+license: CC BY-SA 4.0"))
+         (headers (seq-map (lambda (h) (concat h "\n")) klv/roam-headers))
+         (tags '("dailies" "%<%Y-%m-%d>" "daily"))
+         (with-tags (append headers
+                            (list
+                             (concat "#+filetags: :"
+                                     (apply #'concat (seq-map
+                                                      (lambda (t)
+                                                        (concat t ":"))
+                                                      tags)))))))
+    (apply #'concat (append with-tags '("\n")))))
+
+(defconst klv/roam-dailies-capture-templates
+  `(("d" "default" entry
+     "%?"
+     :target (file+head "%<%Y-%m-%d>.org"
+                        ,(roam-make-daily-header)))))
+
+(defconst klv/roam-capture-templates
+  `(("y" "Yandex" plain
+     "%?"
+     :target (file+head "yandex/${slug}.org"
+                        ,(roam-make-header
+                          :tags '("yandex")))
+     :unarrowed t)
+    ("a" "Yandex Algorithms" plain
+     "#+begin_src go :noweb yes :noweb-prefix no :imports '(\"fmt\")%?\n#+end_src\n"
+     :target (file+head "yandex/algorithms/${slug}.org"
+                        ,(roam-make-header
+                          :tags '("algorithms"
+                                  "yandex")))
+     :unarrowed t)
+    ("b" "Business" plain
+     "%?"
+     :target (file+head "business/${slug}.org"
+                        ,(roam-make-header
+                          :tags '("business")))
+     :unarrowed t)))
+
 (provide 'klv)
 
 ;;; klv.el ends here
