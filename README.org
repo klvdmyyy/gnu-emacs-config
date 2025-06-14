@@ -13,6 +13,7 @@ Languages:
 * Добавить в дальнейшем
 
 - [[https://github.com/novoid/Memacs][Memacs]] - /Visualize your (digital) life in Org-mode/
+- Tab Bar - Посмотреть готовую конфигурацию [[https://github.com/manateelazycat/awesome-tab/blob/master/light-screenshot.png][Awesome Tab Bar]]
 
 * Удалённые модули
 
