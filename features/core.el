@@ -49,26 +49,6 @@
   :config
   (global-visual-line-mode 1)
   (blink-cursor-mode 0)
-  (use-package menu-bar
-    :ensure nil
-    :config (menu-bar-mode 0))
-  
-  (use-package tool-bar
-    :ensure nil
-    :config (tool-bar-mode 0))
-
-  (use-package scroll-bar
-    :ensure nil
-    :config (scroll-bar-mode 0))
-
-  (use-package fringe
-    :ensure nil
-    :config (fringe-mode '(4 . 4)))
-
-  (use-package tab-bar
-    :disabled t                         ; TODO Setup `tab-bar-mode'
-    :ensure nil
-    :config (tab-bar-mode 1))
 
   (use-package which-key
     :ensure nil

@@ -47,4 +47,25 @@
   :config
   (doom-modeline-mode 1))
 
+(use-package menu-bar
+  :ensure nil
+  :config (menu-bar-mode 0))
+
+(use-package tool-bar
+  :ensure nil
+  :config (tool-bar-mode 0))
+
+(use-package scroll-bar
+  :ensure nil
+  :config (scroll-bar-mode 0))
+
+(use-package fringe
+  :ensure nil
+  :config (fringe-mode '(4 . 4)))
+
+(use-package tab-bar
+  :disabled t                           ; MAYBE Setup `tab-bar-mode'
+  :ensure nil
+  :hook (after-init . tab-bar-mode))
+
 ;;; appearance.el ends here
