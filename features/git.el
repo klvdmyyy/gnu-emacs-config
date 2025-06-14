@@ -22,14 +22,14 @@
   ;; :unless (window-system)
   :hook (prog-mode . git-gutter-mode)
   :custom
-  (git-gutter:modified-sign "=")
-  (git-gutter:added-sign "+")
-  (git-gutter:deleted-sign "-")
+  (git-gutter:modified-sign "M")        ; or `='
+  (git-gutter:added-sign "A")           ; or `+'
+  (git-gutter:deleted-sign "D")         ; or `-'
   (git-gutter:window-width 1)
-  :config
-  (set-face-background 'git-gutter:modified (face-foreground 'git-gutter:modified))
-  (set-face-background 'git-gutter:added (face-foreground 'git-gutter:added))
-  (set-face-background 'git-gutter:deleted (face-foreground 'git-gutter:deleted)))
+  :custom-face
+  (git-gutter:modified ((t (:foreground "darkorange" :background "orange"))))
+  (git-gutter:added ((t (:foreground "darkgreen" :background "green"))))
+  (git-gutter:deleted ((t (:foreground "darkred" :background "red")))))
 
 ;; Magit from elpaca need latest version of transient
 ;; which is not in repo (lower than minimum required)
