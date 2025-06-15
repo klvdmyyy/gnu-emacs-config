@@ -14,8 +14,10 @@
   (load-feature elpaca))
 
 (use-package benchmark-init
+  :demand t
+  :config (benchmark-init/activate)
   :bind (("C-c b" . benchmark-init/show-durations-tabulated))
-  :hook ((before-init . benchmark-init/activate)
+  :hook ((before-init . benchmark-init/activate) ; TODO move it to early-init maybe !?
          (after-init . benchmark-init/deactivate)))
 
 (load-feature appearance)
