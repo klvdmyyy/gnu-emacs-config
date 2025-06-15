@@ -59,7 +59,9 @@
   (org-clock-sound (get-user-asset "org-clock-sound.wav")))
 
 (use-package org-roam
-  :hook ((after-init . org-roam-db-autosync-mode))
+  ;; MAYBE Use `after-init-hook'
+  ;; FIXME With `after-init-hook' it may cause issues maybe
+  :hook ((emacs-startup . org-roam-db-autosync-mode))
   :bind (:map
          org-mode-map
          ("C-c r r" . org-roam-ref-add)
