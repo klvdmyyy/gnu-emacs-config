@@ -53,19 +53,7 @@
          ("C-s" . consult-org-heading)  ; MAYBE `consult-outline'
          )
   :custom
-  (org-capture-templates
-   '(("t" "Task" entry
-      (file "~/org/agenda/Tasks.org")
-      "* TODO <%<%Y-%m-%d %a>> %?\n%i") ; MAYBE use %a !?
-     ("h" "Habit" entry
-      (file "~/org/agenda/Habits.org")
-      "* TODO %?\n%i")
-     ("s" "Sport" entry
-      (file "~/org/agenda/Sport.org")
-      "* TODO %?\nSCHEDULED: <%<%Y-%m-%d +1w>>\n%i")
-     ("b" "Birthday" entry
-      (file "~/org/agenda/Birthdays.org")
-      "* %?\nSCHEDULED: <%<%Y-%m-%d +1y>>\n%i")))
+  (org-capture-templates '())           ; TODO Setup global org capture templates
   (org-confirm-babel-evaluate nil)      ; No confirmation for Org Babel evaluation
   (org-id-locations-file klv/org-id-locations-file)
   (org-deadline-warning-days 15)
@@ -118,32 +106,37 @@
   (dolist (dir klv/org-roam-subdirectories)
     (make-directory (concat klv/org-roam-directory "/" dir) t)))
 
+(defconst org-agenda-capture-templates
+  '(("t" "Task" entry
+     (file "~/org/agenda/Tasks.org")
+     "* TODO %?\nSCHEDULED: <%<%Y-%m-%d %a>>\n%i") ; MAYBE use %a !?
+    ("h" "Habit" entry
+     (file "~/org/agenda/Habits.org")
+     "* TODO %?\n%i")
+    ("s" "Sport" entry
+     (file "~/org/agenda/Sport.org")
+     "* TODO %?\nSCHEDULED: <%<%Y-%m-%d +1w>>\n%i")
+    ("b" "Birthday" entry
+     (file "~/org/agenda/Birthdays.org")
+     "* %?\nSCHEDULED: <%<%Y-%m-%d +1y>>\n%i"))
+  "Org Capture Templates used with `my-org-agenda-capture'")
+
+(defun my-org-agenda-capture ()
+  "TODO Documentation"
+  (interactive)
+  (let ((org-capture-templates org-agenda-capture-templates))
+    (org-agenda-capture)))
+
 ;; NOTE Now I using Agenda only with Org Roam
 (use-package org-agenda
   :ensure nil
-  :bind (("C-c a" . org-agenda))
+  :bind (("C-c a" . org-agenda)
+         :map org-agenda-mode-map
+         ("k" . my-org-agenda-capture))
   :init
   (unless (file-exists-p "~/org/agenda")
     (make-directory "~/org/agenda" t))
-  :custom
-  ;; (org-agenda-files (directory-files-recursively klv/org-roam-directory "\\.org\\'"))
-  (org-agenda-files
-   (directory-files-recursively klv/org-agenda-directory "\\.org\\'"))
-  
-  ;; NOTE Old setup for `agenda/' directory
-  ;; :custom
-  ;; (org-agenda-files
-  ;;  (directory-files-recursively
-  ;;   org-directory
-  ;;   ;; *.agenda.org
-  ;;   "\\.agenda.org\\'"))
-  
-  ;; (org-agenda-files
-  ;;  (file-expand-wildcards
-  ;;   (concat org-directory "/agenda/*.org") nil))
-  
-  ;; (org-agenda-files
-  ;;  (directory-files-recursively klv/org-agenda-directory "\\.org\\'"))
-  )
+  :config                               ; FIXME `org-agenda-files' doesn't setup with `:custom' property
+  (setq org-agenda-files `(,klv/org-agenda-directory)))
 
 ;;; productivity.el ends here
