@@ -27,6 +27,16 @@
   :config
   (load-theme 'modus-operandi t nil))
 
+(use-package hl-line
+  :ensure nil
+  :hook ((prog-mode . hl-line-mode)
+         (dired-mode . hl-line-mode)
+         (benchmark-init/tabulated-mode . hl-line-mode)))
+
+(use-package display-line-numbers
+  :ensure nil
+  :hook ((prog-mode . display-line-numbers-mode)))
+
 (use-package doom-themes
   :disabled t
   :demand t

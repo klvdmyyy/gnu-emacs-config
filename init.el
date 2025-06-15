@@ -14,11 +14,9 @@
   (load-feature elpaca))
 
 (use-package benchmark-init
-  :demand t
-  :init (benchmark-init/activate)
   :bind (("C-c b" . benchmark-init/show-durations-tabulated))
-  :hook ((after-init . benchmark-init/deactivate)
-         (benchmark-init/tabulated-mode . hl-line-mode)))
+  :hook ((before-init . benchmark-init/activate)
+         (after-init . benchmark-init/deactivate)))
 
 (load-feature appearance)
 (load-feature gcmh)

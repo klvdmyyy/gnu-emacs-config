@@ -8,7 +8,7 @@
   :ensure nil
   :custom
   (dired-omit-files "\\`\\'")
-  :hook (dired-mode . dired-omit-mode))
+  :hook ((dired-mode . dired-omit-mode)))
 
 (use-package emacs
   :ensure nil
@@ -49,17 +49,17 @@
   :config
   (global-visual-line-mode 1)
   (blink-cursor-mode 0)
-
-  (use-package which-key
-    :ensure nil
-    :config (which-key-mode 1))
-
-  (use-package recentf
-    :ensure nil
-    :config (recentf-mode 1))
   
   (fset #'jsonrpc--log-event #'ignore)
 
   (column-number-mode 1))
+
+(use-package which-key
+  :ensure nil
+  :hook (after-init . which-key-mode))
+
+(use-package recentf
+  :ensure nil
+  :hook (after-init . which-key-mode))
 
 ;;; core.el ends here
