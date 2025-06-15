@@ -40,6 +40,7 @@
 (load-language docker)
 (load-language yaml)
 (load-language markdown)
+(load-language web)                     ; MAYBE Move it to features !?
 
 (load-language nix)                     ; TODO Я думаю об использовании NixOS (или GNU Guix) в качестве основной ОС
 
