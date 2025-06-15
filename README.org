@@ -10,6 +10,10 @@ Languages:
 - Protobuf
 - Yaml
 
+* TODOLIST
+
+- [ ] Remove subdirectories variable for org roam
+
 * Добавить в дальнейшем
 
 - [[https://github.com/novoid/Memacs][Memacs]] - /Visualize your (digital) life in Org-mode/

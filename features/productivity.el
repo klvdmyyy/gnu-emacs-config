@@ -53,9 +53,22 @@
          ("C-s" . consult-org-heading)  ; MAYBE `consult-outline'
          )
   :custom
-  (org-confirm-babel-evaluate nil)
+  (org-capture-templates
+   '(("t" "Task" entry
+      (file "~/org/agenda/Tasks.org")
+      "* TODO <%<%Y-%m-%d %a>> %?\n%i") ; MAYBE use %a !?
+     ("h" "Habit" entry
+      (file "~/org/agenda/Habits.org")
+      "* TODO %?\n%i")
+     ("s" "Sport" entry
+      (file "~/org/agenda/Sport.org")
+      "* TODO %?\nSCHEDULED: <%<%Y-%m-%d +1w>>\n%i")
+     ("b" "Birthday" entry
+      (file "~/org/agenda/Birthdays.org")
+      "* %?\nSCHEDULED: <%<%Y-%m-%d +1y>>\n%i")))
+  (org-confirm-babel-evaluate nil)      ; No confirmation for Org Babel evaluation
   (org-id-locations-file klv/org-id-locations-file)
-  (org-deadline-warning-days 60)
+  (org-deadline-warning-days 15)
   (org-clock-sound (get-user-asset "org-clock-sound.wav")))
 
 (use-package org-roam
@@ -105,19 +118,20 @@
   (dolist (dir klv/org-roam-subdirectories)
     (make-directory (concat klv/org-roam-directory "/" dir) t)))
 
+;; NOTE Now I using Agenda only with Org Roam
 (use-package org-agenda
   :ensure nil
-  :commands (org-agenda)
   :bind (("C-c a" . org-agenda))
   :init
   (unless (file-exists-p "~/org/agenda")
     (make-directory "~/org/agenda" t))
-  :config
-  (with-eval-after-load 'org-roam
-    (add-to-list 'org-agenda-files klv/org-roam-directory)
-    (dolist (dir klv/org-roam-subdirectories)
-      (add-to-list 'org-agenda-files (concat klv/org-roam-directory "/" dir))))
   :custom
+  ;; (org-agenda-files (directory-files-recursively klv/org-roam-directory "\\.org\\'"))
+  (org-agenda-files
+   (directory-files-recursively klv/org-agenda-directory "\\.org\\'"))
+  
+  ;; NOTE Old setup for `agenda/' directory
+  ;; :custom
   ;; (org-agenda-files
   ;;  (directory-files-recursively
   ;;   org-directory
@@ -127,7 +141,9 @@
   ;; (org-agenda-files
   ;;  (file-expand-wildcards
   ;;   (concat org-directory "/agenda/*.org") nil))
-  (org-agenda-files
-   (directory-files-recursively klv/org-agenda-directory "\\.org\\'")))
+  
+  ;; (org-agenda-files
+  ;;  (directory-files-recursively klv/org-agenda-directory "\\.org\\'"))
+  )
 
 ;;; productivity.el ends here
