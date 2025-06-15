@@ -5,22 +5,23 @@
 ;;; Code:
 
 (use-package vertico
-  :demand t
-  :hook (after-init . vertico-mode)
-  :config
-  (vertico-mode 1))
+  :hook emacs-startup)
 
 (use-package orderless
   :after vertico
-  :demand t
   :custom
-  (completion-styles '(orderless basic)))
+  (completion-styles '(orderless basic))
+  ;; FIXME One of these variables provide vertico error on `find-file' when we write unexisten filename in completion
+  ;; (completion-category-overrides
+  ;;  '((project-files (styles . (orderless partial-completion basic)))
+  ;;    (file (styles . (orderless partial-comletion basic)))))
+  ;; (completion-category-defaults nil)
+  ;; (enable-recursive-minibuffers t)
+  )
 
 (use-package marginalia
   :after vertico
-  :demand t
-  :config
-  (marginalia-mode 1)
+  :hook vertico-mode
   :custom
   (marginalia-max-relative-age 0)
   (marginalia-align 'left))

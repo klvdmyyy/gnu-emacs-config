@@ -13,7 +13,7 @@
 (use-package emacs
   :ensure nil
   :init
-  (require 'dired)
+  (require 'dired)                      ; FIXME Why I require `dired' there !?
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   
   ;; MAYBE make frame more transparent ?!
@@ -56,10 +56,10 @@
 
 (use-package which-key
   :ensure nil
-  :hook (after-init . which-key-mode))
+  :hook after-init)
 
 (use-package recentf
   :ensure nil
-  :hook (after-init . which-key-mode))
+  :hook after-init)
 
 ;;; core.el ends here
