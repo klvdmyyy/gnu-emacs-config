@@ -70,6 +70,7 @@
  :buffer-terminator nil
 
  ;; MAYBE Features
+ :org-super-agenda nil ; Interesting thing, but I can configure Agenda without it :>
  :easysession nil
  :compile-angel nil
  )
