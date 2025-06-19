@@ -35,10 +35,25 @@
   :config
   (load-theme 'ef-melissa-light t nil))
 
+;; NOTE Interesting thing, but visual issues with doom-modeline which i can't fix because i'm so lazy
 (use-package solarized-theme
+  :disabled t
   :demand t
   :config
   (load-theme 'solarized-light t nil))
+
+;; NOTE All themes in one package :>
+(use-package doom-themes
+  :disabled t
+  :demand t
+  :config
+  (load-theme 'doom-one t nil))
+
+;; NOTE Simple and beatifull
+(use-package zenburn-theme
+  :demand t
+  :config
+  (load-theme 'zenburn t nil))
 
 (use-package hl-line
   :ensure nil
@@ -49,12 +64,6 @@
 (use-package display-line-numbers
   :ensure nil
   :hook ((prog-mode . display-line-numbers-mode)))
-
-(use-package doom-themes
-  :disabled t
-  :demand t
-  :config
-  (load-theme 'doom-one t nil))
 
 (use-package doom-modeline
   :demand t
