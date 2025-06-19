@@ -23,9 +23,16 @@
 ;; 1. Modus Operandi
 ;; 2. Modus Vivendi
 (use-package modus-themes
+  :disabled t
   :ensure nil
   :config
   (load-theme 'modus-operandi t nil))
+
+;; NOTE So beatifull themes for GNU Emacs. Good alternative for `modus-themes'
+(use-package ef-themes
+  :demand t
+  :config
+  (load-theme 'ef-melissa-light t nil))
 
 (use-package hl-line
   :ensure nil

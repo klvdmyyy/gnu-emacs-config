@@ -4,6 +4,7 @@
 ;;
 ;;; Code:
 
+;; Basic optimizations
 (setq package-enable-at-startup nil
       inhibit-startup-message t
       frame-resize-pixelwise t
@@ -15,22 +16,24 @@
 
 (setq native-comp-async-report-warning-errors 'silent)
 
-;; `lsp-mode' use `plists' for deserialization
-(setenv "LSP_USE_PLISTS" "true")
-
-;; Setup user init directory
+;; User initialization directory define
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
          user-emacs-directory)
         ((boundp 'user-init-directory)
          user-init-directory)
-        (t "~/.emacs.d/")))
+        (t "~/.emacs.d/"))
+  "Root directory of GNU Emacs user configuration.
 
+Directory which contain `early-init.el' and `init.el' files (and other elisp code).")
+
+;; Add `lisp/' folder to load path
+;;
+;; This folder contains my configuration related emacs-lisp code
 (add-to-list 'load-path (concat user-init-dir "lisp"))
 
-(require 'klv)
-
-(lock-startup)
+;; `lsp-mode' use `plists' for deserialization
+(setenv "LSP_USE_PLISTS" "true")
 
 (provide 'early-init)
 

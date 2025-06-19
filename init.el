@@ -2,52 +2,70 @@
 ;;
 ;;; Commentary:
 ;;
+;; Initialization file.
+;;
+;; This file loads all external/internal:
+;; - Modules
+;; - Features
+;; - Extensions/Plugins
+;; - Specific languages
+;;
+;; TODO Early initialization of package management for my configuration compilation (i can't use compilation related packages)
+;;
 ;;; Code:
 
-;; MAYBE Move it to early initialization
-(setq user-full-name "Dmitry Klementiev"
-      user-mail-address "klementievd08@yandex.ru")
+(require 'klv-personal)
+(require 'klv-cstructure)
+(require 'klv-startup)
+(require 'klv-font)
 
-(load-feature core)
+;; TODO Move all code from `klv'. Now non-requiring it breaks configuration
+(require 'klv)
 
-(unless (getenv "NO_EPM")
-  (load-feature elpaca))
+(this-person
+ :name "Dmitry Klementiev"
+ :email "klementievd08@yandex.ru"
 
-(use-package benchmark-init
-  :demand t
-  :config (benchmark-init/activate)
-  :bind (("C-c b" . benchmark-init/show-durations-tabulated))
-  :hook ((before-init . benchmark-init/activate) ; TODO move it to early-init maybe !?
-         (after-init . benchmark-init/deactivate)))
+ ;; Unnecessary :>
+ :github "klvdmyyy"
+ :gitlab "klvdmyyy"
+ :sourcehut "klvdmyyy"
+ :telegram "klvdmyyy"
+ :instagram "klvdmyyy")
 
-(load-feature appearance)
-(load-feature gcmh)
-(load-feature completion)
-(load-feature git)
-(load-feature smartparens)
+(features!
+ ;; Core features of this configuration
+ :core          t ; GNU Emacs core configuration
+ :elpaca        t ; Elpaca - Asynchronous package manager (but not good enough)
+ :appearance    t ; Themes, Fonts, Modeline and etc
+ :gcmh          t ; Better GC for GNU Emacs
+ :completion    t ; Vertico, Consult, Orderless, Marginalia and etc
+ :git           t ; Magit, Git Gutter and etc
+ :smartparens   t ; Smartest parens what i ever seen
 
-(load-feature productivity)             ; TODO Move `hl-todo'. I keep this feature only for it
-(load-feature org)
-(load-feature org-agenda)
-(load-feature org-roam)
-(load-feature org-roam-ui)
+ ;; Productivity and other things
+ :hl-todo       t ; Highlight TODO, NEXT, DONE and other things
+ :org           t ; It's my life
+ :org-agenda    t ; it's also my life
+ :org-roam      t ; It's my knowledge
+ :org-roam-ui   t ; It's my beatifull knowledge
 
-(load-feature esh)
-(load-feature company)
-(load-feature lsp)
-(load-feature yasnippet)
-(load-feature time)
-(load-feature all-the-icons)
+ ;; Development things
+ :esh           t ; Eshell - the best shell
+ :company       t ; Complete anything
+ :lsp           t ; Language Servers
+ :yasnippet     t ; Snippets
+ :time          t ; Time (in modeline also)
+ :all-the-icons t ; Beatifull icons
+ )
 
-(load-language cc)
-(load-language go)
-(load-language zig)
-(load-language proto)
-(load-language docker)
-(load-language yaml)
-(load-language markdown)
-(load-language web)                     ; MAYBE Move it to features !?
-
-(load-language nix)                     ; TODO Я думаю об использовании NixOS (или GNU Guix) в качестве основной ОС
+(languages!
+ ;; Load configuration files for specific languages
+ :cc            t ; C/C++ languages (FIXME A lot of ISSUES !)
+ :go            t ; Go language is Good language
+ :zig           t ; Like C but sometimes better and simpler
+ :nix           t ; Nix expressions for NixOS and nix package manager
+ :web           t ; HTML/CSS
+ )
 
 ;;; init.el ends here

@@ -53,4 +53,11 @@
     (setq use-package-always-demand t)
   (setq use-package-always-defer t))
 
+(use-package benchmark-init
+  :demand t
+  :config (benchmark-init/activate)
+  :bind (("C-c b" . benchmark-init/show-durations-tabulated))
+  :hook ((before-init . benchmark-init/activate) ; TODO move it to early-init maybe !?
+         (after-init . benchmark-init/deactivate)))
+
 ;;; elpaca.el ends here
