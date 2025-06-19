@@ -25,10 +25,6 @@
        (tags "+@emacsissue/CLOSED"
              ((org-agenda-overriding-header "Закрытые проблемы")
               (org-agenda-files org-agenda-files)))))
-     ("d"  "Demo"
-      ((agenda "" ((org-agenda-span 'day)
-                   (org-deadline-warning-days 7)
-                   (org-agenda-remove-tags-when-in-prefix t)))))
      ("w" "Programming/Work/Learning"
       ((tags-todo "+@learning|+@programming|+@work/TODO"
                   ((org-agenda-overriding-header "Нужно сделать")
