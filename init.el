@@ -59,6 +59,9 @@
  :time          t ; Time (in modeline also)
  :all-the-icons t ; Beatifull icons
 
+ ;; Live in GNU Emacs :>
+ :elfeed        t ; Read RSS Feeds (for news reading)
+
  ;; TODO Features (tree-sitter firstly)
  :tree-sitter nil
  :treemacs nil
