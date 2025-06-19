@@ -208,13 +208,22 @@ Following fields doesn't mean anything:
                         ,(roam-make-header
                           :tags '("yandex")))
      :unarrowed t)
-    ("a" "Yandex Algorithms" plain
-     "#+begin_src go :noweb yes :noweb-prefix no :imports '(\"fmt\")%?\n#+end_src\n"
-     :target (file+head "yandex/algorithms/${slug}.org"
+    ("p" "Programming" plain
+     "%?"
+     :target (file+head "programming/${slug}.org"
                         ,(roam-make-header
-                          :tags '("algorithms"
-                                  "yandex")))
+                          :tags '("programming"))))
+    ("a" "Algorithms" plain
+     "#+begin_src go :imports '(\"fmt\")%?\n#+end_src\n"
+     :target (file+head "algorithms/${slug}.org"
+                        ,(roam-make-header
+                          :tags '("algorithm")))
      :unarrowed t)
+    ("d" "Data Structures" plain
+     "#+begin_src go :imports '(\"fmt\")%?\n#+end_src\n"
+     :target (file+head "data_structures/${slug}.org"
+                        ,(roam-make-header
+                          :tags '("data_structure"))))
     ("b" "Business" plain
      "%?"
      :target (file+head "business/${slug}.org"

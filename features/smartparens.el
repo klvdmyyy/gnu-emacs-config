@@ -32,6 +32,7 @@
 
 (defun indent-between-pairs ()
   "Open a new brace or bracket expression, with relevant newlines and indent. "
+  (interactive)
   (if (and (member (char-before) before-pairs-list)
            (member (char-after) after-pairs-list))
       (progn (newline)

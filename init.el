@@ -25,7 +25,13 @@
 (load-feature completion)
 (load-feature git)
 (load-feature smartparens)
-(load-feature productivity)
+
+(load-feature productivity)             ; TODO Move `hl-todo'. I keep this feature only for it
+(load-feature org)
+(load-feature org-agenda)
+(load-feature org-roam)
+(load-feature org-roam-ui)
+
 (load-feature esh)
 (load-feature company)
 (load-feature lsp)

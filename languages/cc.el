@@ -17,8 +17,8 @@
 	 ;; ("\\.hpp\\'" . c++-mode)
 	 )
   :bind (:map
-	 c-mode-base-map
-	 ("RET" . c-context-line-break)
-	 ("<TAB>" . indent-for-tab-command)))
+	     c-mode-base-map
+	     ("RET" . indent-between-pairs)
+	     ("<TAB>" . indent-for-tab-command)))
 
 ;;; cc.el ends here

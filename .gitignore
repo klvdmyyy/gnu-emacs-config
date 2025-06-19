@@ -12,6 +12,7 @@ bookmarks
 var
 .org-id-locations
 .cache
+url
 
 ### Emacs auto-save/backup files ###
 *~
