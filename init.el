@@ -11,6 +11,7 @@
 ;; - Specific languages
 ;;
 ;; TODO Early initialization of package management for my configuration compilation (i can't use compilation related packages)
+;; TODO Read "minimal-emacs.d" configuration from "jamescherti" (take inspiration for optimizations. Now my emacs loaded in 0.3-0.5s)
 ;;
 ;;; Code:
 
