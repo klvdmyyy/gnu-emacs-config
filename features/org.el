@@ -26,7 +26,12 @@
   :custom
   (org-directory "~/org")
   (org-capture-templates
-   `(("w" "Work Tasks")
+   `(("e" "Emacs")
+     ("ei" "Emacs Issue" entry
+      (file ,(concat user-init-dir "ISSUES.org"))
+      "* %?\n%a"
+      :empty-lines 1)
+     ("w" "Work Tasks")
      ("wt" "Task" entry
       (file+headline "~/org/agenda/Work.org" "Tasks")
       "* TODO %?\nSCHEDULED: <%<%Y-%m-%d %a>>\n%a"

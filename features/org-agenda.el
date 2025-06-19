@@ -8,12 +8,28 @@
   :ensure nil
   :bind (("C-c a" . org-agenda))
   :custom
-  (org-agenda-files (directory-files-recursively "~/org/agenda/" "\\.org\\'"))
+  (org-agenda-files
+   (append (directory-files-recursively "~/org/agenda/" "\\`[a-z0-9A-Z]*.org\\'")
+           (list (concat user-init-dir "ISSUES.org"))))
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
   (org-agenda-custom-commands
-   '(("w" "Programming/Work/Learning"
+   '(("ei" "Emacs Issues"
+      ((tags "+@emacsissue/-OPENED-CLOSED"
+             ((org-agenda-overriding-header "Неопределённые")
+              (org-agenda-files org-agenda-files)))
+       (tags "+@emacsissue/OPENED"
+             ((org-agenda-overriding-header "Открытые проблемы")
+              (org-agenda-files org-agenda-files)))
+       (tags "+@emacsissue/CLOSED"
+             ((org-agenda-overriding-header "Закрытые проблемы")
+              (org-agenda-files org-agenda-files)))))
+     ("d"  "Demo"
+      ((agenda "" ((org-agenda-span 'day)
+                   (org-deadline-warning-days 7)
+                   (org-agenda-remove-tags-when-in-prefix t)))))
+     ("w" "Programming/Work/Learning"
       ((tags-todo "+@learning|+@programming|+@work/TODO"
                   ((org-agenda-overriding-header "Нужно сделать")
                    (org-agenda-files org-agenda-files)
@@ -38,21 +54,21 @@
                   ((org-agenda-overriding-header "В ожидании ревью")
                    (org-agenda-files org-agenda-files)
                    (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/STOP"
-                  ((org-agenda-overriding-header "Остановленные задачи")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/NOTE"
-                  ((org-agenda-overriding-header "Заметки ?!")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
+       (tags "+@learning|+@programming|+@work/STOP"
+             ((org-agenda-overriding-header "Остановленные задачи")
+              (org-agenda-files org-agenda-files)
+              (org-agenda-span 'day)))
+       (tags "+@learning|+@programming|+@work/NOTE"
+             ((org-agenda-overriding-header "Заметки ?!")
+              (org-agenda-files org-agenda-files)
+              (org-agenda-span 'day)))
        (tags-todo "+@learning|+@programming|+@work/IDEA"
                   ((org-agenda-overriding-header "Идеи")
                    (org-agenda-files org-agenda-files)
                    (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/DONE"
-                  ((org-agenda-overriding-header "Сделано")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day))))))))
+       (tags "+@learning|+@programming|+@work/DONE"
+             ((org-agenda-overriding-header "Сделано")
+              (org-agenda-files org-agenda-files)
+              (org-agenda-span 'day))))))))
 
 ;;; org-agenda.el ends here

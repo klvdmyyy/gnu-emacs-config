@@ -1,0 +1,7 @@
+#+title: Issues
+#+todo: OPENED | CLOSED
+#+filetags: @emacsissue
+
+* OPENED Slow Startup
+
+* Server
