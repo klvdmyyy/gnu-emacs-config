@@ -6,7 +6,9 @@
 
 (use-package yasnippet
   :init
-  (setq yas-snippet-dirs (seq-map #'file-truename klv/snippets))
+  (setq yas-snippet-dirs
+        (seq-map #'file-truename
+                 (list (concat user-init-dir "snippets"))))
   :hook ((prog-mode . yas-minor-mode)
          (org-mode . yas-minor-mode))
   :config

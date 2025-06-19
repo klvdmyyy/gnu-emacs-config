@@ -4,12 +4,6 @@
 ;;
 ;;; Code:
 
-;; My constants
-
-(defconst klv/snippets
-  (seq-map (apply-partially 'concat user-init-dir)
-           '("snippets")))
-
 ;; Specific constants
 
 (defconst before-pairs-list (list ?\( ?\[ ?\{)
