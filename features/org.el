@@ -14,10 +14,7 @@
 
          ("C-c o e" . org-babel-execute-src-block-maybe)
 
-         ;; TEMP Dummy keybindings and functions
-         ;; MAYBE Remove/change
-         ("C-c o o" . my-org-open-file)
-         ("C-c o c" . my-org-create-file)
+         ("C-c o c" . org-capture)
          
          ;; Specific maps
          :map org-mode-map
