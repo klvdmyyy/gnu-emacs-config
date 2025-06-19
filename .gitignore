@@ -13,6 +13,7 @@ var
 .org-id-locations
 .cache
 url
+server
 
 ### Emacs auto-save/backup files ###
 *~
