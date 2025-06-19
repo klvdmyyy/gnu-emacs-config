@@ -30,9 +30,15 @@
 
 ;; NOTE So beatifull themes for GNU Emacs. Good alternative for `modus-themes'
 (use-package ef-themes
+  :disabled t
   :demand t
   :config
   (load-theme 'ef-melissa-light t nil))
+
+(use-package solarized-theme
+  :demand t
+  :config
+  (load-theme 'solarized-light t nil))
 
 (use-package hl-line
   :ensure nil

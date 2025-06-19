@@ -4,10 +4,12 @@
 ;;
 ;;; Code:
 
-
 (use-package org-roam
+  :init
+  (setq org-roam-v2-ack t)
   ;; MAYBE Use `after-init-hook'
   ;; FIXME With `after-init-hook' it may cause issues maybe
+  ;; FIXME No lazy-loading
   :hook ((emacs-startup . org-roam-db-autosync-mode))
   :bind (:map
          org-mode-map
@@ -29,8 +31,8 @@
          ("n r" . org-roam-ref-find)
          ("n C" . org-roam-capture))
   :custom
-  (org-roam-directory klv/org-roam-directory)
-  (org-roam-db-location klv/org-roam-db-location)
+  (org-roam-directory "~/org/roam")
+  (org-roam-db-location "~/org/cache/org-roam.db")
   (org-roam-db-update-on-save t)
 
   ;; Display template (display tags in vertico)
@@ -45,11 +47,6 @@
   (org-roam-dailies-capture-templates klv/roam-dailies-capture-templates)
 
   ;; Templates
-  (org-roam-capture-templates klv/roam-capture-templates)
-  :init
-  (setq org-roam-v2-ack t)
-  (make-directory klv/org-roam-directory t)
-  (dolist (dir klv/org-roam-subdirectories)
-    (make-directory (concat klv/org-roam-directory "/" dir) t)))
+  (org-roam-capture-templates klv/roam-capture-templates))
 
 ;;; org-roam.el ends here

@@ -6,29 +6,9 @@
 
 ;; My constants
 
-(defconst klv/assets-directory (concat user-init-dir "assets"))
-
 (defconst klv/snippets
   (seq-map (apply-partially 'concat user-init-dir)
            '("snippets")))
-
-(defconst klv/org-directory "~/org")
-
-(defconst klv/org-cache-directory "~/org/cache")
-
-(defconst klv/org-agenda-directory "~/org/agenda")
-
-(defconst klv/org-roam-directory "~/org/roam")
-
-(defconst klv/org-roam-subdirectories '("yandex" "yandex/algorithms" "programming" "business" "daily")
-  "A lot of directories are hard-coded in `org-roam' configuration with
-`use-package'")
-
-(defconst klv/org-id-locations-file
-  (concat klv/org-cache-directory "/.org-id-locations"))
-
-(defconst klv/org-roam-db-location
-  (concat klv/org-cache-directory "/org-roam.db"))
 
 ;; Specific constants
 
@@ -38,9 +18,6 @@
   "Closing pairs list constant")
 
 ;; Functions
-
-(defun get-user-asset (name)
-  (concat klv/assets-directory "/" name))
 
 (defun which-linux-distribution ()
   "Maybe useful for future development of my GNU Emacs configuration.
@@ -63,6 +40,8 @@ work and just return Unknown."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;; Org Roam ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; TODO Move and make more beatifull
 
 (defun roam-make-header (&key tags)
   "Make a header for Org Roam capture

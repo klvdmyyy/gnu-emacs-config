@@ -57,6 +57,17 @@
  :yasnippet     t ; Snippets
  :time          t ; Time (in modeline also)
  :all-the-icons t ; Beatifull icons
+
+ ;; TODO Features (tree-sitter firstly)
+ :tree-sitter nil
+ :treemacs nil
+ :memacs nil
+ :outline-indent nil
+ :buffer-terminator nil
+
+ ;; MAYBE Features
+ :easysession nil
+ :compile-angel nil
  )
 
 (languages!
