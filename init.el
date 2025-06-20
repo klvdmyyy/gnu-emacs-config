@@ -64,6 +64,7 @@
 
  ;; TODO Features (tree-sitter firstly)
  :tree-sitter nil
+ :novel nil ; MAYBE For reading e-books
  :treemacs nil
  :memacs nil
  :outline-indent nil
@@ -82,6 +83,10 @@
  :zig           t ; Like C but sometimes better and simpler
  :nix           t ; Nix expressions for NixOS and nix package manager
  :web           t ; HTML/CSS
+ :docker        t ; Dockerfile
+ :markdown      t ; Markdown
+ :proto         t ; Protobuf for gRPC
+ :yaml          t ; YAML
  )
 
 ;;; init.el ends here
