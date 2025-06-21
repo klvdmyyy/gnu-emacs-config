@@ -4,10 +4,6 @@
 ;;
 ;;; Code:
 
-(defconst klv/default-font "Fira Code")
-(defconst klv/default-font-src
-  "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip")
-
 (defun install-font (name src)
   "Функция для установки шрифта.
 
@@ -39,8 +35,7 @@
 (смотреть `is-first-startup')"
   (and (or (eq system-type 'gnu/linux)
            (eq system-type 'darwin))
-       (or is-first-startup
-           (not (find-font (font-spec :name name))))))
+       (not (find-font (font-spec :name name)))))
 
 (defun maybe-install-font (name src)
   "Данная функция устанавливает шрифт или просто возвращает его название."
@@ -49,16 +44,47 @@
     (install-font name src))
   name)
 
-(defun get-default-font ()
-  (maybe-install-font klv/default-font
-                      klv/default-font-src))
+(defun load-face-attributes (name src &optional height)
+  (let ((choosen-font (maybe-install-font name src))
+        (font-height (or height 130)))
+    (set-face-attribute 'default nil :font choosen-font :height font-height)
+    (set-face-attribute 'fixed-pitch nil :font choosen-font :height font-height)
+    (set-face-attribute 'variable-pitch nil :font choosen-font :height font-height :weight 'regular)))
 
-;; TODO Good implementation
-(defmacro use-font! (&optional name &key src)
-  (let ((name (or name klv/default-font))
-        (src (or src klv/default-font-src)))
-    `(setq klv/font ,name
-           klv/font-src ,src)))
+(defun load-face-attributes-to-frame (name src height frame)
+  (select-frame frame)
+  (load-face-attributes name src height))
+
+(defun set-and-maybe-install-font (name src &optional height)
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions (apply-partially #'load-face-attributes-to-frame name src height))
+    (load-face-attributes name src height)))
+
+(defun klv--parse-font-url (args &optional url)
+  "Parse args and return Font url for downloading.
+
+This implementation is not good enough :>...
+
+[ISSUE] Only GNU/Linux supported...
+
+[IMPORTANT] You must use github releases downloading. Firstly you
+should set github repo, only after `:github' field you should
+setup the `:release'
+
+[TODO] `use-package' like implementation with a lot of extensibility"
+  (pcase args
+    ((pred seq-empty-p) url)
+    (`(:github ,github . ,next)
+     (klv--parse-font-url next (concat "https://github.com/" github "/")))
+    (`(:release ,release . ,next)
+     (klv--parse-font-url next (concat url "releases/download/" release)))
+    (code (klv--parse-font-url (cdr args) url))))
+
+(defmacro use-font (name &rest args)
+  (declare (indent defun))
+  (let ((name name))
+    `(set-and-maybe-install-font
+      ,name ,(klv--parse-font-url ',args))))
 
 (provide 'klv-font)
 

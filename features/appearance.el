@@ -4,56 +4,13 @@
 ;;
 ;;; Code:
 
-(defun load-face-attributes ()
-  (let ((my-font (get-default-font))		; "JetBrains Mono", "Fira Code"
-	(my-height 130))
-    (set-face-attribute 'default nil :font my-font :height my-height)
-    (set-face-attribute 'fixed-pitch nil :font my-font :height my-height)
-    (set-face-attribute 'variable-pitch nil :font my-font :height my-height :weight 'regular)))
+(use-font "Fira Code"
+  :github "ryanoasis/nerd-fonts"
+  :release "v3.1.1/FiraCode.zip")
 
-(defun load-face-attributes-to-frame (frame)
-  (select-frame frame)
-  (load-face-attributes))
-
-(if (daemonp)
-    (add-hook 'after-make-frame-functions #'load-face-attributes-to-frame)
-  (load-face-attributes))
-
-;; Two best themes for GNU Emacs is:
-;; 1. Modus Operandi
-;; 2. Modus Vivendi
-(use-package modus-themes
-  :disabled t
-  :ensure nil
-  :config
-  (load-theme 'modus-operandi t nil))
-
-;; NOTE So beatifull themes for GNU Emacs. Good alternative for `modus-themes'
-(use-package ef-themes
-  :disabled t
-  :demand t
-  :config
-  (load-theme 'ef-melissa-light t nil))
-
-;; NOTE Interesting thing, but visual issues with doom-modeline which i can't fix because i'm so lazy
-(use-package solarized-theme
-  :disabled t
-  :demand t
-  :config
-  (load-theme 'solarized-light t nil))
-
-;; NOTE All themes in one package :>
-(use-package doom-themes
-  :disabled t
-  :demand t
-  :config
-  (load-theme 'doom-one t nil))
-
-;; NOTE Simple and beatifull
 (use-package zenburn-theme
-  :demand t
-  :config
-  (load-theme 'zenburn t nil))
+  :hook
+  (emacs-startup . (lambda () (load-theme 'zenburn t nil))))
 
 (use-package hl-line
   :ensure nil
@@ -64,20 +21,6 @@
 (use-package display-line-numbers
   :ensure nil
   :hook ((prog-mode . display-line-numbers-mode)))
-
-(use-package doom-modeline
-  :demand t
-  :init
-  (when is-first-startup
-    (nerd-icons-install-fonts))
-  :custom
-  (doom-modeline-height 30)
-  (doom-modeline-bar-width 3)
-  (doom-modeline-hud nil)
-  (doom-modeline-percent-position '(-3 "%p"))
-  
-  :config
-  (doom-modeline-mode 1))
 
 (use-package menu-bar
   :ensure nil

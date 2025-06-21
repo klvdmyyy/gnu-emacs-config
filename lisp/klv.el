@@ -59,8 +59,8 @@ Following fields doesn't mean anything:
                             (list
                              (concat "#+filetags: :"
                                      (apply #'concat (seq-map
-                                                      (lambda (t)
-                                                        (concat t ":"))
+                                                      (lambda (tg)
+                                                        (concat tg ":"))
                                                       tags)))))))
     (apply #'concat (append with-tags '("\n")))))
 
@@ -84,8 +84,8 @@ Following fields doesn't mean anything:
                             (list
                              (concat "#+filetags: :"
                                      (apply #'concat (seq-map
-                                                      (lambda (t)
-                                                        (concat t ":"))
+                                                      (lambda (tg)
+                                                        (concat tg ":"))
                                                       tags)))))))
     (apply #'concat (append with-tags '("\n")))))
 

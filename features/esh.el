@@ -6,6 +6,7 @@
 
 (use-package eshell
   :ensure nil
+  :defer t
   :commands (eshell)
   :hook ((eshell-mode . klvdmyyy-eshell-mode-setup))
   :bind (("s-e" . project-eshell-or-eshell)
