@@ -6,6 +6,8 @@
 
 (use-package elfeed
   :bind (("C-x w" . elfeed))
+  :config
+  (elfeed-update)                       ; Just run `elfeed-update' after loading `elfeed' package
   :custom
   (elfeed-feeds
    '(;; Investing.com (RU)
