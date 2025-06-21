@@ -1,28 +1,25 @@
 #+TITLE: My GNU Emacs Configuration/Distribution
 
-* Development
+* What is this shit !?
 
-Languages:
-- Zig
-- Go
-- Emacs Lisp
-- Dockerfile
-- Protobuf
-- Yaml
+This is my *GNU Emacs* configuration which I use for following things:
+- *Note taking* /(Org, Org Agenda, Org Roam)/
+- Sometimes I *reading* here
+- *Knowledge base* with Org Roam
+- *Planning* with Org Agenda
+- *Programming* /(Go, Emacs Lisp and etc)/
 
-* TODOLIST
+* Main Goals of this Emacs distro
 
-- [ ] Remove subdirectories variable for org roam
+- *Blazingly fast* setup
+- *Huge* but as *minimal* as possible
+- *Clean Emacs Lisp* code base
+- As *comfortable* as possible (for me)
 
-* Добавить в дальнейшем
+* Notes
 
 - [[https://github.com/novoid/Memacs][Memacs]] - /Visualize your (digital) life in Org-mode/
 - Tab Bar - Посмотреть готовую конфигурацию [[https://github.com/manateelazycat/awesome-tab/blob/master/light-screenshot.png][Awesome Tab Bar]]
-
-* Удалённые модули
-
-Если захочу вернуть что-то из этого мне будет намного проще найти старый код
-
 - [[https://github.com/klvdmyyy/gnu-emacs-config/blob/c2f63e27de0e0c5386939454b611a303691bf72d/features/treemacs.el][treemacs]]
 - [[https://github.com/klvdmyyy/gnu-emacs-config/blob/c2f63e27de0e0c5386939454b611a303691bf72d/features/eat.el][eat]]
 - [[https://github.com/klvdmyyy/gnu-emacs-config/blob/c2f63e27de0e0c5386939454b611a303691bf72d/features/display-wttr.el][display-wttr]]
