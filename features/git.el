@@ -19,9 +19,9 @@
   (git-gutter:deleted-sign "D")         ; or `-'
   (git-gutter:window-width 1)
   :custom-face
-  (git-gutter:modified ((t (:foreground "transparent" :background "orange"))))
-  (git-gutter:added ((t (:foreground "transparent" :background "green"))))
-  (git-gutter:deleted ((t (:foreground "transparent" :background "red")))))
+  (git-gutter:modified ((t (:foreground "orange" :background "transparent"))))
+  (git-gutter:added ((t (:foreground "green" :background "transparent"))))
+  (git-gutter:deleted ((t (:foreground "red" :background "transparent")))))
 
 ;; Magit from elpaca need latest version of transient
 ;; which is not in repo (lower than minimum required)

@@ -21,6 +21,7 @@
 (require 'klv-font)
 (require 'klv-features)
 (require 'klv-languages)
+(require 'klv-roam)
 
 ;; TODO Move all code from `klv'. Now non-requiring it breaks configuration
 (require 'klv)

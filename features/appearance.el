@@ -2,15 +2,36 @@
 ;;
 ;;; Commentary:
 ;;
+;; Themes for GNU Emacs:
+;; - Modus themes --- Default themes in latest GNU Emacs version which so cute and configurable but I
+;; can't spend a time for customization.
+;; - Zenburn - So simple theme for GNU Emacs
+;; - Spacemacs - Futuristic things which I like :>
+;; - Doom Themes - just all themes in one package
+;;
 ;;; Code:
 
+;; Example of my `use-font' macro usage
+;;
+;; This example just downloads and setup font
+;; from Github repository (releases)
 (use-font "Fira Code"
   :github "ryanoasis/nerd-fonts"
   :release "v3.1.1/FiraCode.zip")
 
-(use-package zenburn-theme
+(use-package spacemacs-theme
   :hook
-  (emacs-startup . (lambda () (load-theme 'zenburn t nil))))
+  (emacs-startup
+   . (lambda () (load-theme 'spacemacs-dark t nil))))
+
+(use-package doom-modeline
+  :hook emacs-startup)
+
+(use-package zenburn-theme
+  :disabled t
+  :hook
+  (emacs-startup
+   . (lambda () (load-theme 'zenburn t nil))))
 
 (use-package hl-line
   :ensure nil
