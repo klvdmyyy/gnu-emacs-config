@@ -5,5 +5,12 @@
 * OPENED Slow Startup
 
 - ~0.39s in last commit with some reworks. (also I don't use SSD, maybe it can cause a little performance issues sometimes)
+- It maybe caused with Elpaca (i should try straight.el as package manager)
 
 * Server
+
+* OPENED Pin package versions
+
+* OPENED Setup initialization benchmarking
+[[file:~/.config/emacs/ISSUES.org::*Slow Startup][Slow Startup]]
+
