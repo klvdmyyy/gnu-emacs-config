@@ -16,11 +16,15 @@
   :release "v3.1.1/FiraCode.zip")
 
 (use-package spacemacs-theme
-  :hook ((emacs-startup
-          . (lambda () (load-theme 'spacemacs-dark t nil))))
+  :demand (not (daemonp))
+  :hook
+  (after-make-frame-functions
+   . (lambda (frame)
+       (with-selected-frame frame
+         (load-theme 'spacemacs-dark t nil))))
   :config
-  ;; FIXME For daemon mode only
-  (add-hook 'server-after-make-frame-hook (lambda (&rest _) (load-theme 'spacemacs-dark t nil))))
+  (when (not (daemonp))
+    (load-theme 'spacemacs-dark t nil)))
 
 ;; So interesting thing
 ;;
