@@ -1,3 +1,9 @@
 #+title: KlvEmacs --- KLementieV's GNU Emacs distribution
 #+author: Klementiev Dmitry
 #+email: klementievd08@yandex.ru
+
+* Org
+
+- ~/org :: Org Directory
+- ~/org/agenda :: Org Agenda Directory
+- ~/org/roam :: Org Roam directory
