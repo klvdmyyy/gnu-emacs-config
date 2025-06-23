@@ -16,12 +16,17 @@
   :release "v3.1.1/FiraCode.zip")
 
 (use-package spacemacs-theme
-  :hook (emacs-startup
-         . (lambda ()
-             (load-theme 'spacemacs-dark t nil))))
+  :hook ((emacs-startup
+          . (lambda () (load-theme 'spacemacs-light t nil))))
+  :config
+  ;; FIXME For daemon mode only
+  (add-hook 'server-after-make-frame-hook (lambda (&rest _) (load-theme 'spacemacs-light t nil))))
 
 (use-package doom-modeline
-  :hook emacs-startup)
+  :hook emacs-startup
+  :custom
+  (doom-modeline-hud t)
+  (doom-modeline-height 30))
 
 (use-package hl-line
   :ensure nil
