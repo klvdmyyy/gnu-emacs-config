@@ -1,4 +1,4 @@
-;;; completion.el
+;;; completion.el --- Complete everything you want -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
@@ -10,14 +10,7 @@
 (use-package orderless
   :after vertico
   :custom
-  (completion-styles '(orderless basic))
-  ;; FIXME One of these variables provide vertico error on `find-file' when we write unexisten filename in completion
-  ;; (completion-category-overrides
-  ;;  '((project-files (styles . (orderless partial-completion basic)))
-  ;;    (file (styles . (orderless partial-comletion basic)))))
-  ;; (completion-category-defaults nil)
-  ;; (enable-recursive-minibuffers t)
-  )
+  (completion-styles '(orderless basic)))
 
 (use-package marginalia
   :after vertico
@@ -43,4 +36,4 @@
   :custom
   (consult-narrow-key "<"))
 
-;;; completion.el ends here
+;;; completion.el

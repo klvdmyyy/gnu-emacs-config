@@ -46,11 +46,14 @@
 (elpaca elpaca-use-package (elpaca-use-package-mode))
 
 (setq use-package-always-ensure t
-      elpaca-use-package-by-default t)
+      elpaca-use-package-by-default t
+
+      ;; Make it floating with daemonp
+      use-package-always-defer t)
 
 ;; No lazy-loading in daemon mode
-(if (daemonp)
-    (setq use-package-always-demand t)
-  (setq use-package-always-defer t))
+;; (if (daemonp)
+;;     (setq use-package-always-demand t)
+;;   (setq use-package-always-defer t))
 
 ;;; elpaca.el ends here

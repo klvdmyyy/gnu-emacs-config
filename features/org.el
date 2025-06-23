@@ -23,11 +23,11 @@
   :custom
   (org-directory "~/org")
   (org-capture-templates
-   `(("e" "Emacs")
-     ("ei" "Emacs Issue" entry
-      (file ,(concat user-init-dir "ISSUES.org"))
-      "* %?\n%a"
-      :empty-lines 1)
+   `(;; ("e" "Emacs")
+     ;; ("ei" "Emacs Issue" entry
+     ;;  (file ,(concat user-emacs-directory "ISSUES.org"))
+     ;;  "* %?\n%a"
+     ;;  :empty-lines 1)
      ("w" "Work Tasks")
      ("wt" "Task" entry
       (file+headline "~/org/agenda/Work.org" "Tasks")

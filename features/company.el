@@ -1,4 +1,4 @@
-;;; company.el
+;;; company.el --- Complete anything -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

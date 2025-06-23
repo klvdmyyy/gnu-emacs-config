@@ -1,4 +1,4 @@
-;;; yasnippet.el
+;;; yasnippet.el --- Snippets for GNU Emcas -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
@@ -8,7 +8,7 @@
   :init
   (setq yas-snippet-dirs
         (seq-map #'file-truename
-                 (list (concat user-init-dir "snippets"))))
+                 (list (concat user-emacs-directory "snippets"))))
   :hook ((prog-mode . yas-minor-mode)
          (org-mode . yas-minor-mode))
   :config

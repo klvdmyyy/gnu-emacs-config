@@ -10,21 +10,22 @@
   :custom
   (org-agenda-files
    (append (directory-files-recursively "~/org/agenda/" "\\`[a-z0-9A-Z]*.org\\'")
-           (list (concat user-init-dir "ISSUES.org"))))
+           ;; (list (concat user-emacs-directory "ISSUES.org"))
+           '()))
   (org-agenda-start-with-log-mode t)
   (org-log-done 'time)
   (org-log-into-drawer t)
   (org-agenda-custom-commands
-   '(("ei" "Emacs Issues"
-      ((tags "+@emacsissue/-OPENED-CLOSED"
-             ((org-agenda-overriding-header "Неопределённые")
-              (org-agenda-files org-agenda-files)))
-       (tags "+@emacsissue/OPENED"
-             ((org-agenda-overriding-header "Открытые проблемы")
-              (org-agenda-files org-agenda-files)))
-       (tags "+@emacsissue/CLOSED"
-             ((org-agenda-overriding-header "Закрытые проблемы")
-              (org-agenda-files org-agenda-files)))))
+   '(;; ("ei" "Emacs Issues"
+     ;;  ((tags "+@emacsissue/-OPENED-CLOSED"
+     ;;         ((org-agenda-overriding-header "Неопределённые")
+     ;;          (org-agenda-files org-agenda-files)))
+     ;;   (tags "+@emacsissue/OPENED"
+     ;;         ((org-agenda-overriding-header "Открытые проблемы")
+     ;;          (org-agenda-files org-agenda-files)))
+     ;;   (tags "+@emacsissue/CLOSED"
+     ;;         ((org-agenda-overriding-header "Закрытые проблемы")
+     ;;          (org-agenda-files org-agenda-files)))))
      ("w" "Programming/Work/Learning"
       ((tags-todo "+@learning|+@programming|+@work/TODO"
                   ((org-agenda-overriding-header "Нужно сделать")

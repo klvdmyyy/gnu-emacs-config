@@ -1,6 +1,8 @@
-;;; klv-font.el --- -*- lexical-binding: t; -*-
+;;; use-font.el --- use-package for fonts -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
+;;
+;; NOTE It can be placed as separated package in my github
 ;;
 ;;; Code:
 
@@ -12,7 +14,12 @@
 Шрифт устанавливается в директорию `~/.local/share/fonts'.
 
 [TODO] Сделать установку асинхронной. После установки шрифт подгрузится
-автоматически."
+автоматически.
+
+------------------------------------
+
+По факту это максимально тупая функция которая берёт в себя только название шрифта
+и ссылку на архив с ним (FIXME Поддерживается только zip-архив)"
   (let ((font-dir "~/.local/share/fonts/"))
     ;; Create font directory if not exists
     (unless (file-exists-p font-dir)
@@ -60,32 +67,48 @@
       (add-hook 'after-make-frame-functions (apply-partially #'load-face-attributes-to-frame name src height))
     (load-face-attributes name src height)))
 
-(defun klv--parse-font-url (args &optional url)
-  "Parse args and return Font url for downloading.
-
-This implementation is not good enough :>...
-
-[ISSUE] Only GNU/Linux supported...
-
-[IMPORTANT] You must use github releases downloading. Firstly you
-should set github repo, only after `:github' field you should
-setup the `:release'
-
-[TODO] `use-package' like implementation with a lot of extensibility"
+(defun use-font--parse-disabled (args)
   (pcase args
-    ((pred seq-empty-p) url)
-    (`(:github ,github . ,next)
-     (klv--parse-font-url next (concat "https://github.com/" github "/")))
-    (`(:release ,release . ,next)
-     (klv--parse-font-url next (concat url "releases/download/" release)))
-    (code (klv--parse-font-url (cdr args) url))))
+    ((pred seq-empty-p) t)
+    (`(:disabled nil . ,next-args) t)
+    (`(:disabled . ,next-args) nil)
+    (code (use-font--parse-disabled (cdr args)))))
 
+(defun use-font--parse-if-and-unless (args)
+  (pcase args
+    ((pred seq-empty-p) t)
+    (`(:if ,expr . ,next-args)
+     (if (eval expr) t nil))
+    (`(:unless ,expr . ,next-args)
+     (if (eval expr) nil t))
+    (code (use-font--parse-if-and-unless (cdr args)))))
+
+(defun use-font--parse-github-url (args)
+  (pcase args
+    ((pred seq-empty-p) (error "Can't parse github url for use-font"))
+    (`(:release ,release . ,next-args)
+     release)
+    (code (use-font--parse-github-url (cdr args)))))
+
+(defun use-font--parse-url (args)
+  (pcase args
+    ((pred seq-empty-p) (error "Can't parse use-font macro"))
+    (`(:github ,github . ,next-args)
+     (concat "https://github.com/" github "/"
+             (use-font--parse-github-url next-args)))
+    (code (use-font--parse-url (cdr args)))))
+
+;;;###autoload
 (defmacro use-font (name &rest args)
   (declare (indent defun))
-  (let ((name name))
-    `(set-and-maybe-install-font
-      ,name ,(klv--parse-font-url ',args))))
 
-(provide 'klv-font)
+  (when (not (stringp name))
+    (error "use-font error: font name must be a string"))
 
-;;; klv-font.el ends here
+  (when (and (use-font--parse-if-and-unless args)
+             (use-font--parse-disabled args))
+    `(set-and-maybe-install-font ,name ,(use-font--parse-url args))))
+
+(provide 'use-font)
+
+;;; use-font.el ends here

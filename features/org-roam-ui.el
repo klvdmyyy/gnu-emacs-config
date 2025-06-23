@@ -18,5 +18,4 @@
   :commands (org-roam-ui-open
              org-roam-ui-mode))
 
-
 ;;; org-roam-ui.el ends here

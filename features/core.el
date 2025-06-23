@@ -1,65 +1,56 @@
-;;; core.el --- Core feature
+;;; core.el --- Core Features -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
 ;;; Code:
 
-(use-package dired
-  :ensure nil
-  :custom
-  (dired-omit-files "\\`\\'")
-  :hook ((dired-mode . dired-omit-mode)))
-
 (use-package emacs
   :ensure nil
   :init
-  (require 'dired)                      ; FIXME Why I require `dired' there !?
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  
-  ;; MAYBE make frame more transparent ?!
   (add-to-list 'default-frame-alist '(alpha-background . 100))
-  
-  :hook
-  ((elpaca-after-init
-    . (lambda () (load custom-file 'noerror)))
-   (after-init
-    . (lambda () (load custom-file 'noerror)))
-   (prog-mode . display-line-numbers-mode)
-   (emacs-startup
-    . (lambda ()
-	(message "Emacs ready in %.2f seconds with %d garbage collections"
-		 (float-time (time-subtract after-init-time before-init-time))
-		 gcs-done)))
-   (prog-mode . hl-line-mode))
+
+  :hook ((prog-mode . display-line-numbers-mode)
+         (after-init
+          . (lambda ()
+              (let ((file-name-handler-alist nil)
+                    (load-suffixes '(".el")))
+                (load custom-file 'noerror))))
+         (emacs-startup
+          . (lambda ()
+              (message "Emacs ready in %.3f seconds with %d garbage collections"
+                       (float-time (time-subtract after-init-time before-init-time))
+                       gcs-done)
+              (setq gc-cons-threshold (* 16 1024 1024)))))
 
   :custom
-  (make-backup-files nil)
-  (frame-title-format "### %b --- GNU Emacs ###")
+  (frame-title-format "*KlvEmacs* :: %f")
+
   (cursor-type 'box)
+  (cursor-in-non-selected-window nil)
+
   (default-input-method "russian-computer")
+
+  (make-backup-files nil)
+  (custom-file (expand-file-name "customs.el" user-emacs-directory))
 
   (indent-tabs-mode nil)
   (tab-width 4)
 
-  (custom-file (expand-file-name "customs.el" user-init-dir))
-  (gc-cons-threshold (* 128 1024 1024))
-  (gc-cons-percentage 0.6)
-  (read-process-output-max (* 4 1024 1024))
-
   :config
   (global-visual-line-mode 1)
   (blink-cursor-mode 0)
-  
-  (fset #'jsonrpc--log-event #'ignore)
+  (column-number-mode 1)
+  (fset #'jsonrpc--log-event #'ignore))
 
-  (column-number-mode 1))
+;; TODO Maybe move which-key and recentf from core feature
 
 (use-package which-key
   :ensure nil
-  :hook after-init)
+  :hook emacs-startup)
 
 (use-package recentf
   :ensure nil
-  :hook after-init)
+  :hook emacs-startup)
 
 ;;; core.el ends here
