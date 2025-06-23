@@ -16,56 +16,22 @@
   (org-log-done 'time)
   (org-log-into-drawer t)
   (org-agenda-custom-commands
-   '(;; ("ei" "Emacs Issues"
-     ;;  ((tags "+@emacsissue/-OPENED-CLOSED"
-     ;;         ((org-agenda-overriding-header "Неопределённые")
-     ;;          (org-agenda-files org-agenda-files)))
-     ;;   (tags "+@emacsissue/OPENED"
-     ;;         ((org-agenda-overriding-header "Открытые проблемы")
-     ;;          (org-agenda-files org-agenda-files)))
-     ;;   (tags "+@emacsissue/CLOSED"
-     ;;         ((org-agenda-overriding-header "Закрытые проблемы")
-     ;;          (org-agenda-files org-agenda-files)))))
-     ("w" "Programming/Work/Learning"
-      ((tags-todo "+@learning|+@programming|+@work/TODO"
-                  ((org-agenda-overriding-header "Нужно сделать")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/NEXT"
-                  ((org-agenda-overriding-header "Следующая задача (после текущей, или позже)")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/WAIT"
-                  ((org-agenda-overriding-header "Ожидание внешних изменений")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/HOLD"
-                  ((org-agenda-overriding-header "Ожидание внутренних изменений")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/READY"
-                  ((org-agenda-overriding-header "Готовая задача")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/REVIEW"
-                  ((org-agenda-overriding-header "В ожидании ревью")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags "+@learning|+@programming|+@work/STOP"
-             ((org-agenda-overriding-header "Остановленные задачи")
-              (org-agenda-files org-agenda-files)
-              (org-agenda-span 'day)))
-       (tags "+@learning|+@programming|+@work/NOTE"
-             ((org-agenda-overriding-header "Заметки ?!")
-              (org-agenda-files org-agenda-files)
-              (org-agenda-span 'day)))
-       (tags-todo "+@learning|+@programming|+@work/IDEA"
-                  ((org-agenda-overriding-header "Идеи")
-                   (org-agenda-files org-agenda-files)
-                   (org-agenda-span 'day)))
-       (tags "+@learning|+@programming|+@work/DONE"
-             ((org-agenda-overriding-header "Сделано")
-              (org-agenda-files org-agenda-files)
-              (org-agenda-span 'day))))))))
+   '(("l" "Learning Agenda"
+      ((agenda "" ((org-agenda-span 'day)
+                   (org-deadline-warning-days 7)
+                   ;; TODO Filter by @yandexlearning tag instead of file
+                   (org-agenda-files '("~/org/agenda/YandexLearning.org"))))
+       (tags-todo "+@yandexlearning|+PRIORITY=\"A\""
+                  ((org-agenda-span 'day)
+                   (org-agenda-overriding-header "High Priority Tasks")))))
+     ("w" "Weekly Review"
+      ((agenda ""
+               ((org-agenda-overriding-header "Completed Task")
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                (org-agenda-span 'week)))
+       (agenda ""
+               ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                (org-agenda-span 'week))))))))
 
 ;;; org-agenda.el ends here

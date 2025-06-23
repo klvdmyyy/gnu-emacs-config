@@ -23,20 +23,9 @@
   :custom
   (org-directory "~/org")
   (org-capture-templates
-   `(;; ("e" "Emacs")
-     ;; ("ei" "Emacs Issue" entry
-     ;;  (file ,(concat user-emacs-directory "ISSUES.org"))
-     ;;  "* %?\n%a"
-     ;;  :empty-lines 1)
-     ("w" "Work Tasks")
-     ("wt" "Task" entry
-      (file+headline "~/org/agenda/Work.org" "Tasks")
-      "* TODO %?\nSCHEDULED: <%<%Y-%m-%d %a>>\n%a"
-      :empty-lines 1
-      :prepend t)
-     ("ws" "Schedule" entry
-      (file+headline "~/org/agenda/Work.org" "Tasks")
-      "* TODO %?\nSCHEDULED: %^t\n%a"
+   `(("l" "Learning Task" entry
+      (file+headline "~/org/agenda/YandexLearning.org" "Tasks")
+      "* TODO %?\nSCHEDULED: <%<%Y-%m-%d %a>>\n%a\n%i"
       :empty-lines 1
       :prepend t)))
 
@@ -44,6 +33,6 @@
   (org-confirm-babel-evaluate nil)      ; No confirmation for Org Babel evaluation
   (org-id-locations-file "~/org/cache/.org-id-locations")
   (org-deadline-warning-days 7)
-  (org-clock-sound (concat user-init-dir "assets/org-clock-sound.wav")))
+  (org-clock-sound (concat user-emacs-directory "assets/org-clock-sound.wav")))
 
 ;;; org.el ends here
