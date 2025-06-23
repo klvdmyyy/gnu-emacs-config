@@ -28,7 +28,10 @@
    git
    smartparens
    hl-todo
-   org-roam)
+   org
+   org-agenda
+   org-roam
+   org-roam-ui)
 
   (load-languages
    ;; cc

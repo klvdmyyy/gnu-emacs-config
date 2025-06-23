@@ -13,6 +13,7 @@
       inhibit-startup-echo-area-message user-login-name
       initial-major-mode 'fundamental-mode
       initial-scratch-message nil
+      native-comp-async-report-warnings-errors 'silent
 
       ;; For use-package debugging (i don't need it)
       use-package-compute-statistics nil)
