@@ -17,10 +17,10 @@
 
 (use-package spacemacs-theme
   :hook ((emacs-startup
-          . (lambda () (load-theme 'spacemacs-light t nil))))
+          . (lambda () (load-theme 'spacemacs-dark t nil))))
   :config
   ;; FIXME For daemon mode only
-  (add-hook 'server-after-make-frame-hook (lambda (&rest _) (load-theme 'spacemacs-light t nil))))
+  (add-hook 'server-after-make-frame-hook (lambda (&rest _) (load-theme 'spacemacs-dark t nil))))
 
 (use-package doom-modeline
   :hook emacs-startup
