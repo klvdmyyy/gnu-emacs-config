@@ -75,9 +75,35 @@
   :ensure nil
   :config (fringe-mode '(4 . 4)))
 
+(use-package modern-tab-bar
+  :disabled t
+  :ensure (modern-tab-bar
+           :host github
+           :repo "aaronjensen/emacs-modern-tab-bar")
+  :hook emacs-startup
+  :init
+  (setq tab-bar-show t
+        tab-bar-new-button nil
+        tab-bar-close-button-show nil)
+
+  :config
+  (modern-tab-bar-mode 1))
+
+(use-package awesome-tab
+  :disabled t
+  :ensure (awesome-tab
+           :host github
+           :repo "manateelazycat/awesome-tab"
+           :branch "master")
+  :hook emacs-startup
+  :bind (("C-<tab>" . awesome-tab-forward)
+         ("C-<iso-lefttab>" . awesome-tab-backward))
+  :custom
+  (awesome-tab-height 130))
+
 (use-package tab-bar
-  :disabled t                           ; NOTE Setup `tab-bar-mode' !?
+  :disabled t
   :ensure nil
-  :hook (after-init . tab-bar-mode))
+  :hook emacs-startup)
 
 ;;; appearance.el
