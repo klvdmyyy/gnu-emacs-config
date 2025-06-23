@@ -7,3 +7,4 @@
 - ~/org :: Org Directory
 - ~/org/agenda :: Org Agenda Directory
 - ~/org/roam :: Org Roam directory
+- ~/org/cache :: Cache-like files (roam db, org id locations)
