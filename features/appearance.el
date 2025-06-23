@@ -22,7 +22,25 @@
   ;; FIXME For daemon mode only
   (add-hook 'server-after-make-frame-hook (lambda (&rest _) (load-theme 'spacemacs-dark t nil))))
 
+;; So interesting thing
+;;
+;; It's maybe the best modeline I ever seen for GNU Emacs.
+;;
+;; Also it's so good for using with EXWM
+(use-package taoline
+  :ensure (taoline
+           :host github
+           :repo "11111000000/taoline"
+           :branch "master")
+  :hook emacs-startup
+  :custom
+  (taoline-segments
+   '((:left taoline-segment-icon-and-buffer taoline-segment-git-branch)
+     (:center taoline-segment-echo-message)
+     (:right taoline-segment-project-name taoline-segment-time))))
+
 (use-package doom-modeline
+  :disabled t
   :hook emacs-startup
   :custom
   (doom-modeline-hud t)
