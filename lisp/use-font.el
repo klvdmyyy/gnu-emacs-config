@@ -65,7 +65,7 @@
 (defun set-and-maybe-install-font (name src &optional height)
   (if (daemonp)
       (add-hook 'after-make-frame-functions (apply-partially #'load-face-attributes-to-frame name src height))
-    (load-face-attributes name src height)))
+    (add-hook 'emacs-startup-hook (apply-partially #'load-face-attributes name src height))))
 
 (defun use-font--parse-disabled (args)
   (pcase args
