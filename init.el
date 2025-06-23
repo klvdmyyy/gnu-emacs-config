@@ -23,8 +23,11 @@
    core
    dired
    elpaca
+   gcmh
    appearance
+   esh
    completion
+   all-the-icons
    company
    yasnippet
    git
