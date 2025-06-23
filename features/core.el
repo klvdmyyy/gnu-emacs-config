@@ -26,8 +26,8 @@
   :custom
   (frame-title-format "*KlvEmacs* :: %f")
 
-  (cursor-type 'box)
-  (cursor-in-non-selected-window nil)
+  (cursor-type '(bar . 2))
+  (cursor-in-non-selected-windows nil)
 
   (default-input-method "russian-computer")
 
