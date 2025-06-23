@@ -18,11 +18,13 @@
   (org-agenda-custom-commands
    '(("l" "Learning Agenda"
       ((agenda "" ((org-agenda-span 'day)
+                   (org-agenda-remove-tags t)
                    (org-deadline-warning-days 7)
                    ;; TODO Filter by @yandexlearning tag instead of file
                    (org-agenda-files '("~/org/agenda/YandexLearning.org"))))
-       (tags-todo "+@yandexlearning|+PRIORITY=\"A\""
+       (tags-todo "+@yandexlearning+PRIORITY=\"A\""
                   ((org-agenda-span 'day)
+                   (org-agenda-remove-tags t)
                    (org-agenda-overriding-header "High Priority Tasks")))))
      ("w" "Weekly Review"
       ((agenda ""
