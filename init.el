@@ -25,13 +25,16 @@
    elpaca
    appearance
    completion
+   company
+   yasnippet
    git
    smartparens
    hl-todo
    org
    org-agenda
    org-roam
-   org-roam-ui)
+   org-roam-ui
+   elfeed)
 
   (load-languages
    ;; cc
