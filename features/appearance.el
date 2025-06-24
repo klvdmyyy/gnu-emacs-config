@@ -16,7 +16,11 @@
   :release "v3.1.1/FiraCode.zip")
 
 (use-package visual-fill-column
-  :hook visual-line-mode
+  :hook (org-mode
+         markdown-mode
+         Info-mode
+         eww-mode
+         elfeed-show-mode)
   :custom
   (visual-fill-column-width 120))
 
