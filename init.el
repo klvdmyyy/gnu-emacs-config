@@ -31,6 +31,7 @@
    git
    smartparens
    hl-todo
+   tree-sitter
    org
    org-agenda
    org-roam
@@ -38,17 +39,13 @@
    elfeed)
 
   (load-languages
+   elisp
    cc
    go
-   rust
-   zig
-   nix
-   web
    docker
    markdown
    proto
-   yaml
-   toml))
+   yaml))
 
 (provide 'init)
 
