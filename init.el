@@ -4,8 +4,6 @@
 ;;
 ;;; Code:
 
-;; TODO
-
 (let ((load-suffixes '(".elc" ".el"))
       (file-name-handler-alist nil))
   (this-person
