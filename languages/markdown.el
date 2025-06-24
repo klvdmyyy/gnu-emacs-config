@@ -1,4 +1,4 @@
-;;; markdown.el
+;;; markdown.el --- Markdown support -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

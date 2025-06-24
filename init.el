@@ -40,18 +40,17 @@
    elfeed)
 
   (load-languages
-   ;; cc
+   cc
    go
-   ;; rust
-   ;; zig
-   ;; nix
+   rust
+   zig
+   nix
    web
    docker
    markdown
    proto
    yaml
-   ;; toml
-   ))
+   toml))
 
 (provide 'init)
 

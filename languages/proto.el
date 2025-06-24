@@ -1,4 +1,4 @@
-;;; proto.el
+;;; proto.el --- Protobuf syntax for gRPC -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

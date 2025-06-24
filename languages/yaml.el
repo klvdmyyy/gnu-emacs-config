@@ -1,4 +1,4 @@
-;;; yaml.el
+;;; yaml.el --- YAML -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

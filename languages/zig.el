@@ -1,12 +1,13 @@
-;;; zig.el
+;;; zig.el --- Zig language -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
 ;;; Code:
 
 (defun zig-semicolon-maybe-after-pairs ()
-  (if (and (member (char-before (point)) after-pairs-list)
-           (member (char-before (- (point) 1)) before-pairs-list))
+  (interactive)
+  (if (and (close-pair-p (char-before (point)))
+           (open-pair-p (char-before (- (point) 1))))
       (progn (insert ";")
              (backward-char 2))
     (insert ";")))
@@ -14,6 +15,6 @@
 (use-package zig-mode
   :mode ("\\.zig\\'" . zig-mode)
   :config
-  (define-key zig-mode-map (kbd ";") (cmd! (zig-semicolon-maybe-after-pairs))))
+  (define-key zig-mode-map (kbd ";") 'zig-semicolon-maybe-after-pairs))
 
 ;;; zig.el ends here

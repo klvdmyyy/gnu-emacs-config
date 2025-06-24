@@ -1,4 +1,4 @@
-;;; cc.el
+;;; cc.el --- C/C++ Languages -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

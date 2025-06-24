@@ -1,4 +1,4 @@
-;;; docker.el
+;;; docker.el --- Dockerfile support for GNU Emacs -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

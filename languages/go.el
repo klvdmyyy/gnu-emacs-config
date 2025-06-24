@@ -1,4 +1,4 @@
-;;; go.el
+;;; go.el --- Golang for Emacs -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
