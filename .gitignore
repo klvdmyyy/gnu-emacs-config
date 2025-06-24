@@ -14,6 +14,7 @@ var
 .cache
 url
 server
+tree-sitter
 
 ### Emacs byte/native compilation files
 *.elc
