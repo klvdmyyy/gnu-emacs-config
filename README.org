@@ -2,6 +2,8 @@
 #+author: Klementiev Dmitry
 #+email: klementievd08@yandex.ru
 
+It's just my try to turn GNU Emacs into the main tool of my daily workflow.
+
 * Org
 
 - ~/org :: Org Directory
