@@ -5,6 +5,8 @@
 ;;; Code:
 
 (use-package elisp-mode
-  :ensure nil)
+  :ensure nil
+  ;; FIXME c-ts-mode by default !?!?!?!?
+  :mode ("\\.\\(el\\|elc\\)" . emacs-lisp-mode))
 
 ;;; elisp.el ends here

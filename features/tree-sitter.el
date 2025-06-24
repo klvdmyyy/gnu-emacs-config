@@ -7,13 +7,13 @@
 (use-package treesit
   :ensure nil
   :hook ((after-init . treesit-install-all))
-  :custom
+  :init
   ;; Tree Sitter source
-  (treesit-language-source-alist
-   '((go "https://github.com/tree-sitter/tree-sitter-go")
-     (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
-     (c "https://github.com/tree-sitter/tree-sitter-c")
-     (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+  (setq treesit-language-source-alist
+        '((go "https://github.com/tree-sitter/tree-sitter-go")
+          (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
 
   :config
   (defun treesit-install-all ()

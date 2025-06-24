@@ -7,10 +7,7 @@
 (use-package c-ts-mode
   :ensure nil
   :after treesit
-  :mode "\\.\\(c\\|h\\)"
-  :init
-  (when (not (treesit-language-available-p 'c))
-    (treesit-install-language-grammar 'c)))
+  :mode "\\.\\(c\\|h\\)")
 
 (use-package c++-ts-mode
   :ensure nil
