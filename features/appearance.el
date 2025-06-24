@@ -15,6 +15,14 @@
   :github "ryanoasis/nerd-fonts"
   :release "v3.1.1/FiraCode.zip")
 
+(use-package visual-fill-column
+  :hook visual-line-mode
+  :custom
+  (visual-fill-column-width 120))
+
+(use-package adaptive-wrap
+  :disabled t)
+
 (use-package spacemacs-theme
   :demand (not (daemonp))
   :hook
