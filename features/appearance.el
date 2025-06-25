@@ -22,6 +22,7 @@
          eww-mode
          elfeed-show-mode)
   :custom
+  (visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
   (visual-fill-column-width 120))
 
 (use-package spacemacs-theme
