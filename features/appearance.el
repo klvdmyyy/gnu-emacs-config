@@ -24,9 +24,6 @@
   :custom
   (visual-fill-column-width 120))
 
-(use-package adaptive-wrap
-  :disabled t)
-
 (use-package spacemacs-theme
   :demand (not (daemonp))
   :hook
@@ -38,11 +35,6 @@
   (when (not (daemonp))
     (load-theme 'spacemacs-dark t nil)))
 
-;; So interesting thing
-;;
-;; It's maybe the best modeline I ever seen for GNU Emacs.
-;;
-;; Also it's so good for using with EXWM
 (use-package taoline
   :ensure (taoline
            :host github
@@ -54,13 +46,6 @@
    '((:left taoline-segment-icon-and-buffer taoline-segment-git-branch)
      (:center taoline-segment-echo-message)
      (:right taoline-segment-project-name taoline-segment-time))))
-
-(use-package doom-modeline
-  :disabled t
-  :hook emacs-startup
-  :custom
-  (doom-modeline-hud t)
-  (doom-modeline-height 30))
 
 (use-package hl-line
   :ensure nil
@@ -86,36 +71,5 @@
 (use-package fringe
   :ensure nil
   :config (fringe-mode '(4 . 4)))
-
-(use-package modern-tab-bar
-  :disabled t
-  :ensure (modern-tab-bar
-           :host github
-           :repo "aaronjensen/emacs-modern-tab-bar")
-  :hook emacs-startup
-  :init
-  (setq tab-bar-show t
-        tab-bar-new-button nil
-        tab-bar-close-button-show nil)
-
-  :config
-  (modern-tab-bar-mode 1))
-
-(use-package awesome-tab
-  :disabled t
-  :ensure (awesome-tab
-           :host github
-           :repo "manateelazycat/awesome-tab"
-           :branch "master")
-  :hook emacs-startup
-  :bind (("C-<tab>" . awesome-tab-forward)
-         ("C-<iso-lefttab>" . awesome-tab-backward))
-  :custom
-  (awesome-tab-height 130))
-
-(use-package tab-bar
-  :disabled t
-  :ensure nil
-  :hook emacs-startup)
 
 ;;; appearance.el
