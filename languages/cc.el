@@ -7,12 +7,12 @@
 (use-package c-ts-mode
   :ensure nil
   :after treesit
-  :mode "\\.\\(c\\|h\\)")
+  :mode "\\.\\(c\\|h\\)\\'")
 
 (use-package c++-ts-mode
   :ensure nil
   :after treesit
-  :mode "\\.\\(cc\\|cpp\\|hh\\|hpp\\)")
+  :mode "\\.\\(cc\\|cpp\\|hh\\|hpp\\)\\'")
 
 ;; (use-package cc-mode
 ;;   :ensure nil
