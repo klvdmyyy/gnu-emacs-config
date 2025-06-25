@@ -39,7 +39,6 @@
    elfeed)
 
   (load-languages
-   elisp
    cc
    go
    docker
