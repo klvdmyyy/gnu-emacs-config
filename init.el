@@ -40,6 +40,7 @@
 
   (load-languages
    cc
+   python
    go
    dockerfile
    markdown

@@ -15,7 +15,9 @@
           (c "https://github.com/tree-sitter/tree-sitter-c")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (bash "https://github.com/tree-sitter/tree-sitter-bash")))
 
   :config
   (defun treesit-install-all ()

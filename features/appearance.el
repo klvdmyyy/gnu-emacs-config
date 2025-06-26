@@ -9,6 +9,8 @@
 ;; - Spacemacs - Futuristic things which I like :>
 ;; - Doom Themes - just all themes in one package
 ;; - GrayScale - Not for me :<
+;; - Solarized
+;; - Gruvbox
 ;;
 ;;; Code:
 
