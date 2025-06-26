@@ -8,6 +8,7 @@
 ;; - Zenburn - So simple theme for GNU Emacs
 ;; - Spacemacs - Futuristic things which I like :>
 ;; - Doom Themes - just all themes in one package
+;; - GrayScale - Not for me :<
 ;;
 ;;; Code:
 
@@ -24,6 +25,11 @@
   :custom
   (visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
   (visual-fill-column-width 120))
+
+(use-package grayscale-theme
+  :disabled t
+  :config
+  (load-theme 'grayscale t nil))
 
 (use-package spacemacs-theme
   :demand (not (daemonp))
