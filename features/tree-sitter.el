@@ -13,7 +13,9 @@
         '((go "https://github.com/tree-sitter/tree-sitter-go")
           (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
           (c "https://github.com/tree-sitter/tree-sitter-c")
-          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+          (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
   :config
   (defun treesit-install-all ()

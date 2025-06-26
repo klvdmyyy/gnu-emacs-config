@@ -41,7 +41,7 @@
   (load-languages
    cc
    go
-   docker
+   dockerfile
    markdown
    proto
    yaml))
