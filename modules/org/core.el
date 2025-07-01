@@ -28,6 +28,13 @@
 (bind-key "o c" 'org-capture mode-specific-map)
 
 (with-eval-after-load 'org
+  (setq org-src-lang-modes
+        (append
+         org-src-lang-modes
+         '(("go" . go-ts)
+           ("Go" . go-ts)
+           ("golang" . go-ts)
+           ("Golang" . go-ts))))
   (add-hook 'org-mode-hook 'org-indent-mode))
 
 ;;; core.el ends here

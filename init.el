@@ -16,6 +16,7 @@
 (load-module 'appearance 'doom-modeline)
 (load-module 'appearance 'rainbow)
 (load-module 'appearance 'hl-todo)
+(load-module 'appearance 'visual-fill-column)
 
 (load-module 'completion 'vertico)
 (load-module 'completion 'orderless)
@@ -39,7 +40,7 @@
 (load-module 'programming 'smartparens)
 (load-module 'programming 'yasnippet)
 (load-module 'programming 'tree-sitter)
-;; (load-module 'programming 'git)
+(load-module 'programming 'git)
 
 (load-module 'languages 'c)             ; No C++ language. I just don't use it now
 (load-module 'languages 'dockerfile)
