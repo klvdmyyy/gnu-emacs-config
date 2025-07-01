@@ -1,23 +1,8 @@
-;;; completion.el --- Complete everything you want -*- lexical-binding: t; -*-
+;;; consult.el --- Consult Completion module -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
 ;;; Code:
-
-(use-package vertico
-  :hook emacs-startup)
-
-(use-package orderless
-  :after vertico
-  :custom
-  (completion-styles '(orderless basic)))
-
-(use-package marginalia
-  :after vertico
-  :hook vertico-mode
-  :custom
-  (marginalia-max-relative-age 0)
-  (marginalia-align 'left))
 
 ;; TODO More convinient consult keybindings
 (use-package consult
@@ -36,4 +21,4 @@
   :custom
   (consult-narrow-key "<"))
 
-;;; completion.el
+;;; consult.el ends here

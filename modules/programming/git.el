@@ -12,7 +12,7 @@
 (use-package git-gutter
   ;; Using git-gutter only in Terminal
   ;; :unless (window-system)
-  :hook (prog-mode . git-gutter-mode)
+  :hook prog-mode
   :custom
   (git-gutter:modified-sign "M")        ; or `='
   (git-gutter:added-sign "A")           ; or `+'
@@ -23,15 +23,8 @@
   (git-gutter:added ((t (:foreground "green" :background "transparent"))))
   (git-gutter:deleted ((t (:foreground "red" :background "transparent")))))
 
-;; Magit from elpaca need latest version of transient
-;; which is not in repo (lower than minimum required)
-(use-package transient
-  :ensure (transient
-	       :host github
-	       :repo "magit/transient"
-	       :tag "v0.9.1"))
-
 (use-package magit
+  :pin nongnu
   :commands (magit
 	         magit-diff-unstaged)
   :bind ("C-x g" . magit))

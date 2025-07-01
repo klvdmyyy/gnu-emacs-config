@@ -1,38 +1,3 @@
-#+title: KlvEmacs --- KLementieV's GNU Emacs distribution
+#+title: My GNU Emacs distribution/configuration
 #+author: Klementiev Dmitry
 #+email: klementievd08@yandex.ru
-
-It's just my try to turn GNU Emacs into the main tool of my daily workflow.
-
-* Org
-
-- ~/org :: Org Directory
-- ~/org/agenda :: Org Agenda Directory
-- ~/org/roam :: Org Roam directory
-- ~/org/cache :: Cache-like files (roam db, org id locations)
-
-* Roadmap
-
-- [X] Setup Tree Sitter for Go
-
-- [ ] Setup LSP, Refactoring, UI, XRef, etc (Setup IDE)
-
-  eglot or lsp-mode !?
-
-- [ ] Setup Editorconfig for GNU Emacs.
-
-  Replace tree-sitter offset, style and etc with =.editorconfig= file
-
-- [ ] Setup Docker + Dockerfile
-
-- [X] Setup Tree Sitter for C/C++
-
-- [ ] Setup Nix language (+tree-sitter)
-
-- [ ] Setup Rust language (+tree-sitter)
-
-- [ ] Setup Toml language (+tree-sitter)
-
-- [ ] Setup Web mode (all separated html/css for web with tree-sitter)
-
-- [ ] Setup Zig language (+tree-sitter)

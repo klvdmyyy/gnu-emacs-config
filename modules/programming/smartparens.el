@@ -1,4 +1,4 @@
-;;; smartparens.el --- Smartparens configuration -*- lexical-binding: t; -*-
+;;; smartparens.el --- Smartparens Editing module -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
@@ -49,14 +49,11 @@
     (sp-local-pair "'" nil :when '(sp-in-string-p sp-in-comment-p) :actions '(forward-char))
     (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))))
 
-(use-package smartparens-config
-  :ensure nil
-  :after smartparens
-  :bind (:map
-	     smartparens-mode-map
-	     ("M-s" . nil)
-         ("M-DEL" . sp-backward-unwrap-sexp)
-         ("C-<left>" . sp-forward-barf-sexp)
-	     ("C-<right>" . sp-forward-slurp-sexp)))
+(with-eval-after-load 'smartparens
+  (require 'smartparens-config)
+  (bind-key "M-s" nil smartparens-mode-map)
+  (bind-key "M-DEL" 'sp-backward-unwrap-sexp smartparens-mode-map)
+  (bind-key "C-<left>" 'sp-forward-barf-sexp smartparens-mode-map)
+  (bind-key "C-<right>" 'sp-forward-slurp-sexp smartparens-mode-map))
 
 ;;; smartparens.el ends here

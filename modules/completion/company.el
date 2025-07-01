@@ -1,4 +1,4 @@
-;;; company.el --- Complete anything -*- lexical-binding: t; -*-
+;;; company.el --- Company Completion module -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;

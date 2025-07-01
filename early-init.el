@@ -2,41 +2,68 @@
 ;;
 ;;; Commentary:
 ;;
+;; Startup time performance issues:
+;; - `package-activate-all' function take ~0.02 seconds (maybe can make faster)
+;;
 ;;; Code:
+
+(setq-default
+ gc-cons-threshold most-positive-fixnum
+ load-prefer-newer t)
+
+(setq-default
+ package-enable-at-startup nil
+ inhibit-startup-screen t
+ initial-major-mode 'fundamental-mode
+ initial-scratch-message nil
+ frame-inhibit-implied-resize t
+ frame-resize-pixelwsie t
+ native-comp-async-report-warnings-errors 'silent
+ cursor-in-non-selected-windows nil)
+
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+
+(add-hook 'emacs-startup-hook
+	  (lambda ()
+	    (setq gc-cons-threshold (* 16 1024 1024))
+	    (message "Emacs started in %.3f seconds."
+		     (float-time (time-subtract after-init-time
+						before-init-time))))
+	  ;; Why Depth is 100 !?
+	  ;;
+	  ;; Because we also load a lot of packages in `emacs-startup-hook'.
+	  ;;
+	  ;; We need to re-setup GC after startup (all starting packages)
+	  100)
+
+(defun load-module (&rest args)
+  "Usage: (load-module [CATEGORY] [MODULE-NAME])
+
+Categories: completion, appearance, language, core, programming and e.t.c
+
+TODO Maybe future usage with more than one module from same category:
+(load-module [CATEGORY] [MODULE-NAME]...)
+
+Load multiple loads from one category in one call of the `load-module'."
+  (if (or (> (length args) 2)
+          (< (length args) 2))
+      (error "Incorrect load-module call. Usage: (load-module [CATEGORY] [MODULE-NAME])")
+    (let* ((file-name-handler-alist nil)
+           (load-suffixes '(".elc" ".el"))
+           (module (apply #'format (cons (concat user-emacs-directory
+                                                 "modules/%s/%s.el")
+                                         (seq-map #'prin1-to-string args)))))
+      (if (file-exists-p module)
+          (progn (load module 'noerror t nil 'must-suffix)
+                 ;; FIXME Hardcoded for only two arguments in function call
+		         ;; TODO Implementation !? (for `modulep!' like in Doom Emacs)
+                 ;; (add-to-list 'gw--loaded-modules `(,(car args) ,(cadr args)))
+                 t)
+        (message "Module not found: %s" module)
+        nil))))
 
 (provide 'early-init)
 
-;; Move to bootstrapping
-(setq package-enable-at-startup nil
-      inhibit-startup-screen t
-      frame-inhibit-implied-resize t
-      inhibit-startup-echo-area-message user-login-name
-      initial-major-mode 'fundamental-mode
-      initial-scratch-message nil
-      native-comp-async-report-warnings-errors 'silent
-
-      ;; For use-package debugging (i don't need it)
-      use-package-compute-statistics nil)
-
-(let (file-name-handler-alist)
-  ;; NOTE Setup GC before and after startup
-  (setq gc-cons-threshold most-positive-fixnum)
-
-  ;; NOTE What is it !?
-  ;; (setq load-prefer-newer noninteractive)
-
-  (let* (;; You must put ".elc" before ".el" in this list
-         ;; You should set only to: '(".so" ".elc" ".el") or '(".elc" ".el")
-         (load-suffixes '(".elc" ".el"))
-
-         ;; Interesting variable :>
-         (file-name-handler-alist nil)
-         (use-font-file (expand-file-name "lisp/use-font" user-emacs-directory))
-         (klv-loaders-file (expand-file-name "lisp/klv-loaders" user-emacs-directory)))
-    ;; NOTE I think it can cause some performance issues with startup-time
-    (autoload 'use-font use-font-file)
-    (autoload 'this-person klv-loaders-file)
-    (autoload 'load-features klv-loaders-file)
-    (autoload 'load-languages klv-loaders-file)))
-
-;;; early-init.el
+;;; early-init.el ends here

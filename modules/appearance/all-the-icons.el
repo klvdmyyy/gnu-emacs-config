@@ -6,7 +6,7 @@
 
 (use-package all-the-icons
   :demand t
-  :config
+  ;; :config
   ;; (when is-first-startup
   ;;   (all-the-icons-install-fonts))
   )

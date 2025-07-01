@@ -15,6 +15,8 @@ var
 url
 server
 tree-sitter
+straight
+elpa
 
 ### Emacs byte/native compilation files
 *.elc
@@ -26,3 +28,4 @@ tree-sitter
 ### My Configuration files ###
 customs.el
 .startup-lock
+.load-path.el
