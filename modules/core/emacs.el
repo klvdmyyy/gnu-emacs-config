@@ -22,6 +22,7 @@
                 indent-tabs-mode nil
                 tab-width 4)
   (blink-cursor-mode 0)
+  (global-visual-line-mode 1)
 
   (add-hook
    'after-init-hook
