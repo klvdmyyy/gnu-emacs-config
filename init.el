@@ -10,6 +10,7 @@
 (load-module 'core 'dired)
 (load-module 'core 'gcmh)
 (load-module 'core 'eshell)
+(load-module 'core 'eat)
 
 (load-module 'appearance 'kaolin)
 (load-module 'appearance 'all-the-icons)
