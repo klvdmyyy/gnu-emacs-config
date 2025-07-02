@@ -27,12 +27,12 @@
          ;; TODO Maybe bind to switching for Eshell !?
          ("s-e" . nil))
   :custom
-  ;; Priority: babashka -> nu (nushell) -> zsh -> fish -> bash -> sh
-  (explicit-shell-file-name (or (executable-find "nu") ; Nushell
-                                (executable-find "zsh") ; ZSH
+  ;; Priority: nu (nushell) -> zsh -> fish -> bash -> babashka -> sh
+  (explicit-shell-file-name (or (executable-find "nu")   ; Nushell (Interesting thing written in Rust)
+                                (executable-find "zsh")  ; ZSH
                                 (executable-find "fish") ; Like ZSH but simpler
                                 (executable-find "bash") ; Default Bash
-                                (executable-find "bb") ; Clojure shell
+                                (executable-find "bb")   ; Clojure shell (Babashka)
                                 (executable-find "sh"))) ; omg :>
   (eat-line-input-ring-size 1024)
   (eat-kill-buffer-on-exit t)
