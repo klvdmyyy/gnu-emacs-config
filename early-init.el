@@ -5,6 +5,8 @@
 ;; Startup time performance issues:
 ;; - `package-activate-all' function take ~0.02 seconds (maybe can make faster)
 ;;
+;; TODO More optimizations from minimal-emacs.d, doom emacs, spacemacs and etc
+;;
 ;;; Code:
 
 (setq-default
@@ -13,13 +15,26 @@
 
 (setq-default
  package-enable-at-startup nil
+ inhibit-splash-screen t
  inhibit-startup-screen t
+ inhibit-startup-echo-area-message user-login-name
+ initial-buffer-choice nil
+ inhibit-startup-buffer-menu t
+ inhibit-x-resources t
  initial-major-mode 'fundamental-mode
  initial-scratch-message nil
  frame-inhibit-implied-resize t
  frame-resize-pixelwise t
  native-comp-async-report-warnings-errors 'silent
  cursor-in-non-selected-windows nil)
+
+(setq-default bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right)
+
+(setq bidi-inhibit-bpa t)
+
+(advice-add 'display-startup-echo-area-message :override #'ignore)
+(advice-add 'display-startup-screen :override #'ignore)
 
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
