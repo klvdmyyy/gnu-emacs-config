@@ -28,6 +28,9 @@
    'after-init-hook
    (lambda () (load custom-file 'noerror t nil 'must-suffix))))
 
+(with-eval-after-load 'jsonrpc
+  (fset #'jsonrpc--log-event #'ignore))
+
 (with-eval-after-load 'recentf
   (add-hook 'emacs-startup-hook 'recentf-mode))
 
