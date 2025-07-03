@@ -6,7 +6,12 @@
 
 (use-package indent-bars
   :hook (python-mode
+         python-ts-mode
          c-mode
-         go-mode))
+         c-ts-mode
+         c++-mode
+         c++-ts-mode
+         go-mode
+         go-ts-mode))
 
 ;;; indent-bars.el ends here
