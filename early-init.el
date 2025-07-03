@@ -17,7 +17,7 @@
  initial-major-mode 'fundamental-mode
  initial-scratch-message nil
  frame-inhibit-implied-resize t
- frame-resize-pixelwsie t
+ frame-resize-pixelwise t
  native-comp-async-report-warnings-errors 'silent
  cursor-in-non-selected-windows nil)
 
