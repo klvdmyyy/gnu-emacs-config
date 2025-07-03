@@ -29,6 +29,9 @@
 (load-module 'completion 'consult)
 (load-module 'completion 'company)
 
+(load-module 'navigation 'avy)
+(load-module 'navigation 'ace)
+
 (load-module 'org 'core)
 (load-module 'org 'agenda)
 (load-module 'org 'roam)
