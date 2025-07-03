@@ -6,6 +6,16 @@
 
 (load-module 'core 'better-package)
 
+(load-module 'languages 'c) ; No C++ language. I just don't use it now
+(load-module 'languages 'dockerfile)
+(load-module 'languages 'protobuf)
+(load-module 'languages 'yaml)
+(load-module 'languages 'python)
+(load-module 'languages 'go)
+
+;; TODO Move it from languages. Make markdown comparable with org-mode in my configuration
+(load-module 'languages 'markdown)
+
 (load-module 'core 'emacs)
 (load-module 'core 'dired)
 (load-module 'core 'gcmh)
@@ -56,16 +66,6 @@
 (load-module 'tools 'google-translate)
 (load-module 'tools 'docker)
 (load-module 'tools 'kubernetes)
-
-(load-module 'languages 'c) ; No C++ language. I just don't use it now
-(load-module 'languages 'dockerfile)
-(load-module 'languages 'protobuf)
-(load-module 'languages 'yaml)
-(load-module 'languages 'python)
-(load-module 'languages 'go)
-
-;; TODO Move it from languages. Make markdown comparable with org-mode in my configuration
-(load-module 'languages 'markdown)
 
 (provide 'init)
 
