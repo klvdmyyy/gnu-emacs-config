@@ -5,13 +5,11 @@
 ;;; Code:
 
 (use-package visual-fill-column
-  :hook (org-mode
-         markdown-mode
-         Info-mode
-         eww-mode
-         elfeed-show-mode)
+  :hook (prog-mode
+         text-mode)
   :custom
+  (visual-fill-column-center-text nil)
   (visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
-  (visual-fill-column-width 120))
+  (visual-fill-column-width 140))
 
 ;;; visual-fill-column.el ends here
