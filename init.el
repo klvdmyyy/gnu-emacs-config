@@ -47,7 +47,11 @@
 (load-module 'programming 'tree-sitter)
 (load-module 'programming 'git)
 
-(load-module 'languages 'c)             ; No C++ language. I just don't use it now
+(load-module 'tools 'google-translate)
+(load-module 'tools 'docker)
+(load-module 'tools 'kubernetes)
+
+(load-module 'languages 'c) ; No C++ language. I just don't use it now
 (load-module 'languages 'dockerfile)
 (load-module 'languages 'protobuf)
 (load-module 'languages 'yaml)
