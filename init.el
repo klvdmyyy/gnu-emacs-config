@@ -12,6 +12,10 @@
 (load-module 'core 'eshell)
 (load-module 'core 'eat)
 
+(load-module 'emacs-lisp 'highlight-defined)
+(load-module 'emacs-lisp 'elisp-autofmt)
+(load-module 'emacs-lisp 'elsa)
+
 (load-module 'appearance 'kaolin)
 (load-module 'appearance 'all-the-icons)
 (load-module 'appearance 'doom-modeline)

@@ -1,0 +1,3 @@
+#+title: Separated modules category for GNU Emacs Lisp
+#+author: Klementiev Dmitry
+#+email: klementievd08@yandex.ru
