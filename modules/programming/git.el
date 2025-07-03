@@ -29,4 +29,13 @@
 	         magit-diff-unstaged)
   :bind ("C-x g" . magit))
 
+(use-package magit-todos
+  :after magit
+  :hook ((magit-mode . magit-todos-mode))
+  :custom
+  (magit-todos-keyword-suffix "\\(?:[([][^])]+[])]\\)?:"))
+
+(use-package forge
+  :after magit)
+
 ;;; git.el ends here

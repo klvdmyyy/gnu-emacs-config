@@ -3,8 +3,8 @@
 ;;; Commentary:
 ;;
 ;; Known performance issues:
-;; - TODO replace `package-activate-all' function which take ~0.02 seconds of startup time
-;; - TODO make `package-installed-p' independent from any package manager
+;; - TODO: replace `package-activate-all' function which take ~0.02 seconds of startup time
+;; - TODO: make `package-installed-p' independent from any package manager
 ;;
 ;; Maybe move to one of the following package managers:
 ;; - Elpaca
@@ -19,7 +19,7 @@
               package-native-compile t
               package-install-upgrade-built-in t)
 
-;; FIXME With this advice I can't upgrade any package (also built-in)
+;; FIXME: With this advice I can't upgrade any package (also built-in)
 ;; ;; Replace `package-installed-p'
 ;; ;;
 ;; ;; Now `package-installed-p' is independent from any package

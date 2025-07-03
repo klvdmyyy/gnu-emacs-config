@@ -4,7 +4,7 @@
 ;;
 ;;; Code:
 
-;; FIXME See emacs/lisp/textmodes/yaml-ts-mode.el
+;; FIXME: See emacs/lisp/textmodes/yaml-ts-mode.el
 ;;
 ;; YAML Tree Sitter mode for GNU Emacs don't have properly
 ;; indentation. (yaml-ts-mode derived from text-mode !?)

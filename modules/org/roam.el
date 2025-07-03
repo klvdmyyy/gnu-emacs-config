@@ -129,9 +129,9 @@ Following keys are supported:
 (use-package org-roam
   :init
   (setq org-roam-v2-ack t)
-  ;; MAYBE Use `after-init-hook'
-  ;; FIXME With `after-init-hook' it may cause issues maybe
-  ;; FIXME No lazy-loading
+  ;; MAYBE: Use `after-init-hook'
+  ;; FIXME: With `after-init-hook' it may cause issues maybe
+  ;; FIXME: No lazy-loading
   :hook ((emacs-startup . org-roam-db-autosync-mode))
   :bind (:map
          org-mode-map
@@ -142,7 +142,7 @@ Following keys are supported:
          ("C-c r T" . org-roam-tag-remove)
          ("C-c r a" . org-roam-alias-add)
          ("C-c r A" . org-roam-alias-remove)
-         ;; TODO See https://git.sr.ht/~abcdw/rde/tree/master/item/src/rde/features/emacs-xyz.scm#L4883
+         ;; NOTE: See https://git.sr.ht/~abcdw/rde/tree/master/item/src/rde/features/emacs-xyz.scm#L4883
          ;; ("C-c r O" . rde-org-roam-open-ref)
          :map
          mode-specific-map

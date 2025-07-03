@@ -5,7 +5,7 @@
 ;; Startup time performance issues:
 ;; - `package-activate-all' function take ~0.02 seconds (maybe can make faster)
 ;;
-;; TODO More optimizations from minimal-emacs.d, doom emacs, spacemacs and etc
+;; TODO: More optimizations from minimal-emacs.d, doom emacs, spacemacs and etc
 ;;
 ;;; Code:
 
@@ -58,7 +58,7 @@
 
 Categories: completion, appearance, language, core, programming and e.t.c
 
-TODO Maybe future usage with more than one module from same category:
+TODO: Maybe future usage with more than one module from same category:
 (load-module [CATEGORY] [MODULE-NAME]...)
 
 Load multiple loads from one category in one call of the `load-module'."
@@ -72,8 +72,8 @@ Load multiple loads from one category in one call of the `load-module'."
                                          (seq-map #'prin1-to-string args)))))
       (if (file-exists-p module)
           (progn (load module 'noerror t nil 'must-suffix)
-                 ;; FIXME Hardcoded for only two arguments in function call
-		         ;; TODO Implementation !? (for `modulep!' like in Doom Emacs)
+                 ;; FIXME: Hardcoded for only two arguments in function call
+		         ;; TODO: Implementation !? (for `modulep!' like in Doom Emacs)
                  ;; (add-to-list 'gw--loaded-modules `(,(car args) ,(cadr args)))
                  t)
         (message "Module not found: %s" module)

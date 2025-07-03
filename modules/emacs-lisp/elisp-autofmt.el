@@ -4,8 +4,8 @@
 ;;
 ;;; Code:
 
-;; FIXME Wrong formatting with use-package
-;; FIXME Wrong indentation
+;; FIXME: Wrong formatting with use-package
+;; FIXME: Wrong indentation
 (use-package elisp-autofmt
   :disabled t
   :hook (emacs-lisp-mode . elisp-autofmt-mode))

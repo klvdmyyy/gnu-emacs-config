@@ -18,6 +18,7 @@ tree-sitter
 straight
 elpa
 elisp-autofmt-cache
+forge-database.sqlite
 
 ### Emacs byte/native compilation files
 *.elc

@@ -2,7 +2,7 @@
 ;;
 ;;; Commentary:
 ;;
-;; TODO Implement this
+;; TODO: Implement this
 ;;
 ;;; Code:
 

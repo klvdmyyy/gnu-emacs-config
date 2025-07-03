@@ -4,7 +4,7 @@
 ;;
 ;;; Code:
 
-;; TODO More convinient consult keybindings
+;; TODO: More convinient consult keybindings
 (use-package consult
   :bind (;; Without `C-c c' prefix
          ("C-s" . consult-line)

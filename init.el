@@ -38,11 +38,11 @@
 (load-module 'org 'agenda)
 (load-module 'org 'roam)
 
-;; TODO Org Roam UI
+;; TODO: Org Roam UI
 (load-module 'org 'roam-ui)
 
-;; TODO See more org-related packages in Doom Emacs modules
-;; TODO Implement following modules:
+;; TODO: See more org-related packages in Doom Emacs modules
+;; TODO: Implement following modules:
 (load-module 'org 'brain)
 (load-module 'org 'noter)
 (load-module 'org 'ql)
@@ -64,7 +64,7 @@
 (load-module 'languages 'python)
 (load-module 'languages 'go)
 
-;; TODO Move it from languages. Make markdown comparable with org-mode in my configuration
+;; TODO: Move it from languages. Make markdown comparable with org-mode in my configuration
 (load-module 'languages 'markdown)
 
 (provide 'init)

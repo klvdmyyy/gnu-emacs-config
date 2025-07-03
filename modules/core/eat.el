@@ -24,7 +24,7 @@
   :bind (("s-E" . eat-project-or-eat)
          :map eat-mode-map
          ("s-E" . switch-to-prev-buffer-or-eat)
-         ;; TODO Maybe bind to switching for Eshell !?
+         ;; TODO: Maybe bind to switching for Eshell !?
          ("s-e" . nil))
   :custom
   ;; Priority: nu (nushell) -> zsh -> fish -> bash -> babashka -> sh
