@@ -23,6 +23,7 @@
 (load-module 'appearance 'hl-todo)
 (load-module 'appearance 'visual-fill-column)
 (load-module 'appearance 'indent-bars)
+(load-module 'appearance 'golden-ratio)
 
 (load-module 'completion 'vertico)
 (load-module 'completion 'orderless)
