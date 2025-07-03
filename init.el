@@ -49,6 +49,7 @@
 (load-module 'programming 'yasnippet)
 (load-module 'programming 'tree-sitter)
 (load-module 'programming 'git)
+(load-module 'programming 'leetcode)
 
 (load-module 'tools 'google-translate)
 (load-module 'tools 'docker)
