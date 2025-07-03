@@ -6,10 +6,10 @@
 
 (use-package google-translate
   :bind (("C-c t" . google-translate-smooth-translate))
-  :config
-  :custom
-  (google-translate-translation-directions-alist
-   '(("ru" . "en")
-     ("en" . "ru"))))
+  :init
+  (require 'google-translate-smooth-ui)
+  (setq-default google-translate-translation-directions-alist
+                '(("ru" . "en")
+                  ("en" . "ru"))))
 
 ;;; google-translate.el ends here
