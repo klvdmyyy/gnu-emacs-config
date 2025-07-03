@@ -17,6 +17,7 @@ server
 tree-sitter
 straight
 elpa
+elisp-autofmt-cache
 
 ### Emacs byte/native compilation files
 *.elc
