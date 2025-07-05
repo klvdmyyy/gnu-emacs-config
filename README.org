@@ -2,6 +2,8 @@
 #+author: Klementiev Dmitry
 #+email: klementievd08@yandex.ru
 
+[[./assets/screenshot.png]]
+
 Welcome to my GNU Emacs configuration/distribution.
 
 Main goals of this configuration:
