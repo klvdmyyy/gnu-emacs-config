@@ -35,6 +35,7 @@
   :custom
   (magit-todos-keyword-suffix "\\(?:[([][^])]+[])]\\)?:"))
 
+;; TODO: Implement Forge
 (use-package forge
   :after magit)
 
