@@ -21,7 +21,12 @@
      (tags-todo "+@yandexlearning+PRIORITY=\"A\"+SCHEDULED<=\"<today>\""
                 ((org-agenda-span 'day)
                  (org-agenda-remove-tags t)
-                 (org-agenda-overriding-header "High Priority Tasks")))))
+                 (org-agenda-overriding-header "High Priority Tasks")))
+     (tags-todo "+@yandexlearning/TODO"
+                ((org-agenda-tags-todo-honor-ignore-options t)
+                 (org-agenda-todo-ignore-scheduled t)
+                 (org-agenda-remove-tags t)
+                 (org-agenda-overriding-header "Just TODO Tasks")))))
    ("w" "Weekly Review"
     ((agenda ""
              ((org-agenda-overriding-header "Completed Task")
