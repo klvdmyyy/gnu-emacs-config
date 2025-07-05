@@ -10,7 +10,9 @@
 
  ;; Setup Org Captures
  org-capture-templates
- '(("l" "Learning Task" entry
+ `(("e" "Emacs")                        ; TODO: Implement captures for GNU Emacs (config, core contributing, packages and etc)
+   
+   ("l" "Learning Task" entry
     (file+headline "~/org/agenda/YandexLearning.org" "Tasks")
     "* TODO %?\nSCHEDULED: <%<%Y-%m-%d %a>>\n%a\n%i"
     :empty-lines 1
