@@ -30,8 +30,8 @@
 (bind-key "o c" 'org-capture mode-specific-map)
 
 (with-eval-after-load 'org
-  (autoload 'consult-org-heading "consult")
-  (bind-key "C-s" 'consult-org-heading org-mode-map)
+  (autoload 'consult-outline "consult")
+  (bind-key "C-s" 'consult-outline org-mode-map)
   (setq org-src-lang-modes
         (append
          org-src-lang-modes

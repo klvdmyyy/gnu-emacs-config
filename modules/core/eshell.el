@@ -9,6 +9,9 @@
   :group 'eshell
   (if eshell-mode-setup
       (progn
+        ;; FIXME: eshell throw error at `completion-at-point' with `all-the-icons-completion-mode' enabled.
+        ;; This is just a temporary fix which disable it.
+        (all-the-icons-completion-mode 0)
         (if (and (boundp 'envrc-global-mode) envrc-global-mode)
 	        (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
 	      (setenv "PAGER" ""))
@@ -18,7 +21,8 @@
         (eshell/alias "d" "dired $1")
         (eshell/alias "gd" "magit-diff-unstaged")
         ;; (local-unset-key 'eshell/clear)
-        )))
+        )
+    (all-the-icons-completion-mode 1)))
 
 (defun switch-to-prev-buffer-or-eshell (arg)
   (interactive "P")
@@ -39,8 +43,8 @@
   (add-hook 'eshell-mode-hook 'eshell-mode-setup)
 
   (bind-key "s-e" 'switch-to-prev-buffer-or-eshell eshell-mode-map)
-  (with-eval-after-load 'consult
-    (bind-key "M-r" 'consult-history eshell-hist-mode-map)))
+  (autoload 'consult-history "consult")
+  (bind-key "M-r" 'consult-history eshell-hist-mode-map))
 
 (bind-key "s-e" 'project-eshell-or-eshell)
 

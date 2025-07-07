@@ -12,6 +12,7 @@
   )
 
 (use-package all-the-icons-completion
+  :after all-the-icons
   :hook ((emacs-startup . all-the-icons-completion-mode)
          (marginalia-mode . all-the-icons-completion-marginalia-setup)))
 

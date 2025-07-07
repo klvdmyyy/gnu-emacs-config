@@ -37,8 +37,6 @@
 (load-module 'org 'core)
 (load-module 'org 'agenda)
 (load-module 'org 'roam)
-
-;; TODO: Org Roam UI
 (load-module 'org 'roam-ui)
 
 ;; TODO: See more org-related packages in Doom Emacs modules
