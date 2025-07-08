@@ -51,7 +51,7 @@
       ;; Load compiled file
       (load Emacs.elc :no-error :no-message :no-suffix :must-suffix)
     ;; Set second argument to t mean we byte-compile the file before loading
-    (t (org-babel-load-file Emacs.org t)))
+    (org-babel-load-file Emacs.org t))
   
   ;; Make relative symbolic link: README.org -> Emacs.org
   (unless (and (file-exists-p README.org)
