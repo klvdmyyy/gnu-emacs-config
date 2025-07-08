@@ -80,11 +80,7 @@ this stage of initialization."
   (advice-add 'command-line-1 :around #'emacs-respect-file-handlers)
 
   (add-hook 'emacs-startup-hook #'emacs-restore-file-name-handler-alist
-            101)
-
-  (let ((load-suffixes '(".elc" ".el"))
-        (dw (expand-file-name "lisp/dw" user-emacs-directory)))
-    (load dw :no-error :no-message :no-suffix :must-suffix)))
+            101))
 
 (push '(menu-bar-lines . 0) default-frame-alist)
 (setq menu-bar-mode nil)
