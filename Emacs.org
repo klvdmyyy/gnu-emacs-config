@@ -1,0 +1,14 @@
+#+title: Конфигурация GNU Emacs
+#+author: Клементьев Дмитрий
+#+email: klementievd08@yandex.ru
+
+- Файл ранней инициализации - Большая часть оптимизаций
+- Файл инициализации - Загружает org файл
+
+#+begin_src emacs-lisp
+  ;;; -*- lexical-binding: t; -*-
+#+end_src
+
+#+begin_src emacs-lisp
+  (message "Hello")
+#+end_src

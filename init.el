@@ -1,69 +1,63 @@
-;;; init.el --- Initialization -*- lexical-binding: t; -*-
-;;
+;;; init.el --- Initialization -*- no-byte-compile: t; lexical-binding: t; -*-
 ;;; Commentary:
-;;
 ;;; Code:
 
-(load-module 'core 'better-package)
+;;================================================================
+;; My init configuration file
+;; --------------------------
+;; It's heavily inspired by following configurations:
+;; - Doom Emacs
+;; - minimal-emacs.d
+;; - Spacemacs
+;; - And other emacs distributions.
+;;
+;; NOT FOR EDIT. USE Emacs.org INSTEAD
+;;================================================================
 
-(load-module 'core 'emacs)
-(load-module 'core 'dired)
-(load-module 'core 'gcmh)
-(load-module 'core 'eshell)
-(load-module 'core 'eat)
+(defun emacs-restore-gc-cons-threshold ()
+  "Restore `gc-cons-threshold'."
+  (setq gc-cons-threshold (* 16 1024 1024)))
 
-(load-module 'emacs-lisp 'highlight-defined)
-(load-module 'emacs-lisp 'elisp-autofmt)
-(load-module 'emacs-lisp 'elsa)
+(defun emacs-display-init-time ()
+  "Display Emacs init time."
+  (message "Emacs initialized in %.3f with %d garbage collections."
+           (float-time
+            (time-subtract
+             after-init-time
+             before-init-time))
+           gcs-done))
 
-(load-module 'appearance 'kaolin)
-(load-module 'appearance 'all-the-icons)
-(load-module 'appearance 'doom-modeline)
-(load-module 'appearance 'rainbow)
-(load-module 'appearance 'hl-todo)
-(load-module 'appearance 'visual-fill-column)
-(load-module 'appearance 'indent-bars)
-(load-module 'appearance 'golden-ratio)
+(add-hook 'emacs-startup-hook #'emacs-restore-gc-cons-threshold 105)
+(add-hook 'emacs-startup-hook #'emacs-display-init-time 105)
 
-(load-module 'completion 'vertico)
-(load-module 'completion 'orderless)
-(load-module 'completion 'marginalia)
-(load-module 'completion 'consult)
-(load-module 'completion 'company)
+;; Load `org-babel-load-file' function before usage
+(autoload 'org-babel-load-file "org")
 
-(load-module 'navigation 'avy)
-(load-module 'navigation 'ace)
+;; Other autoloads
+(autoload 'dired-remove-file "dired")
+(autoload 'dired-make-relative-symlink "dired")
 
-(load-module 'org 'core)
-(load-module 'org 'agenda)
-(load-module 'org 'roam)
-(load-module 'org 'roam-ui)
-
-;; TODO: See more org-related packages in Doom Emacs modules
-;; TODO: Implement following modules:
-(load-module 'org 'brain)
-(load-module 'org 'noter)
-(load-module 'org 'ql)
-
-(load-module 'programming 'smartparens)
-(load-module 'programming 'yasnippet)
-(load-module 'programming 'tree-sitter)
-(load-module 'programming 'git)
-(load-module 'programming 'leetcode)
-
-(load-module 'tools 'google-translate)
-(load-module 'tools 'docker)
-(load-module 'tools 'kubernetes)
-
-(load-module 'languages 'c) ; No C++ language. I just don't use it now
-(load-module 'languages 'dockerfile)
-(load-module 'languages 'protobuf)
-(load-module 'languages 'yaml)
-(load-module 'languages 'python)
-(load-module 'languages 'go)
-
-;; TODO: Move it from languages. Make markdown comparable with org-mode in my configuration
-(load-module 'languages 'markdown)
+;;; PERF: We don't need to always load a Emacs.org file.
+;;; Just check if Emacs.elc is up-to-date. Keep good startup
+;;; time with org-babel based configuration.
+(let* ((load-suffixes '(".elc" ".el"))
+       (Emacs.org (expand-file-name "Emacs.org" user-emacs-directory))
+       (README.org (expand-file-name "README.org" user-emacs-directory))
+       (Emacs.el (expand-file-name "Emacs.el" user-emacs-directory))
+       (Emacs.elc (expand-file-name "Emacs.elc" user-emacs-directory)))
+  (if (and (file-exists-p Emacs.elc)
+           (file-newer-than-file-p Emacs.elc Emacs.el)
+           (file-newer-than-file-p Emacs.elc Emacs.org))
+      ;; Load compiled file
+      (load Emacs.elc :no-error :no-message :no-suffix :must-suffix)
+    ;; Set second argument to t mean we byte-compile the file before loading
+    (t (org-babel-load-file Emacs.org t)))
+  
+  ;; Make relative symbolic link: README.org -> Emacs.org
+  (unless (and (file-exists-p README.org)
+               (file-symlink-p README.org))
+    (dired-remove-file README.org)
+    (dired-make-relative-symlink Emacs.org README.org)))
 
 (provide 'init)
 

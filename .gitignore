@@ -1,33 +1,6 @@
-### Emacs garbage ###
-auto-save-list
-eshell
-recentf
-elpaca
-eln-cache
-projects
-transient
-tramp
-.lsp-session-v1
-bookmarks
-var
-.org-id-locations
-.cache
-url
-server
-tree-sitter
-straight
-elpa
-elisp-autofmt-cache
-forge-database.sqlite
-
-### Emacs byte/native compilation files
-*.elc
-*.eln
-
-### Emacs auto-save/backup files ###
-*~
-
-### My Configuration files ###
-customs.el
-.startup-lock
-.load-path.el
+*
+!early-init.el
+!init.el
+!Emacs.org
+!run.sh
+!README.org

@@ -1,18 +1,1 @@
-#+title: My GNU Emacs configuration
-#+author: Klementiev Dmitry
-#+email: klementievd08@yandex.ru
-
-[[./assets/screenshot.png]]
-
-Welcome to my GNU Emacs configuration/distribution.
-
-Main goals of this configuration:
-- Half of my life in GNU Emacs.
-- Good integration with life out of GNU Emacs.
-- Fast and Simple code base.
-
-* Installation
-
-1. Clone repository to =~/.config/emacs=
-2. Run GNU Emacs and wait package installation
-3. Enjoy usage of my GNU Emacs configuration
+Emacs.org

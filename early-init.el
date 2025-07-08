@@ -1,83 +1,102 @@
-;;; early-init.el --- Early Initialization -*- lexical-binding: t; -*-
-;;
+;;; early-init.el --- -*- no-byte-compile: t; lexical-binding: t; -*-
 ;;; Commentary:
-;;
-;; Startup time performance issues:
-;; - `package-activate-all' function take ~0.02 seconds (maybe can make faster)
-;;
-;; TODO: More optimizations from minimal-emacs.d, doom emacs, spacemacs and etc
-;;
 ;;; Code:
 
-(setq-default
- gc-cons-threshold most-positive-fixnum
- load-prefer-newer t)
+;;================================================================
+;; My early-init configuration file
+;; --------------------------------
+;; It's heavily inspired by following configurations:
+;; - Doom Emacs
+;; - minimal-emacs.d
+;; - Spacemacs
+;; - And other emacs distributions.
+;;
+;; NOT FOR EDIT. USE Emacs.org INSTEAD
+;;================================================================
 
-(setq-default
- package-enable-at-startup nil
- inhibit-splash-screen t
- inhibit-startup-screen t
- inhibit-startup-echo-area-message user-login-name
- initial-buffer-choice nil
- inhibit-startup-buffer-menu t
- inhibit-x-resources t
- initial-major-mode 'fundamental-mode
- initial-scratch-message nil
- frame-inhibit-implied-resize t
- frame-resize-pixelwise t
- native-comp-async-report-warnings-errors 'silent
- cursor-in-non-selected-windows nil)
+(setq load-prefer-newer t)
 
-(setq-default bidi-display-reordering 'left-to-right
-              bidi-paragraph-direction 'left-to-right)
+(setq-default default-input-method "russian-computer"
+              read-process-output-max (* 2 1024 1024)
+              process-adaptive-read-buffering nil
+              ffap-machine-p-known 'reject
+              inhibit-compacting-font-caches t
+              frame-resize-pixelwise t
+              frame-inhibit-implied-resize t
+              auto-mode-case-fold nil
+              inhibit-startup-screen t
+              inhibit-startup-echo-area-message user-login-name
+              initial-buffer-choice nil
+              inhibit-startup-buffer-menu t
+              inhibit-x-resources t
+              bidi-display-reordering 'left-to-right
+              bidi-paragraph-direction 'left-to-right
+              bidi-inhibit-bpa t
+              initial-major-mode 'fundamental-mode
+              initial-scratch-message nil)
 
-(setq bidi-inhibit-bpa t)
-
+;; Remove "For information about GNU Emacs..." message at startup
 (advice-add 'display-startup-echo-area-message :override #'ignore)
+
+;; Suppress the vanilla startup screen completely. We've disabled it with
+;; `inhibit-startup-screen', but it would still initialize anyway.
 (advice-add 'display-startup-screen :override #'ignore)
 
+(defvar emacs-old-file-name-handler-alist (default-toplevel-value
+                                           'file-name-handler-alist))
+
+(defun emacs-respect-file-handlers (fn args-left)
+  "Respect file handlers.
+FN is the function and ARGS-LEFT is the same argument as `command-line-1'.
+Emacs processes command-line files very early in startup.  These files may
+include special paths like TRAMP paths, so restore `file-name-handler-alist' for
+this stage of initialization."
+  (let ((file-name-handler-alist (if args-left
+                                     emacs-old-file-name-handler-alist
+                                   file-name-handler-alist)))
+    (funcall fn args-left)))
+
+(defun emacs-restore-file-name-handler-alist ()
+  "Restore `file-name-handler-alist'."
+  (set-default-toplevel-value
+   'file-name-handler-alist
+   (delete-dups (append file-name-handler-alist
+                        emacs-old-file-name-handler-alist))))
+
+(let (file-name-handler-alist)
+  (setq gc-cons-threshold most-positive-fixnum)
+
+  (set-default-toplevel-value
+   'file-name-handler-alist
+   (if (locate-file-internal "calc-loaddefs.el" load-path)
+       nil
+     (list (rassq 'jka-compr-handler
+                  emacs-old-file-name-handler-alist))))
+
+  ;; Ensure the new value persists through any current let-binding.
+  (put 'file-name-handler-alist 'initial-value
+       emacs-old-file-name-handler-alist)
+
+  (advice-add 'command-line-1 :around #'emacs-respect-file-handlers)
+
+  (add-hook 'emacs-startup-hook #'emacs-restore-file-name-handler-alist
+            101)
+
+  (let ((load-suffixes '(".elc" ".el"))
+        (dw (expand-file-name "lisp/dw" user-emacs-directory)))
+    (load dw :no-error :no-message :no-suffix :must-suffix)))
+
 (push '(menu-bar-lines . 0) default-frame-alist)
+(setq menu-bar-mode nil)
+
 (push '(tool-bar-lines . 0) default-frame-alist)
+(setq menu-bar-mode nil)
+
 (push '(vertical-scroll-bars) default-frame-alist)
+(push '(horizontal-scroll-bars) default-frame-alist)
 
-(add-hook 'emacs-startup-hook
-	  (lambda ()
-	    (setq gc-cons-threshold (* 16 1024 1024))
-	    (message "Emacs started in %.3f seconds."
-		     (float-time (time-subtract after-init-time
-						before-init-time))))
-	  ;; Why Depth is 100 !?
-	  ;;
-	  ;; Because we also load a lot of packages in `emacs-startup-hook'.
-	  ;;
-	  ;; We need to re-setup GC after startup (all starting packages)
-	  100)
-
-(defun load-module (&rest args)
-  "Usage: (load-module [CATEGORY] [MODULE-NAME])
-
-Categories: completion, appearance, language, core, programming and e.t.c
-
-TODO: Maybe future usage with more than one module from same category:
-(load-module [CATEGORY] [MODULE-NAME]...)
-
-Load multiple loads from one category in one call of the `load-module'."
-  (if (or (> (length args) 2)
-          (< (length args) 2))
-      (error "Incorrect load-module call. Usage: (load-module [CATEGORY] [MODULE-NAME])")
-    (let* ((file-name-handler-alist nil)
-           (load-suffixes '(".elc" ".el"))
-           (module (apply #'format (cons (concat user-emacs-directory
-                                                 "modules/%s/%s.el")
-                                         (seq-map #'prin1-to-string args)))))
-      (if (file-exists-p module)
-          (progn (load module 'noerror t nil 'must-suffix)
-                 ;; FIXME: Hardcoded for only two arguments in function call
-		         ;; TODO: Implementation !? (for `modulep!' like in Doom Emacs)
-                 ;; (add-to-list 'gw--loaded-modules `(,(car args) ,(cadr args)))
-                 t)
-        (message "Module not found: %s" module)
-        nil))))
+(setq scroll-bar-mode nil)
+(setq horizontal-scroll-bar-mode 0)
 
 (provide 'early-init)
 
