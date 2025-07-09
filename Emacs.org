@@ -44,6 +44,23 @@
          (add-hook ',hook #',fnname))))
 #+end_src
 
+*** =eval-on-cmd!= - Запуск S-expression перед использованием команды
+
+#+begin_src emacs-lisp
+  (defvar last-eval-on-cmd-id "a")
+
+  (defmacro eval-on-cmd! (cmd &rest body)
+    "Eval BODY before CMD."
+    (declare (indent defun))
+    (let* ((fnid (intern last-eval-on-cmd-id))
+           (fnname (intern (concat (prin1-to-string cmd) "@" (prin1-to-string fnid)))))
+      (setq last-eval-on-cmd-id (concat last-eval-on-cmd-id "a"))
+      `(define-advice ,cmd
+           (:before (&rest _) ,fnid)
+         (advice-remove ',cmd #',fnname)
+         ,@body)))
+#+end_src
+
 * Базовая настройка GNU Emacs
 
 В этой части я настраиваю базовый GNU Emacs.
