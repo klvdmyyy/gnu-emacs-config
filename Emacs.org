@@ -144,6 +144,21 @@
     (add-hook 'emacs-startup-hook 'awesome-tray-mode 103))
 #+end_src
 
+** Начальный экран
+
+В качестве начального экрана есть два пакета:
+- =dashboard= - Максимально простой и готов к использованию
+- =enlight= + =grid= - Очень глубокая кастомизация (сложен в настройке)
+
+Пока что я выберу Dashboard, и не буду париться о том, что и как нужно
+делать.
+
+#+begin_src emacs-lisp
+  (elpaca 'dashboard
+    (autoload 'dashboard-setup-startup-hook "dashboard")
+    (dashboard-setup-startup-hook))
+#+end_src
+
 * Vertico + Marginalia + Orderless
 
 #+begin_src emacs-lisp
