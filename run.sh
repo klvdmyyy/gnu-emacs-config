@@ -27,4 +27,4 @@ get_script_dir()
 
 # Run Gwflow GNU Emacs in script directory
 
-emacs --init-dir="$(get_script_dir)"
+emacs --init-dir="$(get_script_dir)" "$@"
