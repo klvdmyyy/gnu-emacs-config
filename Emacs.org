@@ -36,38 +36,37 @@
 
 А так же набор своих макросов.
 
-*** =require-on!= - Загрузка пакета при первом использовании хука
+*** =require-on!= - Загрузка пакета на хуке/комманде
 
 #+begin_src emacs-lisp
-  (defmacro require-on! (package symbol)
-    "Load PACKAGE when SYMBOL is reached."
-    (declare (indent defun))
-    (let* ((hook (intern (concat (prin1-to-string symbol) "-hook")))
-           (fnname (intern (concat "load-" (prin1-to-string package)
-                                   "-on-" (prin1-to-string hook)))))
-      `(progn
+  (defun require-on-hook (hook package)
+    (let ((fnname (intern (concat "load-" (prin1-to-string package)
+                                  "-on-" (prin1-to-string hook)))))
+      `(when (boundp ',hook)
          ,(unless (fboundp fnname)
             `(defun ,fnname (&rest _)
                (require ',package)
                (remove-hook ',hook #',fnname)))
          (add-hook ',hook #',fnname))))
-#+end_src
 
-*** =eval-on-cmd!= - Запуск S-expression перед использованием команды
+  (defun require-on-command (command package)
+    (let ((fnname (intern (concat "load-" (prin1-to-string package)))))
+      `(when (fboundp ',command)
+         (define-advice ,command
+             (:before (&rest _) ,fnname)
+           (advice-remove ',command #',(intern (concat (prin1-to-string command)
+                                                       "@" (prin1-to-string fnname))))
+           (require ',package)))))
 
-#+begin_src emacs-lisp
-  (defvar last-eval-on-cmd-id "a")
-
-  (defmacro eval-on-cmd! (cmd &rest body)
-    "Eval BODY before CMD."
+  (defmacro require-on! (symbol package)
+    "Load PACKAGE on SYMBOL."
     (declare (indent defun))
-    (let* ((fnid (intern last-eval-on-cmd-id))
-           (fnname (intern (concat (prin1-to-string cmd) "@" (prin1-to-string fnid)))))
-      (setq last-eval-on-cmd-id (concat last-eval-on-cmd-id "a"))
-      `(define-advice ,cmd
-           (:before (&rest _) ,fnid)
-         (advice-remove ',cmd #',fnname)
-         ,@body)))
+    (cond
+     ((commandp symbol)
+      (require-on-command symbol package))
+     ((boundp symbol)
+      (require-on-hook symbol package))
+     (t (error "Can't determine symbol for require-on!: %s" symbol))))
 #+end_src
 
 * Базовая настройка GNU Emacs
@@ -126,8 +125,8 @@
 
 #+begin_src emacs-lisp
   (elpaca 'doom-themes
-    (require-on! doom-themes
-      emacs-startup))
+    (require-on! emacs-startup-hook
+      doom-themes))
 
   (with-eval-after-load 'doom-themes
     (load-theme 'doom-one :no-confirm))
@@ -174,8 +173,8 @@
 
 #+begin_src emacs-lisp
   (elpaca 'vertico
-    (require-on! vertico
-      pre-command))
+    (require-on! pre-command-hook
+      vertico))
 
   (elpaca 'marginalia
     (with-eval-after-load 'vertico
@@ -188,8 +187,8 @@
     (vertico-mode 1))
 
   (elpaca 'orderless
-    (require-on! orderless
-      pre-command))
+    (require-on! pre-command-hook
+      orderless))
 
   (with-eval-after-load 'orderless
     (setq completion-styles '(orderless basic)))
@@ -249,10 +248,10 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
 #+begin_src emacs-lisp
   (elpaca 'golden-ratio
-    (eval-on-cmd! split-window-below
-      (require 'golden-ratio))
-    (eval-on-cmd! split-window-right
-      (require 'golden-ratio)))
+    (require-on! split-window-below
+      golden-ratio)
+    (require-on! split-window-right
+      golden-ratio))
 
   (with-eval-after-load 'golden-ratio
     (golden-ratio-mode 1)
