@@ -279,7 +279,9 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
   (with-eval-after-load 'org
     (with-eval-after-load 'consult
-      (bind-key "C-s" 'consult-outline org-mode-map)))
+      (bind-keys :map org-mode-map
+                 ("C-s" . consult-outline)
+                 ("C-S" . consult-line))))
 #+end_src
 
 ** Agenda
