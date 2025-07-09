@@ -82,6 +82,9 @@ this stage of initialization."
   (add-hook 'emacs-startup-hook #'emacs-restore-file-name-handler-alist
             101))
 
+;; Run GNU Emacs with maximized frame
+;; (push '(fullscreen . maximized) default-frame-alist)
+
 (push '(menu-bar-lines . 0) default-frame-alist)
 (setq menu-bar-mode nil)
 
