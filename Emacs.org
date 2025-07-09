@@ -178,6 +178,126 @@
 
   (with-eval-after-load 'consult
     (bind-keys ("s-B" . consult-buffer)
+               ([remap switch-to-buffer] . consult-buffer)
                ("C-s" . consult-line)
                ("M-g g" . consult-goto-line)))
+#+end_src
+
+* Навигация
+
+Данный заголовок включает в себя конфигурацию которая относится к навигации между окнами, в тексте, и.т.д
+
+** Навигация в тексте
+
+Для навигации в тексте есть множество плагинов:
+- =avy= - Основной плагин (и пока что единственный используемый в конфиге)
+- =ace-link= - Как =ace-window= или =avy=, но для ссылок
+
+Конфигурация =avy=.
+
+TODO: Стоит посмотреть ещё комманды которые предоставляет =avy=. (Это слишком мощная штука)
+
+#+begin_src emacs-lisp
+  (elpaca 'avy
+    (autoload 'avy-goto-char-2 "avy")
+    (bind-key* "C-'" 'avy-goto-char-2))
+#+end_src
+
+** Навигация между окнами
+
+Идеальную навигацию между окнами обеспечивают два плагина:
+- =golden-ratio= - Автоматически изменяет размер окна
+- =ace-window= - Удобное перемещение между окнами одной клавишей (=M-o=)
+
+#+begin_src emacs-lisp
+  (elpaca 'ace-window
+    (autoload 'ace-window "ace-window")
+    (bind-key "M-o" 'ace-window))
+#+end_src
+
+=golden-ratio= будет подгружаться при разделении окна (горизонтально или вертикально).
+
+После чего мы добавляем функцию которая будет запускаться после =ace-window=, и будет
+устанавливать размер окна в соответствии с =golden-ratio=. Это нужно лишь потому, что
+=golden-ratio= почему то не работает с =ace-window= по дефолту.
+
+#+begin_src emacs-lisp
+  (elpaca 'golden-ratio
+    (eval-on-cmd! split-window-below
+      (require 'golden-ratio))
+    (eval-on-cmd! split-window-right
+      (require 'golden-ratio)))
+
+  (with-eval-after-load 'golden-ratio
+    (golden-ratio-mode 1)
+    (with-eval-after-load 'ace-window
+      (define-advice ace-window
+          (:after (&rest _) golden-ratio)
+        (golden-ratio))))
+#+end_src
+
+* Org Mode
+
+Настраиваем =org-indent-mode= и базовую навигацию по заголовкам при помощи =consult=
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+
+  (with-eval-after-load 'org
+    (with-eval-after-load 'consult
+      (bind-key "C-s" 'consult-outline org-mode-map)))
+#+end_src
+
+** Agenda
+
+#+begin_src emacs-lisp
+  (bind-key "a" 'org-agenda mode-specific-map)
+#+end_src
+
+* Системы контроля версий (Git интеграция)
+
+Git интеграция сводится в основном к двум плагинам: =magit= и =forge=.
+
+=magit= - Незаменимый и безальтернативный Git интерфейс. Более мощного гит интерфейса вы просто не найдёте.
+
+=forge= - Клиент для Github, Gitlab и других хостингов прямо в GNU Emacs.
+
+Пока что я не устанавливаю Forge в своей конфигурации (он мне попросту не нужен, а так же я пишу её не
+на своём устройстве). Зато мы сделаем конфиг для Git файлов (gitattributes, gitignore, gitsubmodules)
+и настроим Magit, который будет показывать для нас TODOs (плагин =magit-todos=)
+
+#+begin_src emacs-lisp
+  (elpaca '(transient
+            :host github
+            :repo "magit/transient"
+            :tag "v0.9.3"))
+
+  (elpaca magit
+    (autoload 'magit "magit")
+    (bind-key "C-x g" 'magit))
+#+end_src
+
+** Magit TODOs
+
+Плагин который отлично выводит все *TODO* ключевые слова.
+
+#+begin_src emacs-lisp
+  (elpaca 'magit-todos
+    (autoload 'magit-todos-mode "magit-todos")
+    (add-hook 'magit-mode-hook 'magit-todos-mode-hook))
+#+end_src
+
+** Git файлы и режимы для них
+
+#+begin_src emacs-lisp
+  (elpaca 'git-modes
+    (autoload 'gitignore-mode "git-modes")
+    (autoload 'gitconfig-mode "git-modes")
+    (autoload 'gitattributes-mode "git-modes")
+    (setq auto-mode-alist
+          (append
+           '((".gitignore\\'" . gitignore-mode)
+             (".gitconfig\\'" . gitconfig-mode)
+             (".gitattributes\\'" . gitattributes-mode))
+           auto-mode-alist)))
 #+end_src
