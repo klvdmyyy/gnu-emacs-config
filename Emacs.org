@@ -159,12 +159,15 @@
                 dashboard-items '((recents . 10)
                                   (bookmarks . 3)
                                   (projects . 3)
-                                  (agenda . 5)
-                                  ;; (registers . 5)
-                                  ))
+                                  (agenda . 5)))
   (elpaca 'dashboard
     (autoload 'dashboard-setup-startup-hook "dashboard")
     (dashboard-setup-startup-hook))
+
+  (with-eval-after-load 'dashboard
+    ;; Open dashboard when using "emacsclient -c" (daemon only)
+    (when (daemonp)
+      (setq initial-buffer-choice (get-buffer-create dashboard-buffer-name))))
 #+end_src
 
 * Vertico + Marginalia + Orderless
