@@ -2,6 +2,15 @@
 #+author: Клементьев Дмитрий
 #+email: klementievd08@yandex.ru
 
+Главные цели данной конфигурации:
+- Удобная навигация по =Emacs.org=
+- Относительно быстрое время запуска /(даже при использовании =org-babel=)/
+- Простая кодовая база /(понятная и читаемая)/
+- Лишь несколько основных пакетов загружаются на старте /(ленивая загрузка)/
+- Отсутствие =use-package= макроса
+- Почти идеальная поддержка терминала /(=emacs -nw=)/
+
+Прочие файлы:
 - [[file:early-init.el][Файл ранней инициализации]] - Большая часть оптимизаций
 - [[file:init.el][Файл инициализации]] - Загружает org файл
 
@@ -11,9 +20,9 @@
   ;;; -*- lexical-binding: t; -*-
 #+end_src
 
-* Менеджмент пакетов.
+* Макросы, функции и прочие хелпер фиговины для моего конфига
 
-Для менеджмента пакетов в GNU Emacs я использую пакетный менеджер Elpaca.
+Некоторые вещи для данной конфигурации приходится изобретать с полного нуля
 
 ** Макросы упрощающие ленивую загрузку
 
@@ -108,6 +117,11 @@
 
 * Внешний вид
 
+Здесь мы настраиваем основную часть внешнего вида GNU Emacs.
+
+| *Основная тема*    | Doom One     |
+| *Строка состояния* | Awesome Tray |
+
 ** Основная тема (doom themes)
 
 #+begin_src emacs-lisp
@@ -117,6 +131,17 @@
 
   (with-eval-after-load 'doom-themes
     (load-theme 'doom-one :no-confirm))
+#+end_src
+
+** Строка состояния
+
+#+begin_src emacs-lisp :no-export
+  (setq-default awesome-tray-hide-mode-line t)
+  (elpaca '(awesome-tray
+            :host github
+            :repo "manateelazycat/awesome-tray")
+    (autoload 'awesome-tray-mode "awesome-tray")
+    (add-hook 'emacs-startup-hook 'awesome-tray-mode 103))
 #+end_src
 
 * Vertico + Marginalia + Orderless
@@ -142,4 +167,17 @@
 
   (with-eval-after-load 'orderless
     (setq completion-styles '(orderless basic)))
+#+end_src
+
+* Consult
+
+#+begin_src emacs-lisp
+  (elpaca 'consult
+    (eval-when-compile
+      (require 'consult)))
+
+  (with-eval-after-load 'consult
+    (bind-keys ("s-B" . consult-buffer)
+               ("C-s" . consult-line)
+               ("M-g g" . consult-goto-line)))
 #+end_src
