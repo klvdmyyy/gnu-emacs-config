@@ -284,7 +284,7 @@ Git интеграция сводится в основном к двум пла
 #+begin_src emacs-lisp
   (elpaca 'magit-todos
     (autoload 'magit-todos-mode "magit-todos")
-    (add-hook 'magit-mode-hook 'magit-todos-mode-hook))
+    (add-hook 'magit-mode-hook 'magit-todos-mode))
 #+end_src
 
 ** Git файлы и режимы для них
