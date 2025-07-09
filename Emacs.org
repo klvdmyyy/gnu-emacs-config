@@ -154,6 +154,14 @@
 делать.
 
 #+begin_src emacs-lisp
+  (setq-default dashboard-center-content t
+                dashboard-vertically-center-content t
+                dashboard-items '((recents . 10)
+                                  (bookmarks . 3)
+                                  (projects . 3)
+                                  (agenda . 5)
+                                  ;; (registers . 5)
+                                  ))
   (elpaca 'dashboard
     (autoload 'dashboard-setup-startup-hook "dashboard")
     (dashboard-setup-startup-hook))
