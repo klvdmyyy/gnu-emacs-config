@@ -281,7 +281,7 @@ TODO: Стоит посмотреть ещё комманды которые п�
     (with-eval-after-load 'consult
       (bind-keys :map org-mode-map
                  ("C-s" . consult-outline)
-                 ("C-S" . consult-line))))
+                 ("C-S-s" . consult-line))))
 #+end_src
 
 ** Agenda
