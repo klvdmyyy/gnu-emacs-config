@@ -286,7 +286,65 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
 ** Agenda
 
+*** Кастомные комманды, виды (Custom commands, views)
+
+**** Learning (Обучение)
+
+Отдельный вид агенды для отслеживания и планирования задач, целей по изучению алгоритмов
+и структур данных
+
+#+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
+  ("l" "Learning Agenda"
+   ((agenda "" ((org-agenda-span 'day)
+                (org-agenda-remove-tags t)
+                (org-deadline-warning-days 7)
+                ;; TODO: Filter by @yandexlearning tag instead of file
+                (org-agenda-files '("~/org/agenda/YandexLearning.org"))))
+    (tags-todo "+@yandexlearning+PRIORITY=\"A\"+SCHEDULED<=\"<today>\""
+               ((org-agenda-span 'day)
+                (org-agenda-remove-tags t)
+                (org-agenda-overriding-header "High Priority Tasks")))
+    (tags-todo "+@yandexlearning/TODO"
+               ((org-agenda-tags-todo-honor-ignore-options t)
+                (org-agenda-todo-ignore-scheduled t)
+                (org-agenda-remove-tags t)
+                (org-agenda-overriding-header "Just TODO Tasks")))))
+#+end_src
+
+**** Weekly Review (Недельный обзор)
+
+Недельный обзор завершённых и оставшихся запланированных задач.
+
+Неплохо посмотреть в конце недели как много ты проеб\*\*нил :)
+
+#+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
+  ("w" "Weekly Review"
+   ((agenda "" ((org-agenda-overriding-header "Completed Tasks")
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                (org-agenda-span 'week)))
+    (agenda "" ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                (org-agenda-span 'week)))))
+#+end_src
+
+*** Конфигурация
+
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no
+  (setq-default org-agenda-custom-commands '(<<custom-agenda-views>>))
+#+end_src
+
 #+begin_src emacs-lisp
+  (setq-default org-agenda-start-with-log-mode t
+                org-log-done 'time
+                org-log-into-drawer t)
+
+  (define-advice org-agenda
+      (:before (&rest _) update-files)
+    (setq org-agenda-files
+          (directory-files-recursively
+           (expand-file-name "agenda" org-directory)
+           "\\`[A-Za-z]*.org\\'")))
+
   (bind-key "a" 'org-agenda mode-specific-map)
 #+end_src
 
