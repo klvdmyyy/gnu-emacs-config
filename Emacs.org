@@ -193,7 +193,7 @@
     (vertico-mode 1))
 
   (elpaca 'orderless
-    (require-on! pre-command-hook
+    (require-on! self-insert-command
       orderless))
 
   (with-eval-after-load 'orderless
@@ -343,7 +343,7 @@ TODO: Использовать =org-super-agenda=
 
 Недельный обзор завершённых и оставшихся запланированных задач.
 
-Неплохо посмотреть в конце недели как много ты проеб\*\*нил :)
+Неплохо посмотреть в конце недели как много ты проеб**нил :)
 
 #+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
   ("w" "Weekly Review"
