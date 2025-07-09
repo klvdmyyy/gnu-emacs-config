@@ -138,7 +138,9 @@
 ** Строка состояния
 
 #+begin_src emacs-lisp :no-export
-  (setq-default awesome-tray-hide-mode-line t)
+  (setq-default awesome-tray-hide-mode-line t
+                awesome-tray-update-interval 0.2)
+
   (elpaca '(awesome-tray
             :host github
             :repo "manateelazycat/awesome-tray")
@@ -147,6 +149,21 @@
       (add-hook 'emacs-startup-hook 'awesome-tray-mode 103))
     (when (daemonp)
       (add-hook 'after-make-frame-functions 'awesome-tray-mode 103)))
+
+  (defun org-timer-module ()
+    (if org-timer-active
+        (org-timer-value-string)
+      nil))
+
+  (defface org-timer-module-face
+    '((t (:bold t)))
+    "Org Timer module face."
+    :group 'awesome-tray)
+
+  (with-eval-after-load 'awesome-tray
+    (add-to-list 'awesome-tray-module-alist
+                 '("org-timer" . (org-timer-module org-timer-module-face)))
+    (add-to-list 'awesome-tray-active-modules "org-timer"))
 #+end_src
 
 ** Начальный экран
@@ -303,11 +320,38 @@ TODO: Стоит посмотреть ещё комманды которые п�
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'org-indent-mode)
 
+  (bind-keys* :map mode-specific-map
+              ("o t s" . org-timer-start)
+              ("o t e" . org-timer-stop)
+              ("o t p" . org-timer-pause-or-continue)
+              ("o t t" . org-timer-set-timer)
+              ("o c"   . org-capture))
+
   (with-eval-after-load 'org
     (with-eval-after-load 'consult
       (bind-keys :map org-mode-map
                  ("C-s" . consult-outline)
                  ("C-S-s" . consult-line))))
+#+end_src
+
+** Настройка таймера
+
+#+begin_src emacs-lisp
+  (defvar org-timer-active nil
+    "Non-nil if org-timer is activated")
+
+  (defun org-timer-activate ()
+    "Set `org-timer-active' to t"
+    (setq org-timer-active t))
+
+  (defun org-timer-deactivate ()
+    "Set `org-timer-active' to nil"
+    (setq org-timer-active nil))
+
+  (add-hook 'org-timer-start-hook 'org-timer-activate)
+  (add-hook 'org-timer-stop-hook  'org-timer-deactivate)
+  (add-hook 'org-timer-set-hook   'org-timer-activate)
+  (add-hook 'org-timer-done-hook  'org-timer-deactivate)
 #+end_src
 
 ** Agenda
