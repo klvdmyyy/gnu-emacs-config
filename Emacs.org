@@ -318,6 +318,9 @@ TODO: Стоит посмотреть ещё комманды которые п�
 - Навигация при помощи =consult-outline=
 
 #+begin_src emacs-lisp
+  (setq-default org-directory "~/org"
+                org-id-locations-file (expand-file-name "cache/.org-id-locations" org-directory))
+
   (add-hook 'org-mode-hook 'org-indent-mode)
 
   (bind-keys* :map mode-specific-map
@@ -492,12 +495,14 @@ Roam - Идеальная система заметок на базе Org Mode (
                 org-roam-capture-templates '(<<org-roam-captures>>))
 
   (elpaca 'org-roam
-    (autoload 'org-roam-db-autosync-mode "org-roam")
+    (autoload 'org-roam-db-sync "org-roam")
     (add-hook 'emacs-startup-hook
               (lambda ()
-                (async-start #'org-roam-db-autosync-mode))))
+                (run-with-timer 1 nil 'org-roam-db-sync))))
 
   (with-eval-after-load 'org-roam
+    (org-roam-db-autosync-mode 1)
+
     (setq org-roam-db-update-on-save t
           org-roam-dailies-directory "daily/"
           org-roam-node-display-template
