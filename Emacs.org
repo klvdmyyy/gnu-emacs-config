@@ -214,6 +214,29 @@
                ("M-g g" . consult-goto-line)))
 #+end_src
 
+* Corfu
+
+#+begin_src emacs-lisp
+  (elpaca 'corfu
+    (require-on! self-insert-command
+      corfu))
+
+  (with-eval-after-load 'corfu
+    (setq corfu-cycle t)
+    (setq tab-always-indent 'complete)
+    (global-corfu-mode 1)
+
+    (require 'corfu-popupinfo)
+    (corfu-popupinfo-mode 1)
+
+    (bind-keys* :map corfu-map
+                ("TAB" . corfu-complete)
+                ("M-d" . corfu-popupinfo-toggle)
+                :map corfu-popupinfo-map
+                ("M-n" . corfu-popupinfo-scroll-up)
+                ("M-p" . corfu-popupinfo-scroll-down)))
+#+end_src
+
 * Навигация
 
 Данный заголовок включает в себя конфигурацию которая относится к навигации между окнами, в тексте, и.т.д
