@@ -5,10 +5,124 @@
 - [[file:early-init.el][Файл ранней инициализации]] - Большая часть оптимизаций
 - [[file:init.el][Файл инициализации]] - Загружает org файл
 
+Флаг в начале файла для байт-компиляции.
+
 #+begin_src emacs-lisp
   ;;; -*- lexical-binding: t; -*-
 #+end_src
 
+* Менеджмент пакетов.
+
+Для менеджмента пакетов в GNU Emacs я использую пакетный менеджер Elpaca.
+
+** Макросы упрощающие ленивую загрузку
+
+Это небольшой набор моих собственных макросов для ленивой загрузки (на подобии Neovim).
+
+Вся суть в том, что я не использую =use-package= (он мне не нравится), вместо этого я использую
+другой встроенный в Emacs функционал:
+- =autoload=
+- =with-eval-after-load=
+- =eval-when-compile=
+
+А так же набор своих макросов.
+
+*** =require-on!= - Загрузка пакета при первом использовании хука
+
 #+begin_src emacs-lisp
-  (message "Hello")
+  (defmacro require-on! (package symbol)
+    "Load PACKAGE when SYMBOL is reached."
+    (declare (indent defun))
+    (let* ((hook (intern (concat (prin1-to-string symbol) "-hook")))
+           (fnname (intern (concat "load-" (prin1-to-string package)
+                                   "-on-" (prin1-to-string hook)))))
+      `(progn
+         ,(unless (fboundp fnname)
+            `(defun ,fnname (&rest _)
+               (require ',package)
+               (remove-hook ',hook #',fnname)))
+         (add-hook ',hook #',fnname))))
+#+end_src
+
+* Базовая настройка GNU Emacs
+
+В этой части я настраиваю базовый GNU Emacs.
+
+#+begin_src emacs-lisp
+  (defun load-my-custom-file ()
+    (load custom-file :no-error :no-message :no-suffix :must-suffix))
+
+  (with-eval-after-load 'emacs
+    (add-hook 'after-init-hook #'load-my-custom-file)
+
+    (setq-default frame-title-format "GNU Emacs"
+                  make-backup-files nil
+                  custom-file (expand-file-name "custom.el"
+                                                user-emacs-directory)
+                  cursor-type '(bar . 2)
+                  cursor-in-non-selected-windows nil
+                  default-input-method "russian-computer"
+                  indent-tabs-mode nil
+                  tab-width 4)
+
+    (global-visual-line-mode 1))
+#+end_src
+
+** Встроенные модули
+
+#+begin_src emacs-lisp
+  (eval-when-compile
+    (require 'which-key)
+    (require 'recentf)
+    (require 'fringe))
+
+  (with-eval-after-load 'jsonrpc
+    (fset #'jsonrpc--log-event #'ignore))
+
+  (with-eval-after-load 'recentf
+    (add-hook 'emacs-startup-hook 'recentf-mode))
+
+  (with-eval-after-load 'which-key
+    (add-hook 'emacs-startup-hook 'which-key-mode))
+
+  (with-eval-after-load 'fringe
+    (fringe-mode '(4 . 4)))
+#+end_src
+
+* Внешний вид
+
+** Основная тема (doom themes)
+
+#+begin_src emacs-lisp
+  (elpaca 'doom-themes
+    (require-on! doom-themes
+      emacs-startup))
+
+  (with-eval-after-load 'doom-themes
+    (load-theme 'doom-one :no-confirm))
+#+end_src
+
+* Vertico + Marginalia + Orderless
+
+#+begin_src emacs-lisp
+  (elpaca 'vertico
+    (require-on! vertico
+      pre-command))
+
+  (elpaca 'marginalia
+    (with-eval-after-load 'vertico
+      (require 'marginalia)))
+
+  (with-eval-after-load 'marginalia
+    (marginalia-mode 1))
+
+  (with-eval-after-load 'vertico
+    (vertico-mode 1))
+
+  (elpaca 'orderless
+    (require-on! orderless
+      pre-command))
+
+  (with-eval-after-load 'orderless
+    (setq completion-styles '(orderless basic)))
 #+end_src
