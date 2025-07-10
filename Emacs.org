@@ -530,6 +530,20 @@ Roam - Идеальная система заметок на базе Org Mode (
                ("n C" . org-roam-capture)))
 #+end_src
 
+*** Roam UI
+
+Отличный плагин для просмотра всех заметок и связей между ними.
+
+Красивый веб-фронтенд для заметок Roam.
+
+#+begin_src emacs-lisp
+  (elpaca 'org-roam-ui
+    ;; Just autoload command for Org Roam UI
+    (autoload 'org-roam-ui-mode "org-roam-ui"
+      "Web Frontend for Org Roam notes."
+      t))
+#+end_src
+
 * Системы контроля версий (Git интеграция)
 
 Git интеграция сводится в основном к двум плагинам: =magit= и =forge=.
@@ -576,6 +590,15 @@ Git интеграция сводится в основном к двум пла
              (".gitconfig\\'" . gitconfig-mode)
              (".gitattributes\\'" . gitattributes-mode))
            auto-mode-alist)))
+#+end_src
+
+** Git Gutter
+
+#+begin_src emacs-lisp
+  (elpaca 'git-gutter
+    (autoload 'git-gutter-mode "git-gutter")
+    (add-hook 'prog-mode-hook 'git-gutter-mode)
+    (add-hook 'text-mode-hook 'git-gutter-mode))
 #+end_src
 
 * Эмуляция терминала (Terminal emulation)
@@ -681,3 +704,65 @@ Git интеграция сводится в основном к двум пла
   (with-eval-after-load 'eat
     (bind-key "s-E" 'switch-to-prev-buffer-or-eat eat-mode-map))
 #+end_src
+
+* Programming
+
+В данном заголовке мы настраиваем всё, что относится к программированию (конкретно к части написания кода).
+
+Конфигурация режимов для отдельных языков находиться в другом заголовке
+
+** Smartparens
+
+Безальтернативный плагин для автоматического закрытия скобочек (и не только).
+
+В целом данный плагин идеален для редактирования Lisp, Scheme и подобных им языков
+
+#+begin_src emacs-lisp
+  (defconst default-pairs-list
+    '((?\( . ?\))
+      (?\[ . ?\])
+      (?\{ . ?\}))
+    "List of default pairs")
+
+  (defun open-pair-p (char)
+    "Return t if CHAR is opening pair"
+    (member char (mapcar (lambda (pairs) (car pairs)) default-pairs-list)))
+
+  (defun close-pair-p (char)
+    "Return t if CHAR is closing pair"
+    (member char (mapcar (lambda (pairs) (cdr pairs)) default-pairs-list)))
+
+  (defun indent-between-pairs ()
+    "Open a new brace or bracket expression, with relevant newlines and indent."
+    (interactive)
+    (if (and (open-pair-p (char-before))
+             (close-pair-p (char-after)))
+        (progn (newline)
+               (newline)
+               (indent-according-to-mode)
+               (forward-line -1)
+               (indent-according-to-mode))
+      (newline-and-indent)))
+
+  (bind-key "RET" 'indent-between-pairs prog-mode-map)
+
+  (elpaca 'smartparens
+    (autoload 'smartparens-mode "smartparens")
+    (autoload 'smartparens-strict-mode "smartparens")
+    (add-hook 'prog-mode-hook 'smartparens-mode)
+    (dolist (hook '(emacs-lisp-mode-hook
+                    lisp-mode-hook
+                    common-lisp-mode-hook
+                    scheme-mode-hook))
+      (add-hook hook 'smartparens-strict-mode)))
+
+  (with-eval-after-load 'smartparens
+    (require 'smartparens-config)
+    (bind-keys :map smartparens-mode-map
+               ("M-s" . nil)
+               ("M-DEL" . sp-backward-unwrap-sexp)
+               ("C-<left>" . sp-forward-barf-sexp)
+               ("C-<right>" . sp-forward-slurp-sexp)))
+               
+#+end_src
+
