@@ -489,6 +489,8 @@ Roam - Идеальная система заметок на базе Org Mode (
 *** Configuration
 
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no
+  (setq org-roam-v2-ack t)
+  
   (setq-default org-roam-directory (expand-file-name "roam/" org-directory)
                 org-roam-db-location (expand-file-name "cache/org-roam.db" org-directory)
                 org-roam-dailies-capture-templates '(<<org-roam-daily-captures>>)
