@@ -807,6 +807,14 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
 
 Конфигурация языков.
 
+** Emacs Lisp
+
+#+begin_src emacs-lisp
+  (elpaca 'highlight-defined
+    (autoload 'highlight-defined-mode "highlight-defined")
+    (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode))
+#+end_src
+
 ** C language + Tree Sitter
 
 #+begin_src emacs-lisp
