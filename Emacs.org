@@ -183,7 +183,9 @@
 
 #+begin_src emacs-lisp :no-export
   (setq-default awesome-tray-hide-mode-line t
-                awesome-tray-update-interval 0.2)
+                awesome-tray-update-interval 0.2
+                ;; For Doom One theme
+                awesome-tray-mode-line-active-color "violet")
 
   (elpaca '(awesome-tray
             :host github
