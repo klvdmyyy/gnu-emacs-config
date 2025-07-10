@@ -817,6 +817,26 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
   (run-with-timer 1 nil 'treesit-install-all)
 #+end_src
 
+** LeetCode
+
+LeetCode клиент для GNU Emacs.
+
+Данный пакет - возможность удобно практиковать алгоритмы и структуры данных, а так же решать задачи прямо в Emacs.
+
+#+begin_src emacs-lisp
+  (setq-default leetcode-directory "~/leetcode")
+
+  (elpaca 'leetcode
+    (autoload 'leetcode "leetcode"
+      "Run LeetCode client for GNU Emacs."
+      t))
+
+  (with-eval-after-load 'leetcode
+    (setq leetcode-save-solutions t
+          leetcode-prefer-language "golang"
+          leetcode-prefer-sql "postgresql"))
+#+end_src
+
 * Languages
 
 Конфигурация языков.
