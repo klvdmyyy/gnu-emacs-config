@@ -368,6 +368,14 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
 *Org* - основная часть GNU Emacs. Данный пакет - причина по которой я не могу уйти от GNU Emacs.
 
+TODO: =org-journal= [[https://github.com/bastibe/org-journal][(Link)]]
+TODO: =org-ql= [[https://github.com/alphapapa/org-ql][(Link)]]
+TODO: =org-transclusion= [[https://github.com/nobiot/org-transclusion][(Link)]] (For Org Roam too. Do it firstly)
+TODO: =org-super-agenda= [[https://github.com/alphapapa/org-super-agenda][(Link)]]
+TODO: =orgtbl-aggregate= [[https://github.com/tbanel/orgaggregate][(Link)]]
+TODO: =orgtbl-join= [[https://github.com/tbanel/orgtbljoin][(Link)]]
+TODO: =orgtbl-fit= [[https://github.com/tbanel/orgtblfit][(Link)]]
+
 ** Базовая и обязательная настройка
 
 - Табуляция заголовков (=org-indent-mode=)
