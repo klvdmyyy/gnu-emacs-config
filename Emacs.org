@@ -20,6 +20,45 @@
   ;;; -*- lexical-binding: t; -*-
 #+end_src
 
+* TOC :TOC:
+- [[#макросы-функции-и-прочие-хелпер-фиговины-для-моего-конфига][Макросы, функции и прочие хелпер фиговины для моего конфига]]
+  - [[#макросы-упрощающие-ленивую-загрузку][Макросы упрощающие ленивую загрузку]]
+- [[#базовая-настройка-gnu-emacs][Базовая настройка GNU Emacs]]
+  - [[#встроенные-модули][Встроенные модули]]
+- [[#внешний-вид][Внешний вид]]
+  - [[#основная-тема-doom-themes][Основная тема (doom themes)]]
+  - [[#строка-состояния][Строка состояния]]
+  - [[#начальный-экран][Начальный экран]]
+- [[#vertico--marginalia--orderless][Vertico + Marginalia + Orderless]]
+- [[#consult][Consult]]
+- [[#corfu][Corfu]]
+- [[#навигация][Навигация]]
+  - [[#навигация-в-тексте][Навигация в тексте]]
+  - [[#навигация-между-окнами][Навигация между окнами]]
+  - [[#навигация-между-группами-буфферовокон][Навигация между группами буфферов/окон]]
+- [[#org-mode][Org Mode]]
+  - [[#базовая-и-обязательная-настройка][Базовая и обязательная настройка]]
+  - [[#настройка-таймера-org-timer][Настройка таймера (Org Timer)]]
+  - [[#org-modern-modern-view-of-org-mode][Org Modern (Modern view of Org Mode)]]
+  - [[#toc-org-generate-table-of-contents-for-org-mode][TOC Org (Generate Table Of Contents for Org Mode)]]
+  - [[#agenda][Agenda]]
+  - [[#roam][Roam]]
+- [[#системы-контроля-версий-git-интеграция][Системы контроля версий (Git интеграция)]]
+  - [[#magit-todos][Magit TODOs]]
+  - [[#git-файлы-и-режимы-для-них][Git файлы и режимы для них]]
+  - [[#git-gutter][Git Gutter]]
+- [[#эмуляция-терминала-terminal-emulation][Эмуляция терминала (Terminal emulation)]]
+  - [[#eshell][Eshell]]
+  - [[#eat-emulate-a-terminal][Eat (Emulate A Terminal)]]
+- [[#programming][Programming]]
+  - [[#smartparens][Smartparens]]
+  - [[#tree-sitter][Tree Sitter]]
+  - [[#leetcode][LeetCode]]
+- [[#languages][Languages]]
+  - [[#emacs-lisp][Emacs Lisp]]
+  - [[#c-language--tree-sitter][C language + Tree Sitter]]
+  - [[#go-language--tree-sitter][Go language + Tree Sitter]]
+
 * Макросы, функции и прочие хелпер фиговины для моего конфига
 
 Некоторые вещи для данной конфигурации приходится изобретать с полного нуля
@@ -118,8 +157,11 @@
 
 Здесь мы настраиваем основную часть внешнего вида GNU Emacs.
 
+|--------------------+--------------|
 | *Основная тема*    | Doom One     |
+|--------------------+--------------|
 | *Строка состояния* | Awesome Tray |
+|--------------------+--------------|
 
 ** Основная тема (doom themes)
 
@@ -371,6 +413,22 @@ TODO: Использование =org-pomodoro=
   (add-hook 'org-timer-stop-hook  'org-timer-deactivate)
   (add-hook 'org-timer-set-hook   'org-timer-activate)
   (add-hook 'org-timer-done-hook  'org-timer-deactivate)
+#+end_src
+
+** Org Modern (Modern view of Org Mode)
+
+#+begin_src emacs-lisp
+  (elpaca 'org-modern
+    (autoload 'org-modern-mode "org-modern")
+    (add-hook 'org-mode-hook 'org-modern-mode))
+#+end_src
+
+** TOC Org (Generate Table Of Contents for Org Mode)
+
+#+begin_src emacs-lisp
+  (elpaca 'toc-org
+    (autoload 'toc-org-mode "toc-org")
+    (add-hook 'org-mode-hook 'toc-org-mode))
 #+end_src
 
 ** Agenda
