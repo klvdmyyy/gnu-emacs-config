@@ -329,7 +329,7 @@ TODO: Стоит посмотреть ещё комманды которые п�
 ** Базовая и обязательная настройка
 
 - Табуляция заголовков (=org-indent-mode=)
-- Навигация при помощи =consult-outline=
+- Навигация при помощи =consult-org-heading=
 
 #+begin_src emacs-lisp
   (setq-default org-directory "~/org"
@@ -347,7 +347,7 @@ TODO: Стоит посмотреть ещё комманды которые п�
   (with-eval-after-load 'org
     (with-eval-after-load 'consult
       (bind-keys :map org-mode-map
-                 ("C-s" . consult-outline)
+                 ("C-s" . consult-org-heading)
                  ("C-S-s" . consult-line))))
 #+end_src
 
