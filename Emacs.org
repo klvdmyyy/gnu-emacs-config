@@ -146,10 +146,10 @@
     (fset #'jsonrpc--log-event #'ignore))
 
   (with-eval-after-load 'recentf
-    (add-hook 'emacs-startup-hook 'recentf-mode))
+    (recentf-mode 1))
 
   (with-eval-after-load 'which-key
-    (add-hook 'emacs-startup-hook 'which-key-mode))
+    (which-key-mode 1))
 
   (with-eval-after-load 'fringe
     (fringe-mode '(8 . 8)))
@@ -370,6 +370,7 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
 *Org* - основная часть GNU Emacs. Данный пакет - причина по которой я не могу уйти от GNU Emacs.
 
+TODO: =org-inlinetask= (Built-in)
 TODO: =org-journal= [[https://github.com/bastibe/org-journal][(Link)]]
 TODO: =org-ql= [[https://github.com/alphapapa/org-ql][(Link)]]
 TODO: =org-transclusion= [[https://github.com/nobiot/org-transclusion][(Link)]] (For Org Roam too. Do it firstly)
