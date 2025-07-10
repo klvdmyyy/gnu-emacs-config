@@ -2,6 +2,8 @@
 #+author: Клементьев Дмитрий
 #+email: klementievd08@yandex.ru
 
+[[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] - Перечень функционала и пакетов для GNU Emacs
+
 Главные цели данной конфигурации:
 - Удобная навигация по =Emacs.org=
 - Относительно быстрое время запуска (даже при использовании =org-babel=)
