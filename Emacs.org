@@ -133,7 +133,8 @@
                   tab-width 4)
 
     (blink-cursor-mode 1)
-    (global-visual-line-mode 1))
+    (add-hook 'text-mode-hook 'visual-line-mode)
+    (add-hook 'prog-mode-hook 'visual-line-mode))
 #+end_src
 
 ** Встроенные модули
@@ -350,10 +351,7 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
   (with-eval-after-load 'golden-ratio
     (golden-ratio-mode 1)
-    (with-eval-after-load 'ace-window
-      (define-advice ace-window
-          (:after (&rest _) golden-ratio)
-        (golden-ratio))))
+    (add-to-list 'golden-ratio-extra-commands 'ace-window))
 #+end_src
 
 ** Навигация между группами буфферов/окон
