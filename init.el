@@ -82,13 +82,13 @@
 (let* ((load-suffixes '(".elc" ".el"))
        (Emacs.org (expand-file-name "Emacs.org" user-emacs-directory))
        (README.org (expand-file-name "README.org" user-emacs-directory))
-       (Emacs.el (expand-file-name "Emacs.el" user-emacs-directory))
-       (Emacs.elc (expand-file-name "Emacs.elc" user-emacs-directory))
+       (Emacs.el (expand-file-name (file-name-with-extension Emacs.org "el") user-emacs-directory))
+       (Emacs.elc (expand-file-name (file-name-with-extension Emacs.el "elc") user-emacs-directory))
        (byte-compile-verbose nil)
        (byte-compile-warnings nil))
   (if (and (file-exists-p Emacs.elc)
            (file-newer-than-file-p Emacs.elc Emacs.el)
-           (file-newer-than-file-p Emacs.elc Emacs.org))
+           (file-newer-than-file-p Emacs.el Emacs.org))
       ;; Load compiled file
       (load Emacs.elc :no-error :no-message :no-suffix :must-suffix)
     ;; Set second argument to t mean we byte-compile the file before loading
