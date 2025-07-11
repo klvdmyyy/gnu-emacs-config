@@ -125,12 +125,14 @@
                   make-backup-files nil
                   custom-file (expand-file-name "custom.el"
                                                 user-emacs-directory)
-                  cursor-type '(bar . 2)
+                  cursor-type 'box
+                  ;; cursor-type '(bar . 2)
                   cursor-in-non-selected-windows nil
                   default-input-method "russian-computer"
                   indent-tabs-mode nil
                   tab-width 4)
 
+    (blink-cursor-mode 1)
     (global-visual-line-mode 1))
 #+end_src
 
