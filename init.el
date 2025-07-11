@@ -30,6 +30,8 @@
 (add-hook 'emacs-startup-hook #'emacs-restore-gc-cons-threshold 105)
 (add-hook 'emacs-startup-hook #'emacs-display-init-time 105)
 
+;;; Bootstrap Elpaca:
+
 (defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -68,6 +70,43 @@
     (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
+
+;;; Count external packages loaded by Elpaca usage:
+
+(defvar external-packages-list '())
+(defvar external-packages-loaded-count 0)
+(defvar external-packages-loaded '())
+
+(let* ((external-start-time (current-time))
+       (elpaca-load-path 
+        (cddr (directory-files (expand-file-name "elpaca/builds" user-emacs-directory) t))))
+  (dolist (path elpaca-load-path)
+    (let* ((files (directory-files path nil ".el\\'"))
+           (files (seq-map (lambda (file) (substring file 0 (- (length file) 3))) files))
+           (packages (seq-map #'intern files)))
+      (setq external-packages-list
+            (append
+             external-packages-list
+             packages)))))
+
+(defun external-packages-require (package &rest _)
+  (when (and (member package external-packages-list)
+             (not (member package external-packages-loaded)))
+    (add-to-list 'external-packages-loaded package)
+    (setq external-packages-loaded-count
+          (+ external-packages-loaded-count 1))))
+
+(advice-add 'require :after #'external-packages-require)
+(advice-add 'load :after #'external-packages-require)
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Loaded %d external packages: %s"
+                     external-packages-loaded-count
+                     external-packages-loaded))
+          200)
+
+;;; Compile and Load configuration file (Org Babel -> Emacs Lisp):
 
 ;; Load `org-babel-load-file' function before usage
 (autoload 'org-babel-load-file "org")
