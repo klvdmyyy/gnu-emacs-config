@@ -413,6 +413,8 @@ TODO: =orgtbl-fit= [[https://github.com/tbanel/orgtblfit][(Link)]]
 TODO: Использование =org-pomodoro=
 
 #+begin_src emacs-lisp
+  (setq-default org-timer-display nil)
+  
   (defvar org-timer-active nil
     "Non-nil if org-timer is activated")
 
