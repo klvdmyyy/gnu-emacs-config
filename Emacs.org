@@ -29,6 +29,11 @@
   ;;; -*- lexical-binding: t; -*-
 #+end_src
 
+* COMMENT Some settings
+
+#+seq_todo: TODO(t)
+#+seq_todo: WAIT(w) HOLD(h)
+
 * TOC :TOC:
 - [[#макросы-функции-и-прочие-хелпер-фиговины-для-моего-конфига][Макросы, функции и прочие хелпер фиговины для моего конфига]]
   - [[#макросы-упрощающие-ленивую-загрузку][Макросы упрощающие ленивую загрузку]]
@@ -940,7 +945,8 @@ LeetCode клиент для GNU Emacs.
     "C language + Tree-Sitter")
 #+end_src
 
-** C++ language + Tree Sitter
+** HOLD C++ language + Tree Sitter
+CLOSED: [2025-07-12 Sat 15:05]
 
 #+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.\\(cpp\\|hpp\\|cc\\|hh\\|c++\\|h++\\)\\'" . c++-ts-mode))
@@ -966,4 +972,5 @@ LeetCode клиент для GNU Emacs.
     (setq go-ts-mode-indent-offset 4))
 #+end_src
 
-** TODO Rust language + Tree Sitter
+** HOLD Rust language + Tree Sitter
+CLOSED: [2025-07-12 Sat 15:04]
