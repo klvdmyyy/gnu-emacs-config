@@ -188,7 +188,7 @@
 #+begin_src emacs-lisp
   (elpaca 'doom-themes
     (autoload 'doom-one "doom-themes")
-    (add-hook 'emacs-startup-hook
+    (add-hook 'elpaca-after-init-hook
               (lambda ()
                 (load-theme 'doom-one :no-confirm)))
     (add-hook 'after-make-frame-functions
@@ -210,9 +210,9 @@
             :repo "manateelazycat/awesome-tray")
     (autoload 'awesome-tray-mode "awesome-tray")
     (when (not (daemonp))
-      (add-hook 'emacs-startup-hook 'awesome-tray-mode 103))
+      (add-hook 'elpaca-after-init-hook 'awesome-tray-mode 200))
     (when (daemonp)
-      (add-hook 'after-make-frame-functions 'awesome-tray-mode 103)))
+      (add-hook 'after-make-frame-functions 'awesome-tray-mode 200)))
 
   (defun org-timer-module ()
     (if org-timer-active
@@ -241,7 +241,7 @@
 
 #+begin_src emacs-lisp
   (setq-default dashboard-center-content t
-                dashboard-vertically-center-content t
+                dashboard-vertically-center-content nil
                 dashboard-items '((recents . 10)
                                   (bookmarks . 3)
                                   (projects . 3)
@@ -251,9 +251,19 @@
     (dashboard-setup-startup-hook))
 
   (with-eval-after-load 'dashboard
+    (add-hook 'dashboard-mode-hook 'visual-line-mode)
+
     ;; Open dashboard when using "emacsclient -c" (daemon only)
     (when (daemonp)
-      (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name)))))
+      (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name))))
+
+    (defun my/dashboard-init--info ()
+      (format "%d packages installed. %d packages loaded now. Emacs started in %s"
+              (dashboard-init--packages-count)
+              external-packages-loaded-count
+              (dashboard-init--time)))
+
+    (setq dashboard-init-info #'my/dashboard-init--info))
 #+end_src
 
 * Vertico + Marginalia + Orderless
@@ -630,7 +640,7 @@ Roam - Идеальная система заметок на базе Org Mode (
 
   (elpaca 'org-roam
     (autoload 'org-roam-db-sync "org-roam")
-    (add-hook 'emacs-startup-hook
+    (add-hook 'elpaca-after-init-hook
               (lambda ()
                 (run-with-timer 1 nil 'org-roam-db-sync))))
 

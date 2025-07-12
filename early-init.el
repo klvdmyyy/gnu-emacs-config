@@ -85,6 +85,14 @@ this stage of initialization."
 ;; Run GNU Emacs with maximized frame
 ;; (push '(fullscreen . maximized) default-frame-alist)
 
+;; In non-server mode I just don't close my GNU Emacs. (I don't need to open it maximized)
+;; at start.
+;;
+;; However with emacs server we can use it. Because slowness startup time in
+;; daemon mode it's not problem (~0.02 seconds difference)
+(when (daemonp)
+  (push '(fullscreen . maximized) default-frame-alist))
+
 (push '(menu-bar-lines . 0) default-frame-alist)
 (setq menu-bar-mode nil)
 

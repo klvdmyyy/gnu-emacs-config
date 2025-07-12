@@ -23,12 +23,12 @@
   (message "Emacs initialized in %.3f with %d garbage collections."
            (float-time
             (time-subtract
-             after-init-time
+             elpaca-after-init-time
              before-init-time))
            gcs-done))
 
-(add-hook 'emacs-startup-hook #'emacs-restore-gc-cons-threshold 105)
-(add-hook 'emacs-startup-hook #'emacs-display-init-time 105)
+(add-hook 'elpaca-after-init-hook #'emacs-restore-gc-cons-threshold)
+(add-hook 'elpaca-after-init-hook #'emacs-display-init-time)
 
 ;;; Bootstrap Elpaca:
 
@@ -99,12 +99,11 @@
 (advice-add 'require :after #'external-packages-require)
 (advice-add 'load :after #'external-packages-require)
 
-(add-hook 'emacs-startup-hook
+(add-hook 'elpaca-after-init-hook
           (lambda ()
-            (message "Loaded %d external packages: %s"
+            (message "Loaded %d external packages at startup: %s"
                      external-packages-loaded-count
-                     external-packages-loaded))
-          200)
+                     external-packages-loaded)))
 
 ;;; Compile and Load configuration file (Org Babel -> Emacs Lisp):
 
