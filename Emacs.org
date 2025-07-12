@@ -66,6 +66,7 @@
 - [[#languages][Languages]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#c-language--tree-sitter][C language + Tree Sitter]]
+  - [[#c-language--tree-sitter-1][C++ language + Tree Sitter]]
   - [[#go-language--tree-sitter][Go language + Tree Sitter]]
 
 * Макросы, функции и прочие хелпер фиговины для моего конфига
@@ -936,6 +937,15 @@ LeetCode клиент для GNU Emacs.
 
   (defalias 'c-mode 'c-ts-mode
     "C language + Tree-Sitter")
+#+end_src
+
+** C++ language + Tree Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.\\(cpp\\|hpp\\|cc\\|hh\\|c++\\|h++\\)\\'" . c++-ts-mode))
+
+  (defalias 'c++-mode 'c++-ts-mode
+    "C++ language + Tree-Sitter")
 #+end_src
 
 ** Go language + Tree Sitter
