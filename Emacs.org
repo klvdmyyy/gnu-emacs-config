@@ -44,6 +44,7 @@
   - [[#строка-состояния][Строка состояния]]
   - [[#начальный-экран][Начальный экран]]
 - [[#vertico--marginalia--orderless][Vertico + Marginalia + Orderless]]
+- [[#embark][Embark]]
 - [[#consult][Consult]]
 - [[#corfu][Corfu]]
 - [[#навигация][Навигация]]
@@ -278,6 +279,25 @@
 
   (with-eval-after-load 'orderless
     (setq completion-styles '(orderless basic)))
+#+end_src
+
+* Embark
+
+#+begin_src emacs-lisp
+  (elpaca 'embark
+    (autoload 'embark-act "embark")
+    (autoload 'embark-dwim "embark")
+    (autoload 'embark-bindings "embark")
+
+    (bind-keys ("C-." . embark-act)          ; pick some comfortable binding
+               ("C-;" . embark-dwim)         ; good alternative for M-.
+               ("C-h B" . embark-bindings))) ; alternative for `describe-bindings'
+
+  ;; Embark automatically load it after consult is found
+  (elpaca 'embark-consult)
+
+  (with-eval-after-load 'embark-consult
+    (add-hook 'embark-collect-mode-hook 'consult-preview-at-point-mode))
 #+end_src
 
 * Consult
