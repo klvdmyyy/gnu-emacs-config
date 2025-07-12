@@ -294,7 +294,7 @@
                ("C-h B" . embark-bindings))) ; alternative for `describe-bindings'
 
   (with-eval-after-load 'embark
-    ;; `org-open-at-point-global' can't open link to heading (in TOC for example)
+    ;; FIXME: `org-open-at-point-global' can't open link to heading (in TOC for example)
     ;;
     ;; I solve it just by replacing `org-open-at-point-global' by default
     ;; `org-open-at-point' function when current major mode is Org
