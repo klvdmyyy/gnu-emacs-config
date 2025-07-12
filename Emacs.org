@@ -293,6 +293,17 @@
                ("C-;" . embark-dwim)         ; good alternative for M-.
                ("C-h B" . embark-bindings))) ; alternative for `describe-bindings'
 
+  (with-eval-after-load 'embark
+    ;; `org-open-at-point-global' can't open link to heading (in TOC for example)
+    ;;
+    ;; I solve it just by replacing `org-open-at-point-global' by default
+    ;; `org-open-at-point' function when current major mode is Org
+    (define-advice org-open-at-point-global
+        (:around (orig-fun) current-mode-is-org)
+      (if (eq major-mode #'org-mode)
+          (funcall #'org-open-at-point)
+        (funcall orig-fun))))
+
   ;; Embark automatically load it after consult is found
   (elpaca 'embark-consult)
 
