@@ -972,5 +972,4 @@ CLOSED: [2025-07-12 Sat 15:05]
     (setq go-ts-mode-indent-offset 4))
 #+end_src
 
-** HOLD Rust language + Tree Sitter
-CLOSED: [2025-07-12 Sat 15:04]
+** WAIT Rust language + Tree Sitter
