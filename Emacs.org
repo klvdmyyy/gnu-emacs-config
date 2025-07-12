@@ -134,7 +134,7 @@
     (load custom-file :no-error :no-message :no-suffix :must-suffix))
 
   (with-eval-after-load 'emacs
-    (add-hook 'after-init-hook #'load-my-custom-file)
+    (add-hook 'elpaca-after-init-hook #'load-my-custom-file)
 
     (setq-default frame-title-format "GNU Emacs"
                   make-backup-files nil
@@ -188,12 +188,13 @@
 #+begin_src emacs-lisp
   (elpaca 'doom-themes
     (autoload 'doom-one "doom-themes")
-    (add-hook 'elpaca-after-init-hook
-              (lambda ()
-                (load-theme 'doom-one :no-confirm)))
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (with-selected-frame frame
+    (if (daemonp)
+        (add-hook 'after-make-frame-functions
+                  (lambda (frame)
+                    (with-selected-frame frame
+                      (load-theme 'doom-one :no-confirm))))
+      (add-hook 'elpaca-after-init-hook
+                (lambda ()
                   (load-theme 'doom-one :no-confirm)))))
 #+end_src
 
@@ -209,10 +210,14 @@
             :host github
             :repo "manateelazycat/awesome-tray")
     (autoload 'awesome-tray-mode "awesome-tray")
-    (when (not (daemonp))
-      (add-hook 'elpaca-after-init-hook 'awesome-tray-mode 200))
-    (when (daemonp)
-      (add-hook 'after-make-frame-functions 'awesome-tray-mode 200)))
+    (when (not (daemonp)))
+    (if (daemonp)
+        (add-hook 'after-make-frame-functions
+                  (lambda (frame)
+                    (with-selected-frame frame
+                      (awesome-tray-enable)))
+                  200)
+      (add-hook 'elpaca-after-init-hook 'awesome-tray-mode 200)))
 
   (defun org-timer-module ()
     (if org-timer-active
@@ -416,11 +421,13 @@ TODO: Стоит посмотреть ещё комманды которые п�
 В некоторых случаях это незаменимая вещь, ведь каждая вкладка содержит свой набор окон.
 
 #+begin_src emacs-lisp
-  (eval-when-compile
-    (require 'tab-bar))
-
-  (with-eval-after-load 'tab-bar
-    (tab-bar-mode 1))
+  (autoload 'tab-bar-mode "tab-bar" nil t)
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (with-selected-frame frame
+                    (tab-bar-mode 1))))
+    (add-hook 'emacs-startup-hook 'tab-bar-mode))
 #+end_src
 
 * Org Mode
