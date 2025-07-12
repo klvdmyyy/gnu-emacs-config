@@ -68,6 +68,7 @@
   - [[#c-language--tree-sitter][C language + Tree Sitter]]
   - [[#c-language--tree-sitter-1][C++ language + Tree Sitter]]
   - [[#go-language--tree-sitter][Go language + Tree Sitter]]
+  - [[#rust-language--tree-sitter][Rust language + Tree Sitter]]
 
 * Макросы, функции и прочие хелпер фиговины для моего конфига
 
@@ -964,3 +965,5 @@ LeetCode клиент для GNU Emacs.
   (with-eval-after-load 'go-ts-mode
     (setq go-ts-mode-indent-offset 4))
 #+end_src
+
+** TODO Rust language + Tree Sitter
