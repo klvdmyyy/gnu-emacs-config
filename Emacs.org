@@ -72,6 +72,7 @@
 - [[#languages][Languages]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#c-language--tree-sitter][C language + Tree Sitter]]
+  - [[#zig-language--tree-sitter][Zig language + Tree Sitter]]
   - [[#c-language--tree-sitter-1][C++ language + Tree Sitter]]
   - [[#go-language--tree-sitter][Go language + Tree Sitter]]
   - [[#rust-language--tree-sitter][Rust language + Tree Sitter]]
@@ -991,6 +992,19 @@ LeetCode клиент для GNU Emacs.
 
   (defalias 'c-mode 'c-ts-mode
     "C language + Tree-Sitter")
+#+end_src
+
+** Zig language + Tree Sitter
+
+#+begin_src emacs-lisp
+  (elpaca '(zig-ts-mode
+            :type git
+            :host codeberg
+            :repo "meow_king/zig-ts-mode")
+    (autoload 'zig-ts-mode "zig-ts-mode"
+      "Zig language major mode powered by Tree Sitter."
+      t)
+    (add-to-list 'auto-mode-alist '("\\.zig\\'" . zig-ts-mode)))
 #+end_src
 
 ** HOLD C++ language + Tree Sitter
