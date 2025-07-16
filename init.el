@@ -115,8 +115,8 @@
 (autoload 'dired-make-relative-symlink "dired")
 
 ;;; PERF: We don't need to always load a Emacs.org file.
-;;; Just check if Emacs.elc is up-to-date. Keep good startup
-;;; time with org-babel based configuration.
+;;;   Just check if Emacs.elc is up-to-date. Keep good startup
+;;;   time with org-babel based configuration.
 (let* ((load-suffixes '(".elc" ".el"))
        (Emacs.org (expand-file-name "Emacs.org" user-emacs-directory))
        (README.org (expand-file-name "README.org" user-emacs-directory))
