@@ -346,7 +346,7 @@ TODO: ADD *BUG* keyword
       'dashboard-setup-startup-hook)
     (dashboard-setup-startup-hook))
 
-  (with-eval-after-load 'dashboard
+  (after! 'dashboard
     (add-hook 'dashboard-mode-hook 'visual-line-mode)
 
     ;; Open dashboard when using "emacsclient -c" (daemon only)
@@ -470,7 +470,7 @@ TODO: ADD *BUG* keyword
     (eval-when-compile
       (require 'consult)))
 
-  (with-eval-after-load 'consult
+  (after! 'consult
     (bind-keys ("s-B" . consult-buffer)
                ([remap switch-to-buffer] . consult-buffer)
                ("C-s" . consult-line)
@@ -573,8 +573,9 @@ TODO: Стоит посмотреть ещё комманды которые п�
   (bind-key "RET" 'indent-between-pairs prog-mode-map)
 
   (elpaca 'smartparens
-    (autoload 'smartparens-mode "smartparens")
-    (autoload 'smartparens-strict-mode "smartparens")
+    (autoload! "smartparens"
+      'smartparens-mode
+      'smartparens-strict-mode)
     (add-hook 'prog-mode-hook 'smartparens-mode)
     (dolist (hook '(emacs-lisp-mode-hook
                     lisp-mode-hook
@@ -582,7 +583,7 @@ TODO: Стоит посмотреть ещё комманды которые п�
                     scheme-mode-hook))
       (add-hook hook 'smartparens-strict-mode)))
 
-  (with-eval-after-load 'smartparens
+  (after! 'smartparens
     (require 'smartparens-config)
     (bind-keys :map smartparens-mode-map
                ("M-s" . nil)
@@ -889,7 +890,7 @@ Git интеграция сводится в основном к двум пла
 #+end_src
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'eshell
+  (after! 'eshell
     (require 'em-alias)
     (require 'em-hist)
     
@@ -935,14 +936,15 @@ Git интеграция сводится в основном к двум пла
                 eat-enable-mouse t)
 
   (elpaca 'eat
-    (autoload 'eat "eat")
-    (autoload 'eat-eshell-mode "eat")
-    (autoload 'eat-eshell-visual-command-mode "eat")
+    (autoload! "eat"
+      '(eat nil t)
+      '(eat-eshell-mode nil t)
+      '(eat-eshell-visual-command-mode nil t))
     (bind-key "s-E" 'project-eat-or-eat)
     (add-hook 'eshell-load-hook 'eat-eshell-mode)
     (add-hook 'eshell-load-hook 'eat-eshell-visual-command-mode))
 
-  (with-eval-after-load 'eat
+  (after! 'eat
     (bind-key "s-E" 'switch-to-prev-buffer-or-eat eat-mode-map))
 #+end_src
 
@@ -952,7 +954,8 @@ Git интеграция сводится в основном к двум пла
 
 #+begin_src emacs-lisp
   (elpaca 'highlight-defined
-    (autoload 'highlight-defined-mode "highlight-defined")
+    (autoload! "highlight-defined"
+       'highlight-defined-mode)
     (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode))
 #+end_src
 
