@@ -65,6 +65,7 @@ Use lexical-binding. (for byte-compilation)
 - [[#org-mode][Org Mode]]
   - [[#main-settings][Main Settings]]
   - [[#planning-agenda][Planning (Agenda)]]
+  - [[#note-taking-roam][Note Taking (Roam)]]
 - [[#development][Development]]
   - [[#vcs-magit-forge-git-modes][VCS (Magit, Forge, Git-Modes)]]
   - [[#repl-eat-eshell][REPL (Eat, Eshell)]]
@@ -688,6 +689,9 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
 
 * Org Mode
 
+TODO: =org-ql=
+TODO: =org-transclude=
+
 ** Main Settings
 
 Базовые переменные
@@ -801,6 +805,125 @@ TODO: Использовать =org-super-agenda=
            "\\`[A-Za-z]*.org\\'")))
 
   (bind-key "a" 'org-agenda mode-specific-map)
+#+end_src
+
+** Note Taking (Roam)
+
+Roam - Идеальная система заметок на базе Org Mode ([[https://ru.wikipedia.org/wiki/%D0%A6%D0%B5%D1%82%D1%82%D0%B5%D0%BB%D1%8C%D0%BA%D0%B0%D1%81%D1%82%D0%B5%D0%BD][Zettelkasten]])
+
+*** Шаблоны (Captures)
+
+**** Daily: Default
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-daily-captures
+  ("d" "default" entry
+   "* %?"
+   :target (file+head "%<%Y-%m-%d>.org"
+                      "#+title: %<%Y-%m-%d>.org
+  ,#+author: Klementiev Dmitry
+  ,#+email: klementievd08@yandex.ru
+  ,#+date: %<%Y-%m-%d>
+  ,#+filetags: :dailies:%<%Y-%m-%d>:daily:"))
+#+end_src
+
+**** Programming
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
+  ("p" "Programming" plain
+   "%?"
+   :target (file+head "programming/${slug}.org"
+                      "#+title: ${title}
+  ,#+author: Klementiev Dmitry
+  ,#+email: klementievd08@yandex.ru
+  ,#+date: %<%Y-%m-%d>
+  ,#+filetags: :programming:")
+   :unarrowed t)
+#+end_src
+
+**** Programming: Algorithms
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
+  ("a" "Algorithms" plain
+   "%?"
+   :target (file+head "programming/algorithms/${slug}.org"
+                      "#+title: ${title}
+  ,#+author: Klementiev Dmitry
+  ,#+email: klementievd08@yandex.ru
+  ,#+date: %<%Y-%m-%d>
+  ,#+filetags: :algorithms:programming:")
+   :unarrowed t)
+#+end_src
+
+**** Programming: Data Structures
+
+#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
+  ("d" "Data Structures" plain
+   "%?"
+   :target (file+head "programming/data_structures/${slug}.org"
+                      "#+title: ${title}
+  ,#+author: Klementiev Dmitry
+  ,#+email: klementievd08@yandex.ru
+  ,#+date: %<%Y-%m-%d>
+  ,#+filetags: :data_structures:programming:")
+   :unarrowed t)
+#+end_src
+
+*** Configuration
+
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no
+  (setq org-roam-v2-ack t)
+  
+  (setq-default org-roam-directory (expand-file-name "roam/" org-directory)
+                org-roam-db-location (expand-file-name "cache/org-roam.db" org-directory)
+                org-roam-dailies-capture-templates '(<<org-roam-daily-captures>>)
+                org-roam-capture-templates '(<<org-roam-captures>>))
+
+  (elpaca 'org-roam
+    (autoload 'org-roam-db-sync "org-roam")
+    (add-hook 'elpaca-after-init-hook
+              (lambda ()
+                (run-with-timer 1 nil 'org-roam-db-sync))))
+
+  (with-eval-after-load 'org-roam
+    (org-roam-db-autosync-mode 1)
+
+    (setq org-roam-db-update-on-save t
+          org-roam-dailies-directory "daily/"
+          org-roam-node-display-template
+          (concat "${title:*} "
+                  (propertize "${tags:30}" 'face 'org-tag)))
+
+    (bind-keys :map org-mode-map
+               ("C-c r r" . org-roam-ref-add)
+               ("C-c r R" . org-roam-ref-remove)
+               ("C-c r f" . org-roam-ref-find)
+               ("C-c r t" . org-roam-tag-add)
+               ("C-c r T" . org-roam-tag-remove)
+               ("C-c r a" . org-roam-alias-add)
+               ("C-c r A" . org-roam-alias-remove)
+               ;; NOTE: See https://git.sr.ht/~abcdw/rde/tree/master/item/src/rde/features/emacs-xyz.scm#L4883
+               ;; ("C-c r O" . rde-org-roam-open-ref)
+               :map mode-specific-map
+               ("n t" . org-roam-dailies-capture-today)
+               ("n n" . org-roam-buffer-toggle)
+               ("n f" . org-roam-node-find)
+               ("n i" . org-roam-node-insert)
+               ("n r" . org-roam-ref-find)
+               ("n C" . org-roam-capture)))
+#+end_src
+
+*** Roam UI
+
+Отличный плагин для просмотра всех заметок и связей между ними.
+
+Красивый веб-фронтенд для заметок Roam.
+
+#+begin_src emacs-lisp
+  (elpaca 'org-roam-ui
+    ;; Just autoload command for Org Roam UI
+    (autoload 'org-roam-ui-mode "org-roam-ui"
+      "Web Frontend for Org Roam notes."
+      t))
 #+end_src
 
 * Development
