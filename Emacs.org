@@ -218,6 +218,8 @@ TODO: ADD *BUG* keyword
   	      hl-todo-highlight-punctuation ":")
 
   ;; TODO: Move nerd-icons from the hl-todo
+  ;; PERF: No lazy loading.
+  ;;   Nerd-Icons loaded at startup time
   (elpaca 'nerd-icons
     (eval-when-compile
       (require 'nerd-icons)))
@@ -934,11 +936,9 @@ Git интеграция сводится в основном к двум пла
 
 *** Common Lisp
 
-#+begin_src emacs-lisp
-  (elpaca 'sly
-    (autoload! "sly"
-      '(sly "Common Lisp REPL" t)
-      '(sly-mode "Common Lisp Major Mode" t))
+TODO: Setup completion with Corfu
 
-    (add-to-list 'auto-mode-alist '("\\.lisp\\'" . sly-mode)))
+#+begin_src emacs-lisp
+  (setq-default inferior-lisp-program (executable-find "sbcl"))
+  (elpaca 'sly)
 #+end_src
