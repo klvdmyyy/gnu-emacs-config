@@ -664,6 +664,13 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
 
 ** Main Settings
 
+Базовые переменные
+
+#+begin_src emacs-lisp
+  (setq-default org-directory "~/org"
+  	      org-id-locations-file (expand-file-name "cache/.org-id-locations" org-directory))
+#+end_src
+
 Навигация при помощи =consult-org-heading=.
 
 #+begin_src emacs-lisp
