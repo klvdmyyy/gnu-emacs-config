@@ -17,6 +17,12 @@ Purposes of my GNU Emacs:
 - Organizing, Planning
 
 
+This configuration heavily inspired by following things:
+- RDE (GNU Guix based distribution with Emacs configuration)
+- Doom Emacs (GNU Emacs distribution)
+- Spacemacs (Another GNU Emacs distribution)
+
+
 Other files:
 - [[file:early-init.el][Early Initialization file]]
 
