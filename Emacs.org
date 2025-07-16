@@ -11,6 +11,12 @@ Main goals of this distribution:
 - Excellent terminal support (=emacs -nw=)
 
 
+Purposes of my GNU Emacs:
+- Lisp Development (Emacs Lisp, Common Lisp)
+- Backend Development
+- Organizing, Planning
+
+
 Other files:
 - [[file:early-init.el][Early Initialization file]]
 
@@ -522,8 +528,12 @@ TODO: Стоит посмотреть ещё комманды которые п�
 #+begin_src emacs-lisp
   (elpaca 'avy
     (autoload! "avy"
-      '(avy-goto-char-2 nil t))
-    (bind-key* "C-'" 'avy-goto-char-2))
+      '(avy-goto-char-2 nil t)
+      '(avy-goto-word-0 nil t))
+    (bind-keys :map prog-mode-map
+  	     ("C-'" . avy-goto-char-2)
+  	     :map org-mode-map
+  	     ("C-'" . avy-goto-word-0)))
 #+end_src
 
 ** Ace-Window
