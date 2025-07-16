@@ -1,99 +1,95 @@
-#+title: Конфигурация GNU Emacs
-#+author: Клементьев Дмитрий
+#+title: GNU Emacs configuration/distribution
+#+author: Klementiev Dmitry
 #+email: klementievd08@yandex.ru
 
-[[https://github.com/emacs-tw/awesome-emacs][Awesome Emacs]] - Перечень функционала и пакетов для GNU Emacs
-
-Главные цели данной конфигурации:
-- Удобная навигация по =Emacs.org=
-- Относительно быстрое время запуска (даже при использовании =org-babel=)
-- Простая кодовая база (понятная и читаемая)
-- Лишь несколько основных пакетов загружаются на старте (ленивая загрузка)
-- Отсутствие =use-package= макроса
-- Почти идеальная поддержка терминала (=emacs -nw=)
+Main goals of this distribution:
+- Convenient navigation through the =Emacs.org=
+- Fast startup (also with Org Babel)
+- Good Emacs Lisp code. Keep it simple to read and maintain
+- Only a few packages are loaded at startup (lazy-loading)
+- No =use-package= macro. You know what you're doing.
+- Excellent terminal support (=emacs -nw=)
 
 
-Прочие файлы:
-- [[file:early-init.el][Файл ранней инициализации]]
-  1. Большая часть оптимизация
-- [[file:init.el][Файл инициализации]]
-  1. Настройка сборщика мусора после инициализации
-  2. Инициализация пакетного менеджера (Elpaca)
-  3. Подсчёт загруженных пакетов на старте (внешние пакеты при помощи Elpaca)
-  4. Компиляция (если нужно) и загрузка файла конфигурации (Emacs.org)
+Other files:
+- [[file:early-init.el][Early Initialization file]]
+
+  Main optimizations of GNU Emacs.
+
+- [[file:init.el][Initialization file]]
+
+  Bootstrap Elpaca and load Org Babel files.
 
 
-Флаг в начале файла для байт-компиляции.
-
+Use lexical-binding. (for byte-compilation)
 #+begin_src emacs-lisp
   ;;; -*- lexical-binding: t; -*-
 #+end_src
 
-* COMMENT Some settings
-
-#+seq_todo: TODO(t)
-#+seq_todo: WAIT(w) HOLD(h)
-
-* TOC :TOC:
-- [[#макросы-функции-и-прочие-хелпер-фиговины-для-моего-конфига][Макросы, функции и прочие хелпер фиговины для моего конфига]]
-  - [[#макросы-упрощающие-ленивую-загрузку][Макросы упрощающие ленивую загрузку]]
-- [[#базовая-настройка-gnu-emacs][Базовая настройка GNU Emacs]]
-  - [[#встроенные-модули][Встроенные модули]]
-- [[#внешний-вид][Внешний вид]]
-  - [[#основная-тема-doom-themes][Основная тема (doom themes)]]
-  - [[#строка-состояния][Строка состояния]]
-  - [[#начальный-экран][Начальный экран]]
-- [[#vertico--marginalia--orderless][Vertico + Marginalia + Orderless]]
-- [[#embark][Embark]]
-- [[#consult][Consult]]
-- [[#corfu][Corfu]]
-- [[#навигация][Навигация]]
-  - [[#навигация-в-тексте][Навигация в тексте]]
-  - [[#навигация-между-окнами][Навигация между окнами]]
-  - [[#навигация-между-группами-буфферовокон][Навигация между группами буфферов/окон]]
-- [[#org-mode][Org Mode]]
-  - [[#базовая-и-обязательная-настройка][Базовая и обязательная настройка]]
-  - [[#настройка-таймера-org-timer][Настройка таймера (Org Timer)]]
-  - [[#org-modern-modern-view-of-org-mode][Org Modern (Modern view of Org Mode)]]
-  - [[#toc-org-generate-table-of-contents-for-org-mode][TOC Org (Generate Table Of Contents for Org Mode)]]
-  - [[#agenda][Agenda]]
-  - [[#roam][Roam]]
-- [[#системы-контроля-версий-git-интеграция][Системы контроля версий (Git интеграция)]]
-  - [[#magit-todos][Magit TODOs]]
-  - [[#git-файлы-и-режимы-для-них][Git файлы и режимы для них]]
-  - [[#git-gutter][Git Gutter]]
-- [[#эмуляция-терминала-terminal-emulation][Эмуляция терминала (Terminal emulation)]]
-  - [[#eshell][Eshell]]
-  - [[#eat-emulate-a-terminal][Eat (Emulate A Terminal)]]
-- [[#programming][Programming]]
+* Table Of Contents :TOC:
+- [[#functions-and-macroses][Functions and Macroses]]
+  - [[#after-macro][=after!= macro]]
+  - [[#require-on-macro][=require-on!= macro]]
+  - [[#autoload-macro][=autoload!= macro]]
+- [[#basic-emacs][Basic Emacs]]
+- [[#uiux][UI/UX]]
+  - [[#theme][Theme]]
+  - [[#awesome-tray][Awesome Tray]]
+  - [[#initial-screen-dashboard][Initial Screen (Dashboard)]]
+  - [[#golden-ratio-for-emacs-windows][Golden Ratio for Emacs windows]]
+  - [[#tab-bar-mode][Tab Bar mode]]
+- [[#navigation][Navigation]]
+  - [[#which-key][Which-key]]
+  - [[#hydra][Hydra]]
+  - [[#vertico][Vertico]]
+  - [[#marginalia][Marginalia]]
+  - [[#consult][Consult]]
+  - [[#embark][Embark]]
+  - [[#avy][Avy]]
+  - [[#ace-window][Ace-Window]]
+- [[#editing][Editing]]
   - [[#smartparens][Smartparens]]
-  - [[#tree-sitter][Tree Sitter]]
-  - [[#leetcode][LeetCode]]
-- [[#languages][Languages]]
-  - [[#emacs-lisp][Emacs Lisp]]
-  - [[#c-language--tree-sitter][C language + Tree Sitter]]
-  - [[#zig-language--tree-sitter][Zig language + Tree Sitter]]
-  - [[#c-language--tree-sitter-1][C++ language + Tree Sitter]]
-  - [[#go-language--tree-sitter][Go language + Tree Sitter]]
-  - [[#rust-language--tree-sitter][Rust language + Tree Sitter]]
+  - [[#git-gutter][Git-Gutter]]
+  - [[#tree-sitter][Tree-Sitter]]
+- [[#completion][Completion]]
+  - [[#orderless][Orderless]]
+  - [[#corfu][Corfu]]
+- [[#org-mode][Org Mode]]
+  - [[#main-settings][Main Settings]]
+- [[#development][Development]]
+  - [[#vcs-magit-forge-git-modes][VCS (Magit, Forge, Git-Modes)]]
+  - [[#repl-eat-eshell][REPL (Eat, Eshell)]]
+  - [[#languages][Languages]]
 
-* Макросы, функции и прочие хелпер фиговины для моего конфига
+* Functions and Macroses
 
-Некоторые вещи для данной конфигурации приходится изобретать с полного нуля
+Набор функций и макросов для конфигурации.
 
-** Макросы упрощающие ленивую загрузку
+** =after!= macro
 
-Это небольшой набор моих собственных макросов для ленивой загрузки (на подобии Neovim).
+Более удобная и лучшая версия =with-eval-after-load=.
 
-Вся суть в том, что я не использую =use-package= (он мне не нравится), вместо этого я использую
-другой встроенный в Emacs функционал:
-- =autoload=
-- =with-eval-after-load=
-- =eval-when-compile=
+#+begin_src emacs-lisp
+  (defmacro after! (packages &rest body)
+    (declare (indent defun))
+    (let ((packages (eval `(,@packages))))
+      (cond ((not packages)
+             `(progn
+                ,@body))
+            ((symbolp packages)
+             `(with-eval-after-load ',packages
+                ,@body))
+            ((listp packages)
+             `(with-eval-after-load ',(car packages)
+                (after! ',(cdr packages)
+                  ,@body))))))
+#+end_src
 
-А так же набор своих макросов.
+** =require-on!= macro
 
-*** =require-on!= - Загрузка пакета на хуке/комманде
+Предоставляет возможность подгружать пакет при использовании хука или комманды.
+
+По факту это добавляет хук или "advice" который запускается лишь единожды, подгружая пакет.
 
 #+begin_src emacs-lisp
   (defun require-on-hook (hook package)
@@ -108,8 +104,8 @@
 
   (defun require-on-command (command package)
     (let ((fnname (intern (concat "load-" (prin1-to-string package)))))
-      `(when (fboundp ',command)
-         (define-advice ,command
+      (when (fboundp command)
+        `(define-advice ,command
              (:before (&rest _) ,fnname)
            (advice-remove ',command #',(intern (concat (prin1-to-string command)
                                                        "@" (prin1-to-string fnname))))
@@ -117,7 +113,7 @@
 
   (defmacro require-on! (symbol package)
     "Load PACKAGE on SYMBOL."
-    (declare (indent defun))
+    (declare (indent nil))
     (cond
      ((commandp symbol)
       (require-on-command symbol package))
@@ -126,80 +122,93 @@
      (t (error "Can't determine symbol for require-on!: %s" symbol))))
 #+end_src
 
-* Базовая настройка GNU Emacs
+** =autoload!= macro
 
-В этой части я настраиваю базовый GNU Emacs.
+Удобный макрос для ленивой загрузки. В отличие от обычной функции =autoload= можно загружать
+несколько функций одним вызовом макроса (в целом это и есть всё удобство).
+
+#+begin_src emacs-lisp
+  (defun autoload! (package &rest autoloads)
+    "Generate AUTOLOADS from PACKAGE by repeating `autoload' function."
+    (declare (indent defun))
+    (dolist (symbol autoloads)
+      (cond ((listp symbol)
+             (pcase-let* ((`(,symbol ,doc-string ,interactive?) symbol))
+               (autoload symbol package doc-string interactive?)))
+            ((symbolp symbol)
+             (autoload symbol package))
+            (t (error "Can't determine symbol type for autoloading with `autoload!' macro")))))
+#+end_src
+
+* Basic Emacs
 
 #+begin_src emacs-lisp
   (defun load-my-custom-file ()
     (load custom-file :no-error :no-message :no-suffix :must-suffix))
 
-  (with-eval-after-load 'emacs
+  (after! 'emacs
     (add-hook 'elpaca-after-init-hook #'load-my-custom-file)
 
-    (setq-default frame-title-format "GNU Emacs"
-                  make-backup-files nil
-                  custom-file (expand-file-name "custom.el"
-                                                user-emacs-directory)
-                  cursor-type 'box
-                  ;; cursor-type '(bar . 2)
-                  cursor-in-non-selected-windows nil
-                  default-input-method "russian-computer"
-                  indent-tabs-mode nil
-                  tab-width 4)
+    (setq frame-title-format "GNU Emacs"
+          make-backup-files nil
+          custom-file (expand-file-name "custom.el" user-emacs-directory)
+          cursor-type 'box
+          ;; cursor-type '(bar . 2)
+          cursor-in-non-selected-windows nil
+          default-input-method "russian-computer"
+          indent-tabs-mode nil
+          tab-width 4)
 
     (blink-cursor-mode 1)
     (add-hook 'text-mode-hook 'visual-line-mode)
     (add-hook 'prog-mode-hook 'visual-line-mode))
-#+end_src
 
-** Встроенные модули
-
-#+begin_src emacs-lisp
   (eval-when-compile
-    (require 'which-key)
     (require 'recentf)
     (require 'fringe))
 
-  (with-eval-after-load 'jsonrpc
-    (fset #'jsonrpc--log-event #'ignore))
-
-  (with-eval-after-load 'recentf
+  (after! 'recentf
     (recentf-mode 1))
 
-  (with-eval-after-load 'which-key
-    (which-key-mode 1))
-
-  (with-eval-after-load 'fringe
+  (after! 'fringe
     (fringe-mode '(8 . 8)))
 #+end_src
 
-* Внешний вид
+* UI/UX
 
-Здесь мы настраиваем основную часть внешнего вида GNU Emacs.
+*Настройка UI/UX.*
 
-|--------------------+--------------|
-| *Основная тема*    | Doom One     |
-|--------------------+--------------|
-| *Строка состояния* | Awesome Tray |
-|--------------------+--------------|
+Данная часть конфигурации подразумевает в себе не только красивый и приятный глазу внешний вид,
+но и удобный, интуитивный интерфейс.
 
-** Основная тема (doom themes)
+** Theme
+
+Мне очень нравится обычная тема из Doom Emacs. Она слишком хороша собой :)
 
 #+begin_src emacs-lisp
+  (defvar default-theme 'doom-one
+    "Default theme for GNU Emacs.
+
+  1. Autoload `default-theme' from theme-package
+  2. Load theme")
+
   (elpaca 'doom-themes
-    (autoload 'doom-one "doom-themes")
+    (autoload! "doom-themes"
+      default-theme)
+
     (if (daemonp)
         (add-hook 'after-make-frame-functions
                   (lambda (frame)
                     (with-selected-frame frame
-                      (load-theme 'doom-one :no-confirm))))
+                      (load-theme default-theme :no-confirm))))
       (add-hook 'elpaca-after-init-hook
                 (lambda ()
-                  (load-theme 'doom-one :no-confirm)))))
+                  (load-theme default-theme :no-confirm)))))
 #+end_src
 
-** Строка состояния
+** Awesome Tray
+
+Мне больше нравится минималистичный трэй, чем строка состояния на подобии Doom Modeline. Достаточно одной небольшой строчки со всей необходимой мне информацией.
 
 #+begin_src emacs-lisp :no-export
   (setq-default awesome-tray-hide-mode-line t
@@ -210,8 +219,9 @@
   (elpaca '(awesome-tray
             :host github
             :repo "manateelazycat/awesome-tray")
-    (autoload 'awesome-tray-mode "awesome-tray")
-    (when (not (daemonp)))
+    (autoload! "awesome-tray"
+      'awesome-tray-mode)
+    
     (if (daemonp)
         (add-hook 'after-make-frame-functions
                   (lambda (frame)
@@ -220,23 +230,27 @@
                   200)
       (add-hook 'elpaca-after-init-hook 'awesome-tray-mode 200)))
 
-  (defun org-timer-module ()
-    (if org-timer-active
-        (org-timer-value-string)
-      nil))
+  (after! '(awesome-tray org-timer)
+    (setq org-timer-display nil)          ; Don't display `org-timer'
+                                          ; in unexistent mode-line
+    
+    (defun org-timer-module ()
+      (if org-timer-active
+          (org-timer-value-string)
+        nil))
 
-  (defface org-timer-module-face
-    '((t (:bold t)))
-    "Org Timer module face."
-    :group 'awesome-tray)
+    (defface org-timer-module-face
+      '((t (:bold t)))
+      "Org Timer module face."
+      :group 'awesome-tray)
 
-  (with-eval-after-load 'awesome-tray
     (add-to-list 'awesome-tray-module-alist
                  '("org-timer" . (org-timer-module org-timer-module-face)))
     (add-to-list 'awesome-tray-active-modules "org-timer"))
 #+end_src
 
-** Начальный экран
+
+** Initial Screen (Dashboard)
 
 В качестве начального экрана есть два пакета:
 - =dashboard= - Максимально простой и готов к использованию
@@ -253,7 +267,8 @@
                                   (projects . 3)
                                   (agenda . 5)))
   (elpaca 'dashboard
-    (autoload 'dashboard-setup-startup-hook "dashboard")
+    (autoload! "dashboard"
+      'dashboard-setup-startup-hook)
     (dashboard-setup-startup-hook))
 
   (with-eval-after-load 'dashboard
@@ -264,7 +279,7 @@
       (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name))))
 
     (defun my/dashboard-init--info ()
-      (format "%d packages installed. %d packages loaded now. Emacs started in %s"
+      (format "%d packages installed. %d packages loaded. Emacs started in %s"
               (dashboard-init--packages-count)
               external-packages-loaded-count
               (dashboard-init--time)))
@@ -272,62 +287,104 @@
     (setq dashboard-init-info #'my/dashboard-init--info))
 #+end_src
 
-* Vertico + Marginalia + Orderless
+** Golden Ratio for Emacs windows
+
+#+begin_src emacs-lisp
+  (elpaca 'golden-ratio
+    (require-on! split-window-below
+                 golden-ratio)
+
+    (require-on! split-window-right
+                 golden-ratio))
+
+  (after! 'golden-ratio
+    (golden-ratio-mode 1)
+    (add-to-list 'golden-ratio-extra-commands 'ace-window))
+#+end_src
+
+** Tab Bar mode
+
+#+begin_src emacs-lisp
+  (autoload! "tab-bar"
+    '(tab-bar-mode nil t))
+
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (with-selected-frame frame
+                    (tab-bar-mode 1))))
+    (add-hook 'emacs-startup-hook 'tab-bar-mode))
+#+end_src
+
+* Navigation
+
+*Навигация*
+
+Данный заголовок включает в себя не только навигацию в тексте.
+
+Вот что подразумевается под *навигацией*:
+- Навигация в буффере/тексте
+- Перемещение между буфферами (=consult-buffer=)
+- Перемещение между окнами
+- Навигация между сочетаниями клавиш (соответственно их конфигурация: which-key, hydra, и.т.д)
+- Навигация в минибуффере и между коммандами (vertico, embark, consult)
+
+** Which-key
+
+#+begin_src emacs-lisp
+  (if after-init-time
+      (which-key-mode 1)
+    (add-hook 'after-init-hook 'which-key-mode))
+#+end_src
+
+** Hydra
+
+#+begin_src emacs-lisp
+  ;; FIXME: Byte-Compilation throw error when using `defhydra'
+  ;;   out of `elpaca' macro. All `defhydra' usage are written
+  ;;   in `elpaca' usage for `hydra' package.
+  (elpaca 'hydra
+    (require 'hydra)
+    
+    (defhydra hydra-zoom ()
+      "Zoom"
+      ("i" text-scale-increase "in")
+      ("d" text-scale-decrease "out"))
+    (bind-key "<f2>" 'hydra-zoom/body)
+    
+    (defhydra hydra-org-timer ()
+      "Org Timer"
+      ("s" org-timer-start "Start timer")
+      ("e" org-timer-stop "Timer end (Stop timer)")
+      ("p" org-timer-pause-or-continue "Pause/Continue timer")
+      ("t" org-timer-set-timer "Set timer")
+      ("q" nil "Quit"))
+    (bind-key "o t" 'hydra-org-timer/body mode-specific-map))
+#+end_src
+
+** Vertico
 
 #+begin_src emacs-lisp
   (elpaca 'vertico
     (require-on! pre-command-hook
-      vertico))
+                 vertico))
 
-  (elpaca 'marginalia
-    (with-eval-after-load 'vertico
-      (require 'marginalia)))
-
-  (with-eval-after-load 'marginalia
-    (marginalia-mode 1))
-
-  (with-eval-after-load 'vertico
+  (after! 'vertico
     (vertico-mode 1))
-
-  (elpaca 'orderless
-    (require-on! self-insert-command
-      orderless))
-
-  (with-eval-after-load 'orderless
-    (setq completion-styles '(orderless basic)))
 #+end_src
 
-* Embark
+** Marginalia
 
 #+begin_src emacs-lisp
-  (elpaca 'embark
-    (autoload 'embark-act "embark")
-    (autoload 'embark-dwim "embark")
-    (autoload 'embark-bindings "embark")
+  (elpaca 'marginalia
+    (after! 'vertico
+      (require 'marginalia)))
 
-    (bind-keys ("C-." . embark-act)          ; pick some comfortable binding
-               ("C-;" . embark-dwim)         ; good alternative for M-.
-               ("C-h B" . embark-bindings))) ; alternative for `describe-bindings'
-
-  (with-eval-after-load 'embark
-    ;; FIXME: `org-open-at-point-global' can't open link to heading (in TOC for example)
-    ;;
-    ;; I solve it just by replacing `org-open-at-point-global' by default
-    ;; `org-open-at-point' function when current major mode is Org
-    (define-advice org-open-at-point-global
-        (:around (orig-fun) current-mode-is-org)
-      (if (eq major-mode #'org-mode)
-          (funcall #'org-open-at-point)
-        (funcall orig-fun))))
-
-  ;; Embark automatically load it after consult is found
-  (elpaca 'embark-consult)
-
-  (with-eval-after-load 'embark-consult
-    (add-hook 'embark-collect-mode-hook 'consult-preview-at-point-mode))
+  (after! 'marginalia
+    (marginalia-mode 1))
 #+end_src
 
-* Consult
+** Consult
 
 #+begin_src emacs-lisp
   (elpaca 'consult
@@ -341,34 +398,38 @@
                ("M-g g" . consult-goto-line)))
 #+end_src
 
-* Corfu
+** Embark
 
 #+begin_src emacs-lisp
-  (elpaca 'corfu
-    (require-on! self-insert-command
-      corfu))
+  (elpaca 'embark
+    (autoload! "embark"
+      '(embark-act nil t)
+      '(embark-dwim nil t)
+      '(embark-bindings nil t))
 
-  (with-eval-after-load 'corfu
-    (setq corfu-cycle t)
-    (setq tab-always-indent 'complete)
-    (global-corfu-mode 1)
+    (bind-keys ("C-." . embark-act)          ; pick some comfortable binding
+               ("C-;" . embark-dwim)         ; good alternative for M-.
+               ("C-h B" . embark-bindings))) ; alternative for `describe-bindings'
 
-    (require 'corfu-popupinfo)
-    (corfu-popupinfo-mode 1)
+  (after! 'embark
+    ;; FIXME: `org-open-at-point-global' can't open link to heading (in TOC for example)
+    ;;
+    ;; I solve it just by replacing `org-open-at-point-global' by default
+    ;; `org-open-at-point' function when current major mode is Org
+    (define-advice org-open-at-point-global
+        (:around (orig-fun) current-mode-is-org)
+      (if (eq major-mode #'org-mode)
+          (funcall #'org-open-at-point)
+        (funcall orig-fun))))
 
-    (bind-keys* :map corfu-map
-                ("TAB" . corfu-complete)
-                ("M-d" . corfu-popupinfo-toggle)
-                :map corfu-popupinfo-map
-                ("M-n" . corfu-popupinfo-scroll-up)
-                ("M-p" . corfu-popupinfo-scroll-down)))
+  ;; Embark automatically load it after consult is found
+  (elpaca 'embark-consult)
+
+  (after! 'embark-consult
+    (add-hook 'embark-collect-mode-hook 'consult-preview-at-point-mode))
 #+end_src
 
-* Навигация
-
-Данный заголовок включает в себя конфигурацию которая относится к навигации между окнами, в тексте, и.т.д
-
-** Навигация в тексте
+** Avy
 
 Для навигации в тексте есть множество плагинов:
 - =avy= - Основной плагин (и пока что единственный используемый в конфиге)
@@ -381,485 +442,21 @@ TODO: Стоит посмотреть ещё комманды которые п�
 
 #+begin_src emacs-lisp
   (elpaca 'avy
-    (autoload 'avy-goto-char-2 "avy")
+    (autoload! "avy"
+      '(avy-goto-char-2 nil t))
     (bind-key* "C-'" 'avy-goto-char-2))
 #+end_src
 
-** Навигация между окнами
-
-Идеальную навигацию между окнами обеспечивают два плагина:
-- =golden-ratio= - Автоматически изменяет размер окна
-- =ace-window= - Удобное перемещение между окнами одной клавишей (=M-o=)
+** Ace-Window
 
 #+begin_src emacs-lisp
   (elpaca 'ace-window
-    (autoload 'ace-window "ace-window")
+    (autoload! "ace-window"
+      '(ace-window nil t))
     (bind-key "M-o" 'ace-window))
 #+end_src
 
-=golden-ratio= будет подгружаться при разделении окна (горизонтально или вертикально).
-
-После чего мы добавляем функцию которая будет запускаться после =ace-window=, и будет
-устанавливать размер окна в соответствии с =golden-ratio=. Это нужно лишь потому, что
-=golden-ratio= почему то не работает с =ace-window= по дефолту.
-
-#+begin_src emacs-lisp
-  (elpaca 'golden-ratio
-    (require-on! split-window-below
-      golden-ratio)
-    (require-on! split-window-right
-      golden-ratio))
-
-  (with-eval-after-load 'golden-ratio
-    (golden-ratio-mode 1)
-    (add-to-list 'golden-ratio-extra-commands 'ace-window))
-#+end_src
-
-** Навигация между группами буфферов/окон
-
-Подобную навигацию может обеспечить встроенный в GNU Emacs =tab-bar-mode=.
-
-В некоторых случаях это незаменимая вещь, ведь каждая вкладка содержит свой набор окон.
-
-#+begin_src emacs-lisp
-  (autoload 'tab-bar-mode "tab-bar" nil t)
-  (if (daemonp)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                  (with-selected-frame frame
-                    (tab-bar-mode 1))))
-    (add-hook 'emacs-startup-hook 'tab-bar-mode))
-#+end_src
-
-* Org Mode
-
-*Org* - основная часть GNU Emacs. Данный пакет - причина по которой я не могу уйти от GNU Emacs.
-
-- TODO: =org-inlinetask= (Built-in)
-- TODO: =org-journal= [[https://github.com/bastibe/org-journal][(Link)]]
-- TODO: =org-ql= [[https://github.com/alphapapa/org-ql][(Link)]]
-- TODO: =org-transclusion= [[https://github.com/nobiot/org-transclusion][(Link)]] (For Org Roam too. Do it firstly)
-- TODO: =org-super-agenda= [[https://github.com/alphapapa/org-super-agenda][(Link)]]
-- TODO: =orgtbl-aggregate= [[https://github.com/tbanel/orgaggregate][(Link)]]
-- TODO: =orgtbl-join= [[https://github.com/tbanel/orgtbljoin][(Link)]]
-- TODO: =orgtbl-fit= [[https://github.com/tbanel/orgtblfit][(Link)]]
-
-** Базовая и обязательная настройка
-
-- Табуляция заголовков (=org-indent-mode=)
-- Навигация при помощи =consult-org-heading=
-
-#+begin_src emacs-lisp
-  (setq-default org-directory "~/org"
-                org-id-locations-file (expand-file-name "cache/.org-id-locations" org-directory))
-
-  (add-hook 'org-mode-hook 'org-indent-mode)
-
-  (bind-keys* :map mode-specific-map
-              ("o t s" . org-timer-start)
-              ("o t e" . org-timer-stop)
-              ("o t p" . org-timer-pause-or-continue)
-              ("o t t" . org-timer-set-timer)
-              ("o c"   . org-capture))
-
-  (with-eval-after-load 'org
-    (with-eval-after-load 'consult
-      (bind-keys :map org-mode-map
-                 ("C-s" . consult-org-heading)
-                 ("C-S-s" . consult-line))))
-#+end_src
-
-** Настройка таймера (Org Timer)
-
-TODO: Использование =org-pomodoro=
-
-#+begin_src emacs-lisp
-  (setq-default org-timer-display nil)
-  
-  (defvar org-timer-active nil
-    "Non-nil if org-timer is activated")
-
-  (defun org-timer-activate ()
-    "Set `org-timer-active' to t"
-    (setq org-timer-active t))
-
-  (defun org-timer-deactivate ()
-    "Set `org-timer-active' to nil"
-    (setq org-timer-active nil))
-
-  (add-hook 'org-timer-start-hook 'org-timer-activate)
-  (add-hook 'org-timer-stop-hook  'org-timer-deactivate)
-  (add-hook 'org-timer-set-hook   'org-timer-activate)
-  (add-hook 'org-timer-done-hook  'org-timer-deactivate)
-#+end_src
-
-** Org Modern (Modern view of Org Mode)
-
-#+begin_src emacs-lisp
-  (elpaca 'org-modern
-    (autoload 'org-modern-mode "org-modern")
-    (add-hook 'org-mode-hook 'org-modern-mode))
-#+end_src
-
-** TOC Org (Generate Table Of Contents for Org Mode)
-
-#+begin_src emacs-lisp
-  (elpaca 'toc-org
-    (autoload 'toc-org-mode "toc-org")
-    (add-hook 'org-mode-hook 'toc-org-mode))
-#+end_src
-
-** Agenda
-
-TODO: Использовать =org-super-agenda=
-
-*** Кастомные комманды, виды (Custom commands, views)
-
-**** Learning (Обучение)
-
-Отдельный вид агенды для отслеживания и планирования задач, целей по изучению алгоритмов
-и структур данных
-
-#+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
-  ("l" "Learning Agenda"
-   ((agenda "" ((org-agenda-span 'day)
-                (org-agenda-remove-tags t)
-                (org-deadline-warning-days 7)
-                ;; TODO: Filter by @yandexlearning tag instead of file
-                (org-agenda-files '("~/org/agenda/YandexLearning.org"))))
-    (tags-todo "+@yandexlearning+PRIORITY=\"A\"+SCHEDULED<=\"<today>\""
-               ((org-agenda-span 'day)
-                (org-agenda-remove-tags t)
-                (org-agenda-overriding-header "High Priority Tasks")))
-    (tags-todo "+@yandexlearning/TODO"
-               ((org-agenda-tags-todo-honor-ignore-options t)
-                (org-agenda-todo-ignore-scheduled t)
-                (org-agenda-remove-tags t)
-                (org-agenda-overriding-header "Just TODO Tasks")))))
-#+end_src
-
-**** Weekly Review (Недельный обзор)
-
-Недельный обзор завершённых и оставшихся запланированных задач.
-
-Неплохо посмотреть в конце недели как много ты проеб**нил :)
-
-#+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
-  ("w" "Weekly Review"
-   ((agenda "" ((org-agenda-overriding-header "Completed Tasks")
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
-                (org-agenda-span 'week)))
-    (agenda "" ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                (org-agenda-span 'week)))))
-#+end_src
-
-*** Конфигурация
-
-#+begin_src emacs-lisp :noweb yes :noweb-prefix no
-  (setq-default org-agenda-custom-commands '(<<custom-agenda-views>>))
-#+end_src
-
-#+begin_src emacs-lisp
-  (setq-default org-agenda-start-with-log-mode t
-                org-log-done 'time
-                org-log-into-drawer t)
-
-  (define-advice org-agenda
-      (:before (&rest _) update-files)
-    (setq org-agenda-files
-          (directory-files-recursively
-           (expand-file-name "agenda" org-directory)
-           "\\`[A-Za-z]*.org\\'")))
-
-  (bind-key "a" 'org-agenda mode-specific-map)
-#+end_src
-
-** Roam
-
-Roam - Идеальная система заметок на базе Org Mode ([[https://ru.wikipedia.org/wiki/%D0%A6%D0%B5%D1%82%D1%82%D0%B5%D0%BB%D1%8C%D0%BA%D0%B0%D1%81%D1%82%D0%B5%D0%BD][Zettelkasten]])
-
-*** Шаблоны (Captures)
-
-**** Daily: Default
-
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-daily-captures
-  ("d" "default" entry
-   "* %?"
-   :target (file+head "%<%Y-%m-%d>.org"
-                      "#+title: %<%Y-%m-%d>.org
-  ,#+author: Klementiev Dmitry
-  ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :dailies:%<%Y-%m-%d>:daily:"))
-#+end_src
-
-**** Programming
-
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
-  ("p" "Programming" plain
-   "%?"
-   :target (file+head "programming/${slug}.org"
-                      "#+title: ${title}
-  ,#+author: Klementiev Dmitry
-  ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :programming:")
-   :unarrowed t)
-#+end_src
-
-**** Programming: Algorithms
-
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
-  ("a" "Algorithms" plain
-   "%?"
-   :target (file+head "programming/algorithms/${slug}.org"
-                      "#+title: ${title}
-  ,#+author: Klementiev Dmitry
-  ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :algorithms:programming:")
-   :unarrowed t)
-#+end_src
-
-**** Programming: Data Structures
-
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
-  ("d" "Data Structures" plain
-   "%?"
-   :target (file+head "programming/data_structures/${slug}.org"
-                      "#+title: ${title}
-  ,#+author: Klementiev Dmitry
-  ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :data_structures:programming:")
-   :unarrowed t)
-#+end_src
-
-*** Configuration
-
-#+begin_src emacs-lisp :noweb yes :noweb-prefix no
-  (setq org-roam-v2-ack t)
-  
-  (setq-default org-roam-directory (expand-file-name "roam/" org-directory)
-                org-roam-db-location (expand-file-name "cache/org-roam.db" org-directory)
-                org-roam-dailies-capture-templates '(<<org-roam-daily-captures>>)
-                org-roam-capture-templates '(<<org-roam-captures>>))
-
-  (elpaca 'org-roam
-    (autoload 'org-roam-db-sync "org-roam")
-    (add-hook 'elpaca-after-init-hook
-              (lambda ()
-                (run-with-timer 1 nil 'org-roam-db-sync))))
-
-  (with-eval-after-load 'org-roam
-    (org-roam-db-autosync-mode 1)
-
-    (setq org-roam-db-update-on-save t
-          org-roam-dailies-directory "daily/"
-          org-roam-node-display-template
-          (concat "${title:*} "
-                  (propertize "${tags:30}" 'face 'org-tag)))
-
-    (bind-keys :map org-mode-map
-               ("C-c r r" . org-roam-ref-add)
-               ("C-c r R" . org-roam-ref-remove)
-               ("C-c r f" . org-roam-ref-find)
-               ("C-c r t" . org-roam-tag-add)
-               ("C-c r T" . org-roam-tag-remove)
-               ("C-c r a" . org-roam-alias-add)
-               ("C-c r A" . org-roam-alias-remove)
-               ;; NOTE: See https://git.sr.ht/~abcdw/rde/tree/master/item/src/rde/features/emacs-xyz.scm#L4883
-               ;; ("C-c r O" . rde-org-roam-open-ref)
-               :map mode-specific-map
-               ("n t" . org-roam-dailies-capture-today)
-               ("n n" . org-roam-buffer-toggle)
-               ("n f" . org-roam-node-find)
-               ("n i" . org-roam-node-insert)
-               ("n r" . org-roam-ref-find)
-               ("n C" . org-roam-capture)))
-#+end_src
-
-*** Roam UI
-
-Отличный плагин для просмотра всех заметок и связей между ними.
-
-Красивый веб-фронтенд для заметок Roam.
-
-#+begin_src emacs-lisp
-  (elpaca 'org-roam-ui
-    ;; Just autoload command for Org Roam UI
-    (autoload 'org-roam-ui-mode "org-roam-ui"
-      "Web Frontend for Org Roam notes."
-      t))
-#+end_src
-
-* Системы контроля версий (Git интеграция)
-
-Git интеграция сводится в основном к двум плагинам: =magit= и =forge=.
-
-=magit= - Незаменимый и безальтернативный Git интерфейс. Более мощного гит интерфейса вы просто не найдёте.
-
-=forge= - Клиент для Github, Gitlab и других хостингов прямо в GNU Emacs.
-
-Пока что я не устанавливаю Forge в своей конфигурации (он мне попросту не нужен, а так же я пишу её не
-на своём устройстве). Зато мы сделаем конфиг для Git файлов (gitattributes, gitignore, gitsubmodules)
-и настроим Magit, который будет показывать для нас TODOs (плагин =magit-todos=)
-
-#+begin_src emacs-lisp
-  (elpaca '(transient
-            :host github
-            :repo "magit/transient"
-            :tag "v0.9.3"))
-
-  (elpaca magit
-    (autoload 'magit "magit")
-    (bind-key "C-x g" 'magit))
-#+end_src
-
-** Magit TODOs
-
-Плагин который отлично выводит все *TODO* ключевые слова.
-
-#+begin_src emacs-lisp
-  (elpaca 'magit-todos
-    (autoload 'magit-todos-mode "magit-todos")
-    (add-hook 'magit-mode-hook 'magit-todos-mode))
-#+end_src
-
-** Git файлы и режимы для них
-
-#+begin_src emacs-lisp
-  (elpaca 'git-modes
-    (autoload 'gitignore-mode "git-modes")
-    (autoload 'gitconfig-mode "git-modes")
-    (autoload 'gitattributes-mode "git-modes")
-    (setq auto-mode-alist
-          (append
-           '((".gitignore\\'" . gitignore-mode)
-             (".gitconfig\\'" . gitconfig-mode)
-             (".gitattributes\\'" . gitattributes-mode))
-           auto-mode-alist)))
-#+end_src
-
-** Git Gutter
-
-#+begin_src emacs-lisp
-  (elpaca 'git-gutter
-    (autoload 'git-gutter-mode "git-gutter")
-    (add-hook 'prog-mode-hook 'git-gutter-mode)
-    (add-hook 'text-mode-hook 'git-gutter-mode))
-#+end_src
-
-* Эмуляция терминала (Terminal emulation)
-
-Для эмуляции терминала я использую два пакета:
-- =eshell= + =eat= - основной эмулятор терминала, который закрывает 90% задач (с режимами от =eat=)
-- =eat= - эмулятор терминала закрывающий остальные 10%
-
-** Eshell
-
-#+begin_src emacs-lisp
-  (define-minor-mode eshell-mode-setup
-  "Set up environment on `eshell-mode' invocation."
-  :group 'eshell
-  (if eshell-mode-setup
-      (progn
-        ;; FIXME: eshell throw error at `completion-at-point' with `all-the-icons-completion-mode' enabled.
-        ;; This is just a temporary fix which disable it.
-        (when (boundp 'all-the-icons-completion-mode)
-          (all-the-icons-completion-mode 0))
-        (if (and (boundp 'envrc-global-mode) envrc-global-mode)
-            (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
-          (setenv "PAGER" ""))
-        (eshell/alias "l" "ls -al $1")
-        (eshell/alias "e" "find-file $1")
-        (eshell/alias "ee" "find-file-other-window $1")
-        (eshell/alias "d" "dired $1")
-        (eshell/alias "gd" "magit-diff-unstaged")
-        ;; (local-unset-key 'eshell/clear)
-        )
-    (when (boundp 'all-the-icons-completion-mode)
-      (all-the-icons-completion-mode 1))))
-#+end_src
-
-#+begin_src emacs-lisp
-  (defun switch-to-prev-buffer-or-eshell (arg)
-    (interactive "P")
-    (if arg
-        (eshell arg)			; or `project-eshell-or-eshell'
-      (switch-to-buffer (other-buffer (current-buffer) 1))))
-
-  (defun project-eshell-or-eshell (&optional arg)
-    (interactive "P")
-    (if (project-current)
-        (project-eshell)
-      (eshell arg)))
-#+end_src
-
-#+begin_src emacs-lisp
-  (with-eval-after-load 'eshell
-    (require 'em-alias)
-    (require 'em-hist)
-    
-    (add-hook 'eshell-mode-hook 'eshell-mode-setup)
-
-    (bind-key "s-e" 'switch-to-prev-buffer-or-eshell eshell-mode-map)
-    (autoload 'consult-history "consult")
-    (bind-key "M-r" 'consult-history eshell-hist-mode-map))
-
-  (bind-key "s-e" 'project-eshell-or-eshell)
-#+end_src
-
-** Eat (Emulate A Terminal)
-
-#+begin_src emacs-lisp
-  (defun project-eat-or-eat (&optional arg)
-    (interactive "P")
-    (if (project-current)
-        (eat-project arg)
-      (eat)))
-
-  (defun switch-to-prev-buffer-or-eat (arg)
-    (interactive "P")
-    (if arg
-        (eat nil arg)
-      (switch-to-buffer (other-buffer (current-buffer) 1))))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; Priority: nu (nushell) -> zsh -> fish -> bash -> babashka -> sh
-  (setq-default eat-shell (or (executable-find "nu")   ; Nushell
-                              (executable-find "zsh")  ; ZShell
-                              (executable-find "fish") ; Like ZSH but simpler
-                              (executable-find "bash") ; Default Bash
-                              (executable-find "bb")   ; Clojure REPL (Without JVM)
-                              (executable-find "sh"))) ; You don't have Bash !?
-
-  (setq explicit-shell-file-name eat-shell)
-
-  (setq-default eat-line-input-ring-size 1024
-                eat-kill-buffer-on-exit t
-                eat-term-scrollback-size nil
-                eat-enable-mouse t)
-
-  (elpaca 'eat
-    (autoload 'eat "eat")
-    (autoload 'eat-eshell-mode "eat")
-    (autoload 'eat-eshell-visual-command-mode "eat")
-    (bind-key "s-E" 'project-eat-or-eat)
-    (add-hook 'eshell-load-hook 'eat-eshell-mode)
-    (add-hook 'eshell-load-hook 'eat-eshell-visual-command-mode))
-
-  (with-eval-after-load 'eat
-    (bind-key "s-E" 'switch-to-prev-buffer-or-eat eat-mode-map))
-#+end_src
-
-* Programming
-
-В данном заголовке мы настраиваем всё, что относится к программированию (конкретно к части написания кода).
-
-[[*Languages][Конфигурация режимов для отдельных языков находиться в другом заголовке]]
+* Editing
 
 ** Smartparens
 
@@ -916,7 +513,16 @@ Git интеграция сводится в основном к двум пла
                
 #+end_src
 
-** Tree Sitter
+** Git-Gutter
+
+#+begin_src emacs-lisp
+  (elpaca 'git-gutter
+    (autoload 'git-gutter-mode "git-gutter")
+    (add-hook 'prog-mode-hook 'git-gutter-mode)
+    (add-hook 'text-mode-hook 'git-gutter-mode))
+#+end_src
+
+** Tree-Sitter
 
 Tree Sitter в GNU Emacs - это головная боль. Местами он слишком сложен в настройке и просто работает каким-то вообще непонятным образом.
 
@@ -944,6 +550,7 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
         '((go "https://github.com/tree-sitter/tree-sitter-go")
           (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
           (c "https://github.com/tree-sitter/tree-sitter-c")
+          (zig "https://github.com/maxxnino/tree-sitter-zig")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
           ;; (yaml "https://github.com/ikatyang/tree-sitter-yaml")
@@ -953,31 +560,243 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
   (run-with-timer 1 nil 'treesit-install-all)
 #+end_src
 
-** LeetCode
+* Completion
 
-LeetCode клиент для GNU Emacs.
-
-Данный пакет - возможность удобно практиковать алгоритмы и структуры данных, а так же решать задачи прямо в Emacs.
+** Orderless
 
 #+begin_src emacs-lisp
-  (setq-default leetcode-directory "~/leetcode")
+  (elpaca 'orderless
+    (require-on! self-insert-command
+                 orderless))
 
-  (elpaca 'leetcode
-    (autoload 'leetcode "leetcode"
-      "Run LeetCode client for GNU Emacs."
-      t))
-
-  (with-eval-after-load 'leetcode
-    (setq leetcode-save-solutions t
-          leetcode-prefer-language "golang"
-          leetcode-prefer-sql "postgresql"))
+  (after! 'orderless
+    (setq completion-styles '(orderless basic)))
 #+end_src
 
-* Languages
+** Corfu
 
-Конфигурация языков.
+#+begin_src emacs-lisp
+  (elpaca 'corfu
+    (require-on! self-insert-command
+                 corfu))
 
-** Emacs Lisp
+  (after! 'corfu
+    (setq corfu-cycle t)
+    (setq tab-always-indent 'complete)
+    (global-corfu-mode 1)
+
+    (require 'corfu-popupinfo)
+    (corfu-popupinfo-mode 1)
+
+    (bind-keys* :map corfu-map
+                ("TAB" . corfu-complete)
+                ("M-d" . corfu-popupinfo-toggle)
+                :map corfu-popupinfo-map
+                ("M-n" . corfu-popupinfo-scroll-up)
+                ("M-p" . corfu-popupinfo-scroll-down)))
+#+end_src
+
+* Org Mode
+
+** Main Settings
+
+Навигация при помощи =consult-org-heading=.
+
+#+begin_src emacs-lisp
+  (after! '(org consult)
+    (bind-keys :map org-mode-map
+  	     ("C-s" . consult-org-heading)
+  	     ("C-S-s" . consult-line)))
+#+end_src
+
+Лучшая настройка для таймера.
+
+#+begin_src emacs-lisp
+  (after! 'org-timer
+    (setq org-timer-display nil)
+
+    (defvar org-timer-active nil
+      "Non-nil if org-timer is activated")
+
+    (defun org-timer-activate ()
+      "Set `org-timer-active' to t"
+      (setq org-timer-active t))
+
+    (defun org-timer-deactivate ()
+      "Set `org-timer-active' to nil"
+      (setq org-timer-active nil))
+
+    (add-hook 'org-timer-start-hook 'org-timer-activate)
+    (add-hook 'org-timer-stop-hook  'org-timer-deactivate)
+    (add-hook 'org-timer-set-hook   'org-timer-activate)
+    (add-hook 'org-timer-done-hook  'org-timer-deactivate))
+#+end_src
+
+Автоматическая генерация [[*Table Of Contents][TOC]].
+
+#+begin_src emacs-lisp
+  (elpaca 'toc-org
+    (autoload 'toc-org-mode "toc-org")
+    (add-hook 'org-mode-hook 'toc-org-mode))
+#+end_src
+
+* Development
+
+** VCS (Magit, Forge, Git-Modes)
+
+Git интеграция сводится в основном к двум плагинам: =magit= и =forge=.
+
+=magit= - Незаменимый и безальтернативный Git интерфейс. Более мощного гит интерфейса вы просто не найдёте.
+
+=forge= - Клиент для Github, Gitlab и других хостингов прямо в GNU Emacs.
+
+Пока что я не устанавливаю Forge в своей конфигурации (он мне попросту не нужен, а так же я пишу её не
+на своём устройстве). Зато мы сделаем конфиг для Git файлов (gitattributes, gitignore, gitsubmodules)
+и настроим Magit, который будет показывать для нас TODOs (плагин =magit-todos=)
+
+#+begin_src emacs-lisp
+  (elpaca '(transient
+            :host github
+            :repo "magit/transient"
+            :tag "v0.9.3"))
+
+  (elpaca magit
+    (autoload 'magit "magit")
+    (bind-key "C-x g" 'magit))
+#+end_src
+
+*** Magit TODOs
+
+Плагин который отлично выводит все *TODO* ключевые слова.
+
+#+begin_src emacs-lisp
+  (elpaca 'magit-todos
+    (autoload 'magit-todos-mode "magit-todos")
+    (add-hook 'magit-mode-hook 'magit-todos-mode))
+#+end_src
+
+*** Git файлы и режимы для них
+
+#+begin_src emacs-lisp
+  (elpaca 'git-modes
+    (autoload 'gitignore-mode "git-modes")
+    (autoload 'gitconfig-mode "git-modes")
+    (autoload 'gitattributes-mode "git-modes")
+    (setq auto-mode-alist
+          (append
+           '((".gitignore\\'" . gitignore-mode)
+             (".gitconfig\\'" . gitconfig-mode)
+             (".gitattributes\\'" . gitattributes-mode))
+           auto-mode-alist)))
+#+end_src
+
+** REPL (Eat, Eshell)
+
+Для эмуляции терминала я использую два пакета:
+- =eshell= + =eat= - основной эмулятор терминала, который закрывает 90% задач (с режимами от =eat=)
+- =eat= - эмулятор терминала закрывающий остальные 10%
+
+*** Eshell
+
+#+begin_src emacs-lisp
+  (define-minor-mode eshell-mode-setup
+  "Set up environment on `eshell-mode' invocation."
+  :group 'eshell
+  (if eshell-mode-setup
+      (progn
+        ;; FIXME: eshell throw error at `completion-at-point' with `all-the-icons-completion-mode' enabled.
+        ;; This is just a temporary fix which disable it.
+        (when (boundp 'all-the-icons-completion-mode)
+          (all-the-icons-completion-mode 0))
+        (if (and (boundp 'envrc-global-mode) envrc-global-mode)
+            (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
+          (setenv "PAGER" ""))
+        (eshell/alias "l" "ls -al $1")
+        (eshell/alias "e" "find-file $1")
+        (eshell/alias "ee" "find-file-other-window $1")
+        (eshell/alias "d" "dired $1")
+        (eshell/alias "gd" "magit-diff-unstaged")
+        ;; (local-unset-key 'eshell/clear)
+        )
+    (when (boundp 'all-the-icons-completion-mode)
+      (all-the-icons-completion-mode 1))))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun switch-to-prev-buffer-or-eshell (arg)
+    (interactive "P")
+    (if arg
+        (eshell arg)			; or `project-eshell-or-eshell'
+      (switch-to-buffer (other-buffer (current-buffer) 1))))
+
+  (defun project-eshell-or-eshell (&optional arg)
+    (interactive "P")
+    (if (project-current)
+        (project-eshell)
+      (eshell arg)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'eshell
+    (require 'em-alias)
+    (require 'em-hist)
+    
+    (add-hook 'eshell-mode-hook 'eshell-mode-setup)
+
+    (bind-key "s-e" 'switch-to-prev-buffer-or-eshell eshell-mode-map)
+    (autoload 'consult-history "consult")
+    (bind-key "M-r" 'consult-history eshell-hist-mode-map))
+
+  (bind-key "s-e" 'project-eshell-or-eshell)
+#+end_src
+
+*** Eat (Emulate A Terminal)
+
+#+begin_src emacs-lisp
+  (defun project-eat-or-eat (&optional arg)
+    (interactive "P")
+    (if (project-current)
+        (eat-project arg)
+      (eat)))
+
+  (defun switch-to-prev-buffer-or-eat (arg)
+    (interactive "P")
+    (if arg
+        (eat nil arg)
+      (switch-to-buffer (other-buffer (current-buffer) 1))))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; Priority: nu (nushell) -> zsh -> fish -> bash -> babashka -> sh
+  (setq-default eat-shell (or (executable-find "nu")   ; Nushell
+                              (executable-find "zsh")  ; ZShell
+                              (executable-find "fish") ; Like ZSH but simpler
+                              (executable-find "bash") ; Default Bash
+                              (executable-find "bb")   ; Clojure REPL (Without JVM)
+                              (executable-find "sh"))) ; You don't have Bash !?
+
+  (setq explicit-shell-file-name eat-shell)
+
+  (setq-default eat-line-input-ring-size 1024
+                eat-kill-buffer-on-exit t
+                eat-term-scrollback-size nil
+                eat-enable-mouse t)
+
+  (elpaca 'eat
+    (autoload 'eat "eat")
+    (autoload 'eat-eshell-mode "eat")
+    (autoload 'eat-eshell-visual-command-mode "eat")
+    (bind-key "s-E" 'project-eat-or-eat)
+    (add-hook 'eshell-load-hook 'eat-eshell-mode)
+    (add-hook 'eshell-load-hook 'eat-eshell-visual-command-mode))
+
+  (with-eval-after-load 'eat
+    (bind-key "s-E" 'switch-to-prev-buffer-or-eat eat-mode-map))
+#+end_src
+
+** Languages
+
+*** Emacs Lisp
 
 #+begin_src emacs-lisp
   (elpaca 'highlight-defined
@@ -985,53 +804,13 @@ LeetCode клиент для GNU Emacs.
     (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode))
 #+end_src
 
-** C language + Tree Sitter
+*** Common Lisp
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.\\(c\\|h\\)\\'" . c-ts-mode))
+  (elpaca 'sly
+    (autoload! "sly"
+      '(sly "Common Lisp REPL" t)
+      '(sly-mode "Common Lisp Major Mode" t))
 
-  (defalias 'c-mode 'c-ts-mode
-    "C language + Tree-Sitter")
+    (add-to-list 'auto-mode-alist '("\\.lisp\\'" . sly-mode)))
 #+end_src
-
-** Zig language + Tree Sitter
-
-#+begin_src emacs-lisp
-  (elpaca '(zig-ts-mode
-            :type git
-            :host codeberg
-            :repo "meow_king/zig-ts-mode")
-    (autoload 'zig-ts-mode "zig-ts-mode"
-      "Zig language major mode powered by Tree Sitter."
-      t)
-    (add-to-list 'auto-mode-alist '("\\.zig\\'" . zig-ts-mode)))
-#+end_src
-
-** HOLD C++ language + Tree Sitter
-CLOSED: [2025-07-12 Sat 15:05]
-
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.\\(cpp\\|hpp\\|cc\\|hh\\|c++\\|h++\\)\\'" . c++-ts-mode))
-
-  (defalias 'c++-mode 'c++-ts-mode
-    "C++ language + Tree-Sitter")
-#+end_src
-
-** Go language + Tree Sitter
-
-#+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
-  (add-to-list 'auto-mode-alist '("go.mod\\'" . go-mod-ts-mode))
-
-  (elpaca 'ob-go
-    (require-on! org-mode-hook
-      ob-go))
-
-  (defalias 'go-mode 'go-ts-mode
-    "Go language + Tree-Sitter")
-
-  (with-eval-after-load 'go-ts-mode
-    (setq go-ts-mode-indent-offset 4))
-#+end_src
-
-** WAIT Rust language + Tree Sitter
