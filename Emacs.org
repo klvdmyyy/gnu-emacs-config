@@ -34,6 +34,7 @@ Use lexical-binding. (for byte-compilation)
 - [[#basic-emacs][Basic Emacs]]
 - [[#uiux][UI/UX]]
   - [[#theme][Theme]]
+  - [[#hl-todo-highlight-todos][HL-TODO (Highlight TODOs)]]
   - [[#awesome-tray][Awesome Tray]]
   - [[#initial-screen-dashboard][Initial Screen (Dashboard)]]
   - [[#golden-ratio-for-emacs-windows][Golden Ratio for Emacs windows]]
@@ -206,6 +207,52 @@ Use lexical-binding. (for byte-compilation)
                   (load-theme default-theme :no-confirm)))))
 #+end_src
 
+** HL-TODO (Highlight TODOs)
+
+#+begin_src emacs-lisp
+  (setq-default hl-todo-require-punctuation t
+  	      hl-todo-highlight-punctuation ":")
+
+  ;; TODO: Move nerd-icons from the hl-todo
+  (elpaca 'nerd-icons
+    (eval-when-compile
+      (require 'nerd-icons)))
+
+  (elpaca 'hl-todo
+    (autoload! "hl-todo"
+      'hl-todo-mode)
+    (add-hook 'text-mode-hook 'hl-todo-mode)
+    (add-hook 'prog-mode-hook 'hl-todo-mode))
+
+  (after! '(hl-todo nerd-icons)
+    (define-advice hl-todo--get-face
+        (:override () with-icons)
+      (let* ((keyword (match-string 2))
+             (ov (make-overlay (match-beginning 0) (match-end 0))))
+
+        ;; Overlays only for the icons
+        (overlay-put ov 'hl-todo t)
+        (overlay-put ov 'evaporate t)
+        (overlay-put ov 'before-string
+                     (pcase keyword
+                       ("TODO" (nerd-icons-sucicon "nf-seti-todo"))
+                       ("TEMP" (nerd-icons-mdicon "nf-md-timer"))
+                       ("BUG" (nerd-icons-faicon "nf-fa-bug"))
+                       ("FIXME" (nerd-icons-faicon "nf-fa-wrench"))
+                       ("WARNING" (nerd-icons-faicon "nf-fa-flag"))
+                       (_ (nerd-icons-mdicon "nf-md-content_paste"))))
+
+        ;; Return color for font-lock
+        (hl-todo--combine-face
+         (cdr (or
+               ;; Fast allocation free lookup for literal keywords.
+               (assoc keyword hl-todo-keyword-faces)
+               ;; Slower regexp lookup.
+               (compat-call assoc keyword hl-todo-keyword-faces
+                            (lambda (a b)
+                              (string-match-p (format "\\`%s\\'" a) b)))))))))
+#+end_src
+
 ** Awesome Tray
 
 Мне больше нравится минималистичный трэй, чем строка состояния на подобии Doom Modeline. Достаточно одной небольшой строчки со всей необходимой мне информацией.
@@ -343,6 +390,10 @@ Use lexical-binding. (for byte-compilation)
   ;; FIXME: Byte-Compilation throw error when using `defhydra'
   ;;   out of `elpaca' macro. All `defhydra' usage are written
   ;;   in `elpaca' usage for `hydra' package.
+  ;; PERF: Hydra loaded at startup time.
+  ;; TODO: Improve Hydra configuration.
+  ;;   It throw errors out of `elpaca' macro when byte-compiling.
+  ;;   Also it loads at startup time. (No lazy loading)
   (elpaca 'hydra
     (require 'hydra)
     
