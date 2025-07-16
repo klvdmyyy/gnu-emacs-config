@@ -33,6 +33,7 @@ Use lexical-binding. (for byte-compilation)
   - [[#autoload-macro][=autoload!= macro]]
 - [[#basic-emacs][Basic Emacs]]
 - [[#uiux][UI/UX]]
+  - [[#font-and-font-size][Font and Font Size]]
   - [[#theme][Theme]]
   - [[#hl-todo-highlight-todos][HL-TODO (Highlight TODOs)]]
   - [[#awesome-tray][Awesome Tray]]
@@ -182,6 +183,20 @@ Use lexical-binding. (for byte-compilation)
 
 Данная часть конфигурации подразумевает в себе не только красивый и приятный глазу внешний вид,
 но и удобный, интуитивный интерфейс.
+
+** Font and Font Size
+
+#+begin_src emacs-lisp
+  (defvar my-font-size 120)
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+  	      (lambda (frame)
+  		(with-selected-frame frame
+  		  (set-face-attribute 'default nil :height my-font-size))))
+    (add-hook 'emacs-startup-hook
+  	    (lambda ()
+  	      (set-face-attribute 'default nil :height my-font-size))))
+#+end_src
 
 ** Theme
 
