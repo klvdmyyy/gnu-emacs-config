@@ -769,9 +769,8 @@ TODO: =org-transclude=
     (add-hook 'org-mode-hook 'toc-org-mode))
 #+end_src
 
-Шаблоны для заметок (Captures).
-
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :noweb yes :noweb-prefix no
+  (setq-default org-capture-templates '(<<org-capture-templates>>))
 #+end_src
 
 ** Planning (Agenda)
