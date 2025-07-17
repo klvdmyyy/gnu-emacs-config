@@ -77,6 +77,9 @@ Use lexical-binding. (for byte-compilation)
   - [[#vcs-magit-forge-git-modes][VCS (Magit, Forge, Git-Modes)]]
   - [[#repl-eat-eshell][REPL (Eat, Eshell)]]
   - [[#languages][Languages]]
+- [[#toolsutilities][Tools/Utilities]]
+  - [[#leetcode][LeetCode]]
+  - [[#google-translate][Google Translate]]
 
 * Functions and Macroses
 
@@ -1165,4 +1168,43 @@ TODO: Setup completion with Corfu
 
   (after! 'go-ts-mode
     (setq go-ts-mode-indent-offset 4))
+#+end_src
+
+* Tools/Utilities
+
+TODO: =docker=
+TODO: =kubernetes= or =kubel= or =kele=
+
+** LeetCode
+
+LeetCode клиент для GNU Emacs.
+
+Данный пакет - возможность удобно практиковать алгоритмы и структуры данных, а так же решать задачи прямо в Emacs.
+
+#+begin_src emacs-lisp
+  (setq-default leetcode-directory "~/leetcode")
+
+  (elpaca 'leetcode
+    (autoload 'leetcode "leetcode"
+      "Run LeetCode client for GNU Emacs."
+      t))
+
+  (with-eval-after-load 'leetcode
+    (setq leetcode-save-solutions t
+          leetcode-prefer-language "golang"
+          leetcode-prefer-sql "postgresql"))
+#+end_src
+
+** Google Translate
+
+#+begin_src emacs-lisp
+  (setq-default google-translate-translation-directions-alist
+  	      '(("ru" . "en")
+  		("en" . "ru")))
+
+  (elpaca 'google-translate
+    (autoload! "google-translate-smooth-ui"
+      'google-translate-smooth-translate)
+
+    (bind-key "C-c t" 'google-translate-smooth-translate))
 #+end_src
