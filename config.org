@@ -1115,7 +1115,6 @@ Git интеграция сводится в основном к двум пла
 
 ** Languages
 
-TODO: Python
 TODO: Clojure (Babashka or JVM)
 
 *** Bash + Tree-Sitter
