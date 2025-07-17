@@ -1115,6 +1115,15 @@ Git интеграция сводится в основном к двум пла
 
 ** Languages
 
+*** Bash + Tree-Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.sh\\'" . bash-ts-mode))
+
+  (defalias 'sh-mode 'bash-ts-mode
+    "Bash editing mode powered by tree-sitter (ALIAS).")
+#+end_src
+
 *** Emacs Lisp
 
 #+begin_src emacs-lisp
