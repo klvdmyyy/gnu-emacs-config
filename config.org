@@ -1127,6 +1127,13 @@ TODO: Clojure (Babashka or JVM)
     "Bash editing mode powered by tree-sitter (ALIAS).")
 #+end_src
 
+*** Python + Tree-Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
+  (defalias 'python-mode 'python-ts-mode)
+#+end_src
+
 *** Emacs Lisp
 
 #+begin_src emacs-lisp
