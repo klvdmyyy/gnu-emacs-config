@@ -11,7 +11,7 @@
 ;; - Spacemacs
 ;; - And other emacs distributions.
 ;;
-;; NOT FOR EDIT. USE Emacs.org INSTEAD
+;; NOT FOR EDIT. USE config.org INSTEAD
 ;;================================================================
 
 (defun emacs-restore-gc-cons-threshold ()
@@ -118,25 +118,25 @@
 ;;;   Just check if Emacs.elc is up-to-date. Keep good startup
 ;;;   time with org-babel based configuration.
 (let* ((load-suffixes '(".elc" ".el"))
-       (Emacs.org (expand-file-name "Emacs.org" user-emacs-directory))
+       (config.org (expand-file-name "config.org" user-emacs-directory))
        (README.org (expand-file-name "README.org" user-emacs-directory))
-       (Emacs.el (expand-file-name (file-name-with-extension Emacs.org "el") user-emacs-directory))
-       (Emacs.elc (expand-file-name (file-name-with-extension Emacs.el "elc") user-emacs-directory))
+       (config.el (expand-file-name (file-name-with-extension config.org "el") user-emacs-directory))
+       (config.elc (expand-file-name (file-name-with-extension config.el "elc") user-emacs-directory))
        (byte-compile-verbose nil)
        (byte-compile-warnings nil))
-  (if (and (file-exists-p Emacs.elc)
-           (file-newer-than-file-p Emacs.elc Emacs.el)
-           (file-newer-than-file-p Emacs.el Emacs.org))
+  (if (and (file-exists-p config.elc)
+           (file-newer-than-file-p config.elc config.el)
+           (file-newer-than-file-p config.el config.org))
       ;; Load compiled file
-      (load Emacs.elc :no-error :no-message :no-suffix :must-suffix)
+      (load config.elc :no-error :no-message :no-suffix :must-suffix)
     ;; Set second argument to t mean we byte-compile the file before loading
-    (org-babel-load-file Emacs.org t))
+    (org-babel-load-file config.org t))
   
   ;; Make relative symbolic link: README.org -> Emacs.org
   (unless (and (file-exists-p README.org)
                (file-symlink-p README.org))
     (dired-remove-file README.org)
-    (dired-make-relative-symlink Emacs.org README.org)))
+    (dired-make-relative-symlink config.org README.org)))
 
 (provide 'init)
 

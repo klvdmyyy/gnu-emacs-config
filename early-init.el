@@ -11,7 +11,7 @@
 ;; - Spacemacs
 ;; - And other emacs distributions.
 ;;
-;; NOT FOR EDIT. USE Emacs.org INSTEAD
+;; NOT FOR EDIT. USE config.org INSTEAD
 ;;================================================================
 
 (setq load-prefer-newer t)

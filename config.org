@@ -53,6 +53,7 @@ Use lexical-binding. (for byte-compilation)
   - [[#golden-ratio-for-emacs-windows][Golden Ratio for Emacs windows]]
   - [[#tab-bar-mode][Tab Bar mode]]
 - [[#navigation][Navigation]]
+  - [[#dired][Dired]]
   - [[#which-key][Which-key]]
   - [[#hydra][Hydra]]
   - [[#vertico][Vertico]]
@@ -417,6 +418,21 @@ TODO: ADD *BUG* keyword
 - Навигация между сочетаниями клавиш (соответственно их конфигурация: which-key, hydra, и.т.д)
 - Навигация в минибуффере и между коммандами (vertico, embark, consult)
 
+
+** Dired
+
+#+begin_src emacs-lisp
+  (elpaca 'dired-gitignore
+    (autoload! "dired-gitignore"
+      'dired-gitignore-mode)
+    (add-hook 'dired-mode-hook 'dired-gitignore-mode))
+
+  (after! '(dired dired-gitignore)
+    ;; MAYBE: More convenient keybinding for
+    ;;    `dired-gitignore-mode' toggle.
+    (bind-key "C-d" 'dired-gitignore-mode dired-mode-map))
+#+end_src
+
 ** Which-key
 
 #+begin_src emacs-lisp
@@ -751,6 +767,11 @@ TODO: =org-transclude=
   (elpaca 'toc-org
     (autoload 'toc-org-mode "toc-org")
     (add-hook 'org-mode-hook 'toc-org-mode))
+#+end_src
+
+Шаблоны для заметок (Captures).
+
+#+begin_src emacs-lisp
 #+end_src
 
 ** Planning (Agenda)

@@ -1,6 +1,6 @@
 *
 !early-init.el
 !init.el
-!Emacs.org
+!config.org
 !run.sh
-!README.org
+!readme.org
