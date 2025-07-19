@@ -858,48 +858,19 @@ Roam - Идеальная система заметок на базе Org Mode (
   ,#+author: Klementiev Dmitry
   ,#+email: klementievd08@yandex.ru
   ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :dailies:%<%Y-%m-%d>:daily:"))
+  ,#+filetags: :daily:"))
 #+end_src
 
-**** Programming
+**** Default
 
 #+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
-  ("p" "Programming" plain
+  ("d" "default" plain
    "%?"
-   :target (file+head "programming/${slug}.org"
+   :target (file+head "${slug}.org"
                       "#+title: ${title}
   ,#+author: Klementiev Dmitry
   ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :programming:")
-   :unarrowed t)
-#+end_src
-
-**** Programming: Algorithms
-
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
-  ("a" "Algorithms" plain
-   "%?"
-   :target (file+head "programming/algorithms/${slug}.org"
-                      "#+title: ${title}
-  ,#+author: Klementiev Dmitry
-  ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :algorithms:programming:")
-   :unarrowed t)
-#+end_src
-
-**** Programming: Data Structures
-
-#+begin_src emacs-lisp :tangle no :noweb-ref org-roam-captures
-  ("d" "Data Structures" plain
-   "%?"
-   :target (file+head "programming/data_structures/${slug}.org"
-                      "#+title: ${title}
-  ,#+author: Klementiev Dmitry
-  ,#+email: klementievd08@yandex.ru
-  ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :data_structures:programming:")
+  ,#+date: %<%Y-%m-%d>")
    :unarrowed t)
 #+end_src
 
