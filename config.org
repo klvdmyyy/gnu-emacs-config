@@ -77,9 +77,10 @@ Use lexical-binding. (for byte-compilation)
   - [[#vcs-magit-forge-git-modes][VCS (Magit, Forge, Git-Modes)]]
   - [[#repl-eat-eshell][REPL (Eat, Eshell)]]
   - [[#languages][Languages]]
-- [[#toolsutilities][Tools/Utilities]]
+- [[#tools][Tools]]
   - [[#leetcode][LeetCode]]
   - [[#google-translate][Google Translate]]
+  - [[#syncthing][Syncthing]]
 
 * Functions and Macroses
 
@@ -1141,7 +1142,7 @@ TODO: Setup completion with Corfu
     (setq go-ts-mode-indent-offset 4))
 #+end_src
 
-* Tools/Utilities
+* Tools
 
 TODO: =docker=
 TODO: =kubernetes= or =kubel= or =kele=
@@ -1178,4 +1179,12 @@ LeetCode клиент для GNU Emacs.
       'google-translate-smooth-translate)
 
     (bind-key "C-c t" 'google-translate-smooth-translate))
+#+end_src
+
+** Syncthing
+
+#+begin_src emacs-lisp
+  (elpaca 'syncthing
+    (autoload! "syncthing"
+      '(syncthing nil t)))
 #+end_src
