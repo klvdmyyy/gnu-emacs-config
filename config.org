@@ -220,7 +220,7 @@ Use lexical-binding. (for byte-compilation)
 Мне очень нравится обычная тема из Doom Emacs. Она слишком хороша собой :)
 
 #+begin_src emacs-lisp
-  (defvar default-theme 'doom-one
+  (defvar default-theme 'doom-one-light
     "Default theme for GNU Emacs.
 
   1. Autoload `default-theme' from theme-package
