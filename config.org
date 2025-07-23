@@ -700,6 +700,8 @@ TODO: =org-transclude=
 
 #+begin_src emacs-lisp
   (after! 'org-timer
+    ;; NOTE: I wait until I start using window manager with custom bar (eww, waybar or something similar)
+    ;;   When I start using custom bar I can set this variable to `nil'
     (setq org-timer-display 'mode-line)
 
     (defvar org-timer-active nil
