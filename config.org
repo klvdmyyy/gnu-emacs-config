@@ -729,54 +729,63 @@ TODO: =org-transclude=
     (add-hook 'org-mode-hook 'toc-org-mode))
 #+end_src
 
+#+begin_src emacs-lisp :noweb-ref org-capture-templates :tangle no
+  ("t" "Tasks/Projects")
+  ("tt" "Task" entry
+   (file "agenda/Inbox.org")
+   "* TODO %?\n%U\n%a\n%i"
+   :prepend t
+   :empty-lines 1)
+  ;; ("ts" "Clocked Entry Subtask" entry
+  ;;  (clock)
+  ;;  "* TODO %?\n%U\n%a\n%i"
+  ;;  :prepend t
+  ;;  :empty-lines 1)
+
+  ("j" "Journal Entries")
+  ("jj" "Journal" entry
+   (file+olp+datetree "agenda/Journal.org")
+   "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
+   :clock-in :clock-resume
+   :empty-lines 1)
+  ("jm" "Meeting" entry
+   (file+olp+datetree "agenda/Journal.org")
+   "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
+   :clock-in :clock-resume
+   :empty-lines 1)
+
+  ;; ("w" "Workflows")
+  ;; ("we" "Checking Email" entry (file+olp+datetree ,(dw/get-todays-journal-file-name))
+  ;;  "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
+
+  ("m" "Metrics Capture")
+  ("mw" "Weight" table-line (file+headline "agenda/Metrics.org" "Weight")
+   "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
+#+end_src
+
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no
   (setq-default org-capture-templates '(<<org-capture-templates>>))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "|" "CANC(k@)" "DONE(d!)")))
+  (bind-key "o c" 'org-capture mode-specific-map)
 #+end_src
 
 ** Planning (Agenda)
 
 TODO: Использовать =org-super-agenda=
 
-*** Кастомные комманды, виды (Custom commands, views)
+TODO: article about Emacs+Orgzly+Syncthing
 
-**** Learning (Обучение)
+FIXME: Org Mode error with =tab-width= sometimes (i find it only in config.org, don't know about other files and why this problem exists)
 
-Отдельный вид агенды для отслеживания и планирования задач, целей по изучению алгоритмов
-и структур данных
-
-#+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
-  ("l" "Learning Agenda"
-   ((agenda "" ((org-agenda-span 'day)
-                (org-agenda-remove-tags t)
-                (org-deadline-warning-days 7)
-                ;; TODO: Filter by @yandexlearning tag instead of file
-                (org-agenda-files '("~/org/agenda/YandexLearning.org"))))
-    (tags-todo "+@yandexlearning+PRIORITY=\"A\"+SCHEDULED<=\"<today>\""
-               ((org-agenda-span 'day)
-                (org-agenda-remove-tags t)
-                (org-agenda-overriding-header "High Priority Tasks")))
-    (tags-todo "+@yandexlearning/TODO"
-               ((org-agenda-tags-todo-honor-ignore-options t)
-                (org-agenda-todo-ignore-scheduled t)
-                (org-agenda-remove-tags t)
-                (org-agenda-overriding-header "Just TODO Tasks")))))
-#+end_src
-
-**** Weekly Review (Недельный обзор)
-
-Недельный обзор завершённых и оставшихся запланированных задач.
-
-Неплохо посмотреть в конце недели как много ты проеб**нил :)
-
-#+begin_src emacs-lisp :tangle no :noweb-ref custom-agenda-views
-  ("w" "Weekly Review"
-   ((agenda "" ((org-agenda-overriding-header "Completed Tasks")
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
-                (org-agenda-span 'week)))
-    (agenda "" ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
-                (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                (org-agenda-span 'week)))))
-#+end_src
+Структура Agenda:
+- Inbox.org :: Файл для /входящих заметок/
+- Tasks.org :: Задачи
+- Journal.org :: Журнальчик
+- Habits.org :: Привычки и их отслеживание (сюда входят все повторяющиеся задачи)
+- Metrics.org :: Метрики (вес, рост, и.т.д)
+- *.org :: Остальные файлы описание которых я не предоставляю по каким-либо причинам
+# - GetThingsDone.org :: Файл для /входящих задач/
 
 *** Конфигурация
 
@@ -815,7 +824,8 @@ Roam - Идеальная система заметок на базе Org Mode (
   ,#+author: Klementiev Dmitry
   ,#+email: klementievd08@yandex.ru
   ,#+date: %<%Y-%m-%d>
-  ,#+filetags: :daily:"))
+  ,#+filetags: :daily:")
+   :unnarrowed t)
 #+end_src
 
 **** Default
