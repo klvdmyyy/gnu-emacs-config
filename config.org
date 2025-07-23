@@ -518,10 +518,9 @@ TODO: Стоит посмотреть ещё комманды которые п�
     (autoload! "avy"
       '(avy-goto-char-2 nil t)
       '(avy-goto-word-0 nil t))
-    (bind-keys* :map prog-mode-map
-  	      ("C-'" . avy-goto-char-2)
-  	      :map org-mode-map
-  	      ("C-'" . avy-goto-word-0)))
+    (bind-key "C-'" 'avy-goto-char-2 prog-mode-map)
+    (after! 'org-mode
+      (bind-key* "C-'" 'avy-goto-word-0 org-mode-map)))
 #+end_src
 
 ** Ace-Window
@@ -701,7 +700,7 @@ TODO: =org-transclude=
 
 #+begin_src emacs-lisp
   (after! 'org-timer
-    (setq org-timer-display nil)
+    (setq org-timer-display 'mode-line)
 
     (defvar org-timer-active nil
       "Non-nil if org-timer is activated")
