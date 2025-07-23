@@ -48,7 +48,6 @@ Use lexical-binding. (for byte-compilation)
   - [[#font-and-font-size][Font and Font Size]]
   - [[#theme][Theme]]
   - [[#hl-todo-highlight-todos][HL-TODO (Highlight TODOs)]]
-  - [[#awesome-tray][Awesome Tray]]
   - [[#initial-screen-dashboard][Initial Screen (Dashboard)]]
   - [[#golden-ratio-for-emacs-windows][Golden Ratio for Emacs windows]]
   - [[#tab-bar-mode][Tab Bar mode]]
@@ -298,50 +297,6 @@ TODO: ADD *BUG* keyword
                             (lambda (a b)
                               (string-match-p (format "\\`%s\\'" a) b)))))))))
 #+end_src
-
-** Awesome Tray
-
-Мне больше нравится минималистичный трэй, чем строка состояния на подобии Doom Modeline. Достаточно одной небольшой строчки со всей необходимой мне информацией.
-
-#+begin_src emacs-lisp :no-export
-  (setq-default awesome-tray-hide-mode-line t
-                awesome-tray-update-interval 0.2
-                ;; For Doom One theme
-                awesome-tray-mode-line-active-color "violet")
-
-  (elpaca '(awesome-tray
-            :host github
-            :repo "manateelazycat/awesome-tray")
-    (autoload! "awesome-tray"
-      'awesome-tray-mode)
-    
-    (if (daemonp)
-        (add-hook 'after-make-frame-functions
-                  (lambda (frame)
-                    (with-selected-frame frame
-                      (awesome-tray-enable)))
-                  200)
-      (add-hook 'elpaca-after-init-hook 'awesome-tray-mode 200)))
-
-  (after! '(awesome-tray org-timer)
-    (setq org-timer-display nil)          ; Don't display `org-timer'
-                                          ; in unexistent mode-line
-    
-    (defun org-timer-module ()
-      (if org-timer-active
-          (org-timer-value-string)
-        nil))
-
-    (defface org-timer-module-face
-      '((t (:bold t)))
-      "Org Timer module face."
-      :group 'awesome-tray)
-
-    (add-to-list 'awesome-tray-module-alist
-                 '("org-timer" . (org-timer-module org-timer-module-face)))
-    (add-to-list 'awesome-tray-active-modules "org-timer"))
-#+end_src
-
 
 ** Initial Screen (Dashboard)
 
