@@ -820,7 +820,7 @@ Roam - Идеальная система заметок на базе Org Mode (
   ("d" "default" entry
    "* %?"
    :target (file+head "%<%Y-%m-%d>.org"
-                      "#+title: %<%Y-%m-%d>.org
+                      "#+title: %<%Y-%m-%d>
   ,#+author: Klementiev Dmitry
   ,#+email: klementievd08@yandex.ru
   ,#+date: %<%Y-%m-%d>
