@@ -39,6 +39,7 @@ Use lexical-binding. (for byte-compilation)
 #+end_src
 
 * Table Of Contents :TOC:
+- [[#roadmap][Roadmap]]
 - [[#functions-and-macroses][Functions and Macroses]]
   - [[#after-macro][=after!= macro]]
   - [[#require-on-macro][=require-on!= macro]]
@@ -80,6 +81,10 @@ Use lexical-binding. (for byte-compilation)
   - [[#leetcode][LeetCode]]
   - [[#google-translate][Google Translate]]
   - [[#syncthing][Syncthing]]
+
+* Roadmap
+
+- [ ] Сделать свои =autoload= для конфига. Это позволит сделать ленивую загрузку еще лучше (например не загружать пакет hydra на старте).
 
 * Functions and Macroses
 
