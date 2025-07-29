@@ -222,10 +222,13 @@ Use lexical-binding. (for byte-compilation)
 
 ** Theme
 
-Мне очень нравится обычная тема из Doom Emacs. Она слишком хороша собой :)
+Недавно я начал использовать тему =tao-yang= из пакета =tao-theme=.
+
+Мне кажется что это максимально интересный опыт работы с однотонным текстом и кодом. Так же я думаю что это
+может помочь работать и писать более сосредоточенно.
 
 #+begin_src emacs-lisp
-  (defvar default-theme '(doom-one . doom-themes)
+  (defvar default-theme '(tao-yang . tao-theme)
     "Default theme for GNU Emacs.
 
   1. Autoload `default-theme' from theme-package
