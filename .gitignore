@@ -4,4 +4,9 @@
 !config.org
 !run.sh
 !README.org
+!lisp
 !lisp/*.el
+
+*.elc
+.\#*
+\#*\#

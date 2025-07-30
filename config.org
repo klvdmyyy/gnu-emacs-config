@@ -36,14 +36,11 @@ Other files:
 Use lexical-binding. (for byte-compilation)
 #+begin_src emacs-lisp
   ;;; -*- lexical-binding: t; -*-
+  (require 'lazydo)
 #+end_src
 
 * Table Of Contents :TOC:
 - [[#roadmap][Roadmap]]
-- [[#functions-and-macroses][Functions and Macroses]]
-  - [[#after-macro][=after!= macro]]
-  - [[#require-on-macro][=require-on!= macro]]
-  - [[#autoload-macro][=autoload!= macro]]
 - [[#basic-emacs][Basic Emacs]]
 - [[#uiux][UI/UX]]
   - [[#font-and-font-size][Font and Font Size]]
@@ -85,85 +82,6 @@ Use lexical-binding. (for byte-compilation)
 * Roadmap
 
 - [ ] Сделать свои =autoload= для конфига. Это позволит сделать ленивую загрузку еще лучше (например не загружать пакет hydra на старте).
-
-* Functions and Macroses
-
-Набор функций и макросов для конфигурации.
-
-** =after!= macro
-
-Более удобная и лучшая версия =with-eval-after-load=.
-
-#+begin_src emacs-lisp
-  (defmacro after! (packages &rest body)
-    (declare (indent defun))
-    (let ((packages (eval `(,@packages))))
-      (cond ((not packages)
-             `(progn
-                ,@body))
-            ((symbolp packages)
-             `(with-eval-after-load ',packages
-                ,@body))
-            ((listp packages)
-             `(with-eval-after-load ',(car packages)
-                (after! ',(cdr packages)
-                  ,@body))))))
-#+end_src
-
-** =require-on!= macro
-
-Предоставляет возможность подгружать пакет при использовании хука или комманды.
-
-По факту это добавляет хук или "advice" который запускается лишь единожды, подгружая пакет.
-
-#+begin_src emacs-lisp
-  (defun require-on-hook (hook package)
-    (let ((fnname (intern (concat "load-" (prin1-to-string package)
-                                  "-on-" (prin1-to-string hook)))))
-      `(when (boundp ',hook)
-         ,(unless (fboundp fnname)
-            `(defun ,fnname (&rest _)
-               (require ',package)
-               (remove-hook ',hook #',fnname)))
-         (add-hook ',hook #',fnname))))
-
-  (defun require-on-command (command package)
-    (let ((fnname (intern (concat "load-" (prin1-to-string package)))))
-      (when (fboundp command)
-        `(define-advice ,command
-             (:before (&rest _) ,fnname)
-           (advice-remove ',command #',(intern (concat (prin1-to-string command)
-                                                       "@" (prin1-to-string fnname))))
-           (require ',package)))))
-
-  (defmacro require-on! (symbol package)
-    "Load PACKAGE on SYMBOL."
-    (declare (indent nil))
-    (cond
-     ((commandp symbol)
-      (require-on-command symbol package))
-     ((boundp symbol)
-      (require-on-hook symbol package))
-     (t (error "Can't determine symbol for require-on!: %s" symbol))))
-#+end_src
-
-** =autoload!= macro
-
-Удобный макрос для ленивой загрузки. В отличие от обычной функции =autoload= можно загружать
-несколько функций одним вызовом макроса (в целом это и есть всё удобство).
-
-#+begin_src emacs-lisp
-  (defun autoload! (package &rest autoloads)
-    "Generate AUTOLOADS from PACKAGE by repeating `autoload' function."
-    (declare (indent defun))
-    (dolist (symbol autoloads)
-      (cond ((listp symbol)
-             (pcase-let* ((`(,symbol ,doc-string ,interactive?) symbol))
-               (autoload symbol package doc-string interactive?)))
-            ((symbolp symbol)
-             (autoload symbol package))
-            (t (error "Can't determine symbol type for autoloading with `autoload!' macro")))))
-#+end_src
 
 * Basic Emacs
 
@@ -228,35 +146,8 @@ Use lexical-binding. (for byte-compilation)
 может помочь работать и писать более сосредоточенно.
 
 #+begin_src emacs-lisp
-  (defvar default-theme '(tao-yang . tao-theme)
-    "Default theme for GNU Emacs.
-
-  1. Autoload `default-theme' from theme-package
-  2. Load theme
-
-  How to setup variable:
-  1. Just a name of theme. Load theme without any installation.
-  2. (THEME-NAME . PACKAGE-NAME) - Install PACKAGE-NAME and load THEME-NAME from it.")
-
-  (defun better-load-theme (theme)
-    "Load THEME like `load-theme' but better."
-    (if (daemonp)
-        (add-hook 'after-make-frame-functions
-                  (lambda (frame)
-                    (with-selected-frame frame
-                      (load-theme theme :no-confirm))))
-      (add-hook 'elpaca-after-init-hook
-                (lambda ()
-                  (load-theme theme :no-confirm)))))
-
-  ;; Load theme from `default-theme' variable.
-  (pcase default-theme
-    ((pred symbolp)
-     (eval `(better-load-theme ',default-theme)))
-    (`(,default-theme . ,package)
-     (eval `(elpaca ',package
-  	   (autoload ',default-theme ,(prin1-to-string package))
-  	   (better-load-theme ',default-theme)))))
+  (autoload 'load-default-theme "theme-management" nil t)
+  (load-default-theme)
 #+end_src
 
 ** HL-TODO (Highlight TODOs)
@@ -358,11 +249,10 @@ TODO: ADD *BUG* keyword
 
 #+begin_src emacs-lisp
   (elpaca 'golden-ratio
-    (require-on! split-window-below
-                 golden-ratio)
-
-    (require-on! split-window-right
-                 golden-ratio))
+    (hook! 'split-window-below 'golden-ratio
+  	 :lazy-load t)
+    (hook! 'split-window-right 'golden-ratio
+  	 :lazy-load t))
 
   (after! 'golden-ratio
     (golden-ratio-mode 1)
@@ -430,30 +320,24 @@ TODO: ADD *BUG* keyword
   ;;   It throw errors out of `elpaca' macro when byte-compiling.
   ;;   Also it loads at startup time. (No lazy loading)
   (elpaca 'hydra
-    (require 'hydra)
-    
-    (defhydra hydra-zoom ()
-      "Zoom"
-      ("i" text-scale-increase "in")
-      ("d" text-scale-decrease "out"))
-    (bind-key "<f2>" 'hydra-zoom/body)
-    
-    (defhydra hydra-org-timer ()
-      "Org Timer"
-      ("s" org-timer-start "Start timer")
-      ("e" org-timer-stop "Timer end (Stop timer)")
-      ("p" org-timer-pause-or-continue "Pause/Continue timer")
-      ("t" org-timer-set-timer "Set timer")
-      ("q" nil "Quit"))
-    (bind-key "o t" 'hydra-org-timer/body mode-specific-map))
+    (autoload! "hydra-definitions"
+      'hydra-zoom/body
+      'hydra-org-timer/body
+      'hydra-org-roam/body
+      'hydra-org-roam-node/body)
+
+    (bind-keys ("<f2>" . hydra-zoom/body)
+  	     ("C-c o t" . hydra-org-timer/body)
+  	     ("C-c r" . hydra-org-roam/body)
+  	     ("C-c n" . hydra-org-roam-node/body)))
 #+end_src
 
 ** Vertico
 
 #+begin_src emacs-lisp
   (elpaca 'vertico
-    (require-on! pre-command-hook
-                 vertico))
+    (hook! 'pre-command-hook 'vertico
+  	 :lazy-load t))
 
   (after! 'vertico
     (vertico-mode 1))
@@ -662,8 +546,8 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
 
 #+begin_src emacs-lisp
   (elpaca 'orderless
-    (require-on! self-insert-command
-                 orderless))
+    (hook! 'self-insert-command 'orderless
+  	 :lazy-load t))
 
   (after! 'orderless
     (setq completion-styles '(orderless basic)))
@@ -673,8 +557,8 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
 
 #+begin_src emacs-lisp
   (elpaca 'corfu
-    (require-on! self-insert-command
-                 corfu))
+    (hook! 'self-insert-command 'corfu
+  	 :lazy-load t))
 
   (after! 'corfu
     (setq corfu-cycle t)
@@ -883,25 +767,7 @@ Roam - Идеальная система заметок на базе Org Mode (
           org-roam-dailies-directory "daily/"
           org-roam-node-display-template
           (concat "${title:*} "
-                  (propertize "${tags:30}" 'face 'org-tag)))
-
-    (bind-keys :map org-mode-map
-               ("C-c r r" . org-roam-ref-add)
-               ("C-c r R" . org-roam-ref-remove)
-               ("C-c r f" . org-roam-ref-find)
-               ("C-c r t" . org-roam-tag-add)
-               ("C-c r T" . org-roam-tag-remove)
-               ("C-c r a" . org-roam-alias-add)
-               ("C-c r A" . org-roam-alias-remove)
-               ;; NOTE: See https://git.sr.ht/~abcdw/rde/tree/master/item/src/rde/features/emacs-xyz.scm#L4883
-               ;; ("C-c r O" . rde-org-roam-open-ref)
-               :map mode-specific-map
-               ("n t" . org-roam-dailies-capture-today)
-               ("n n" . org-roam-buffer-toggle)
-               ("n f" . org-roam-node-find)
-               ("n i" . org-roam-node-insert)
-               ("n r" . org-roam-ref-find)
-               ("n C" . org-roam-capture)))
+                  (propertize "${tags:30}" 'face 'org-tag))))
 #+end_src
 
 *** Roam UI
@@ -1118,8 +984,8 @@ TODO: Setup completion with Corfu
   (add-to-list 'auto-mode-alist '("go.mod\\'" . go-mod-ts-mode))
 
   (elpaca 'ob-go
-    (require-on! org-mode-hook
-  	       ob-go))
+    (hook! 'org-mode-hook 'ob-go
+  	 :lazy-load t))
 
   (defalias 'go-mode 'go-ts-mode)
 
