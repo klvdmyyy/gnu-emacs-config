@@ -2,6 +2,10 @@
 ;;
 ;;; Commentary:
 ;;
+;; lazydo - packages lazy loading
+;;
+;; TODO: Part/Partition of packages (like `hydra-definitions').
+;;
 ;;; Code:
 
 (defmacro after! (packages &rest body)
