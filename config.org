@@ -91,18 +91,19 @@ Use lexical-binding. (for byte-compilation)
   (defun load-my-custom-file ()
     (load custom-file :no-error :no-message :no-suffix :must-suffix))
 
+  (setq-default frame-title-format "GNU Emacs"
+  	      make-backup-files nil
+  	      custom-file (expand-file-name "custom.el" user-emacs-directory)
+  	      cursor-type 'box
+  	      ;; cursor-type '(bar . 2)
+  	      cursor-in-non-selected-windows nil
+  	      default-input-method "russian-computer"
+  	      indent-tabs-mode nil
+  	      tab-width 4)
   (after! 'emacs
     (add-hook 'elpaca-after-init-hook #'load-my-custom-file)
 
-    (setq frame-title-format "GNU Emacs"
-          make-backup-files nil
-          custom-file (expand-file-name "custom.el" user-emacs-directory)
-          cursor-type 'box
-          ;; cursor-type '(bar . 2)
-          cursor-in-non-selected-windows nil
-          default-input-method "russian-computer"
-          indent-tabs-mode nil
-          tab-width 4)
+    
 
     (blink-cursor-mode 1)
     (add-hook 'text-mode-hook 'visual-line-mode)
@@ -366,6 +367,7 @@ TODO: ADD *BUG* keyword
   (after! 'consult
     (bind-keys ("s-B" . consult-buffer)
                ([remap switch-to-buffer] . consult-buffer)
+  	         ([remap imenu] . consult-imenu)
                ("C-s" . consult-line)
                ("M-g g" . consult-goto-line)))
 #+end_src
