@@ -39,7 +39,8 @@
               bidi-paragraph-direction 'left-to-right
               bidi-inhibit-bpa t
               initial-major-mode 'fundamental-mode
-              initial-scratch-message nil)
+              initial-scratch-message nil
+	      native-comp-async-report-warnings-errors 'silent)
 
 ;; Remove "For information about GNU Emacs..." message at startup
 (advice-add 'display-startup-echo-area-message :override #'ignore)

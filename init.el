@@ -79,21 +79,24 @@
 
 ;;; Count external packages loaded by Elpaca usage:
 
+;; TODO: This section need some fixes
+
 (defvar external-packages-list '())
 (defvar external-packages-loaded-count 0)
 (defvar external-packages-loaded '())
 
-(let* ((external-start-time (current-time))
-       (elpaca-load-path 
-        (cddr (directory-files (expand-file-name "elpaca/builds" user-emacs-directory) t))))
-  (dolist (path elpaca-load-path)
-    (let* ((files (directory-files path nil ".el\\'"))
-           (files (seq-map (lambda (file) (substring file 0 (- (length file) 3))) files))
-           (packages (seq-map #'intern files)))
-      (setq external-packages-list
-            (append
-             external-packages-list
-             packages)))))
+(when (file-exists-p (expand-file-name "elpaca/builds" user-emacs-directory))
+  (let* ((external-start-time (current-time))
+	 (elpaca-load-path 
+          (cddr (directory-files (expand-file-name "elpaca/builds" user-emacs-directory) t))))
+    (dolist (path elpaca-load-path)
+      (let* ((files (directory-files path nil ".el\\'"))
+             (files (seq-map (lambda (file) (substring file 0 (- (length file) 3))) files))
+             (packages (seq-map #'intern files)))
+	(setq external-packages-list
+              (append
+               external-packages-list
+               packages))))))
 
 (defun external-packages-require (package &rest _)
   (when (and (member package external-packages-list)
