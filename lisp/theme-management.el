@@ -7,7 +7,8 @@
 ;;
 ;;; Code:
 
-(defvar default-theme '(tao-yin . tao-theme)
+;; or `tao-yin'
+(defvar default-theme '(tao-yang . tao-theme)
   "Default theme for GNU Emacs.
 
   1. Autoload `default-theme' from theme-package
