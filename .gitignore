@@ -3,4 +3,5 @@
 !init.el
 !config.org
 !run.sh
-!readme.org
+!README.org
+!lisp/*.el
