@@ -104,8 +104,6 @@ Use lexical-binding. (for byte-compilation)
   (after! 'emacs
     (add-hook 'elpaca-after-init-hook #'load-my-custom-file)
 
-    
-
     (blink-cursor-mode 1)
     (add-hook 'text-mode-hook 'visual-line-mode)
     (add-hook 'prog-mode-hook 'visual-line-mode))
