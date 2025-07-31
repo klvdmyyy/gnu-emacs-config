@@ -40,7 +40,7 @@ Use lexical-binding. (for byte-compilation)
 #+end_src
 
 * Table Of Contents :TOC:
-- [[#roadmap][Roadmap]]
+- [[#roadmap-or-just-my-own-todo-list-with-ideas][Roadmap (or just my own todo list with ideas)]]
 - [[#basic-emacs][Basic Emacs]]
 - [[#uiux][UI/UX]]
   - [[#font-and-font-size][Font and Font Size]]
@@ -79,7 +79,7 @@ Use lexical-binding. (for byte-compilation)
   - [[#google-translate][Google Translate]]
   - [[#syncthing][Syncthing]]
 
-* Roadmap
+* Roadmap (or just my own todo list with ideas)
 
 - [ ] Сделать свои =autoload= для конфига. Это позволит сделать ленивую загрузку еще лучше (например не загружать пакет hydra на старте).
 - [ ] Абсолютно всё описание должно быть на русском (кроме заголовков, для более удобного поиска)
