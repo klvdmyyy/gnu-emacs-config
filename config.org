@@ -946,6 +946,12 @@ Git интеграция сводится в основном к двум пла
 
 TODO: Clojure (Babashka or JVM)
 
+*** JSON + Tree-Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+#+end_src
+
 *** Bash + Tree-Sitter
 
 #+begin_src emacs-lisp
