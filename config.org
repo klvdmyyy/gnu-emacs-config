@@ -93,8 +93,16 @@ Use lexical-binding. (for byte-compilation)
   ;; TODO: I think we need more convenient
   ;;   corutines (async/await/multithreading)
   ;;   for GNU Emacs.
+  ;;
+  ;;   I think Emacs' corutines must be in C core
+  ;;   or written in Emacs Lisp with C module.
+  ;;   (Core/Module can be written with `libuv' C library
+  ;;   *Used in NodeJS*)
   ;;   
-  ;;   For now we can just use aio.el library
+  ;;   For now we can just use aio.el library.
+  ;;   
+  ;;   Also aio.el must be a example of async i/o
+  ;;   library for GNU Emacs.
   ;;
   ;; MAYBE: Move it from Basic Emacs configuration
   ;;   to another heading.
@@ -119,6 +127,7 @@ Use lexical-binding. (for byte-compilation)
   	      default-input-method "russian-computer"
   	      indent-tabs-mode nil
   	      tab-width 4)
+
   (after! 'emacs
     (add-hook 'elpaca-after-init-hook #'load-my-custom-file)
 
