@@ -9,8 +9,8 @@
 
 ;; Good light themes:
 ;; '(tao-yang . tao-theme)
-;; '(doom-earl-grey . doom-themes)
-(defvar default-theme '(doom-earl-grey . doom-themes)
+;; '(doom-one-light . doom-themes)
+(defvar default-theme '(doom-one-light . doom-themes)
   "Default theme for GNU Emacs.
 
   1. Autoload `default-theme' from theme-package

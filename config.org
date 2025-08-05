@@ -90,6 +90,23 @@ Use lexical-binding. (for byte-compilation)
 * Basic Emacs
 
 #+begin_src emacs-lisp
+  ;; TODO: I think we need more convenient
+  ;;   corutines (async/await/multithreading)
+  ;;   for GNU Emacs.
+  ;;   
+  ;;   For now we can just use aio.el library
+  ;;
+  ;; MAYBE: Move it from Basic Emacs configuration
+  ;;   to another heading.
+  (elpaca 'aio
+    (autoload! "aio"
+      'aio-defun
+      'aio-await
+      'aio-sleep
+      'aio-wait-for
+      'aio-lambda
+      'aio-with-async))
+
   (defun load-my-custom-file ()
     (load custom-file :no-error :no-message :no-suffix :must-suffix))
 
@@ -532,15 +549,15 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
         '((go "https://github.com/tree-sitter/tree-sitter-go")
           (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
           (c "https://github.com/tree-sitter/tree-sitter-c")
-          (zig "https://github.com/maxxnino/tree-sitter-zig")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-          ;; (yaml "https://github.com/ikatyang/tree-sitter-yaml")
           (python "https://github.com/tree-sitter/tree-sitter-python")
           (bash "https://github.com/tree-sitter/tree-sitter-bash")
           (json "https://github.com/tree-sitter/tree-sitter-json")))
 
-  (run-with-timer 1 nil 'treesit-install-all)
+  (add-hook 'elpaca-after-init-hook
+            (lambda ()
+              (run-with-timer 1 nil 'treesit-install-all)))
 #+end_src
 
 * Completion
@@ -550,7 +567,7 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
 #+begin_src emacs-lisp
   (elpaca 'orderless
     (hook! 'self-insert-command 'orderless
-  	 :lazy-load t))
+  	     :lazy-load t))
 
   (after! 'orderless
     (setq completion-styles '(orderless basic)))
@@ -751,7 +768,7 @@ Roam - Идеальная система заметок на базе Org Mode (
 
 #+begin_src emacs-lisp :noweb yes :noweb-prefix no
   (setq org-roam-v2-ack t)
-  
+
   (setq-default org-roam-directory (expand-file-name "roam/" org-directory)
                 org-roam-db-location (expand-file-name "cache/org-roam.db" org-directory)
                 org-roam-dailies-capture-templates '(<<org-roam-daily-captures>>)
