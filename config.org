@@ -76,7 +76,6 @@ Use lexical-binding. (for byte-compilation)
   - [[#languages][Languages]]
 - [[#tools][Tools]]
   - [[#leetcode][LeetCode]]
-  - [[#google-translate][Google Translate]]
   - [[#syncthing][Syncthing]]
 
 * Roadmap (or just my own todo list with ideas)
@@ -661,6 +660,24 @@ TODO: =org-transclude=
     (add-hook 'org-mode-hook 'toc-org-mode))
 #+end_src
 
+Pomodoro техника для org-mode
+
+#+begin_src emacs-lisp
+  (setq-default org-pomodoro-length 25
+                org-pomodoro-short-break-length 5
+                org-pomodoro-long-break-length 20)
+
+  (elpaca 'org-pomodoro
+    (autoload! "org-pomodoro"
+      '(org-pomodoro nil t))
+
+    (bind-keys :map mode-specific-map
+               ("o p" . org-pomodoro)
+               :map org-agenda-mode-map
+               ("P" . org-pomodoro)))
+
+#+end_src
+
 #+begin_src emacs-lisp :noweb-ref org-capture-templates :tangle no
   ("t" "Tasks/Projects")
   ("tt" "Task" entry
@@ -1012,6 +1029,22 @@ TODO: Setup completion with Corfu
   (elpaca 'sly)
 #+end_src
 
+*** C + Tree-Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.\\(c\\|h\\)\\'" . c-ts-mode))
+
+  (defalias 'c-mode 'c-ts-mode)
+#+end_src
+
+*** C++ + Tree-Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.\\(cc\\|cpp\\|hh\\|hpp\\)\\'" . c++-ts-mode))
+
+  (defalias 'c++-mode 'c++-ts-mode)
+#+end_src
+
 *** Go + Tree-Sitter
 
 #+begin_src emacs-lisp
@@ -1053,21 +1086,9 @@ LeetCode клиент для GNU Emacs.
           leetcode-prefer-sql "postgresql"))
 #+end_src
 
-** Google Translate
-
-#+begin_src emacs-lisp
-  (setq-default google-translate-translation-directions-alist
-  	      '(("ru" . "en")
-  		("en" . "ru")))
-
-  (elpaca 'google-translate
-    (autoload! "google-translate-smooth-ui"
-      'google-translate-smooth-translate)
-
-    (bind-key "C-c t" 'google-translate-smooth-translate))
-#+end_src
-
 ** Syncthing
+
+TODO: Configure it.
 
 #+begin_src emacs-lisp
   (elpaca 'syncthing
