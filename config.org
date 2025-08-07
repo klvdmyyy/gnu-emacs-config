@@ -561,7 +561,9 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
           (python "https://github.com/tree-sitter/tree-sitter-python")
           (bash "https://github.com/tree-sitter/tree-sitter-bash")
-          (json "https://github.com/tree-sitter/tree-sitter-json")))
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (meson "https://github.com/tree-sitter-grammars/tree-sitter-meson")
+          (cmake "https://github.com/uyha/tree-sitter-cmake")))
 
   (add-hook 'elpaca-after-init-hook
             (lambda ()
@@ -667,14 +669,16 @@ Pomodoro техника для org-mode
                 org-pomodoro-short-break-length 5
                 org-pomodoro-long-break-length 20)
 
+  ;; FIXME: Pomodoro bindings doesn't work.
+
   (elpaca 'org-pomodoro
     (autoload! "org-pomodoro"
       '(org-pomodoro nil t))
 
-    (bind-keys :map mode-specific-map
-               ("o p" . org-pomodoro)
-               :map org-agenda-mode-map
-               ("P" . org-pomodoro)))
+    (after! 'org-agenda
+      (bind-key "P" 'org-pomodoro org-agenda-mode-map))
+
+    (bind-key "o p" 'org-pomodoro mode-specific-map))
 
 #+end_src
 
@@ -755,6 +759,11 @@ FIXME: Org Mode error with =tab-width= sometimes (i find it only in config.org, 
            "\\`[A-Za-z]*.org\\'")))
 
   (bind-key "a" 'org-agenda mode-specific-map)
+
+  (after! 'org-agenda
+    (bind-keys :map org-agenda-mode-map
+               ([remap org-agenda-previous-line] . org-agenda-previous-item)
+               ([remap org-agenda-next-line]     . org-agenda-next-item)))
 #+end_src
 
 ** Note Taking (Roam)
@@ -992,23 +1001,19 @@ TODO: Clojure (Babashka or JVM)
 *** JSON + Tree-Sitter
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.json\\'" . json-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
 #+end_src
 
 *** Bash + Tree-Sitter
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.sh\\'" . bash-ts-mode))
-
-  (defalias 'sh-mode 'bash-ts-mode
-    "Bash editing mode powered by tree-sitter (ALIAS).")
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
 #+end_src
 
 *** Python + Tree-Sitter
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-ts-mode))
-  (defalias 'python-mode 'python-ts-mode)
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 #+end_src
 
 *** Emacs Lisp
@@ -1032,17 +1037,27 @@ TODO: Setup completion with Corfu
 *** C + Tree-Sitter
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.\\(c\\|h\\)\\'" . c-ts-mode))
-
-  (defalias 'c-mode 'c-ts-mode)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
 #+end_src
 
 *** C++ + Tree-Sitter
 
 #+begin_src emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.\\(cc\\|cpp\\|hh\\|hpp\\)\\'" . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+#+end_src
 
-  (defalias 'c++-mode 'c++-ts-mode)
+*** CMake + Tree-Sitter
+
+#+begin_src emacs-lisp
+  (add-to-list 'major-mode-remap-alist '(cmake-mode . cmake-ts-mode))
+#+end_src
+
+*** Meson (Without Tree-Sitter)
+
+#+begin_src emacs-lisp
+  (elpaca 'meson-mode
+    ;; NOTE: All necessary autoloads is loaded automatically from source code.
+    )
 #+end_src
 
 *** Go + Tree-Sitter
