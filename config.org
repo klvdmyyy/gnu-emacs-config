@@ -283,7 +283,9 @@ TODO: ADD *BUG* keyword
 
   (after! 'golden-ratio
     (golden-ratio-mode 1)
-    (add-to-list 'golden-ratio-extra-commands 'ace-window))
+    (add-to-list 'golden-ratio-extra-commands 'ace-window)
+    (add-to-list 'golden-ratio-extra-commands 'avy-goto-char-2)
+    (add-to-list 'golden-ratio-extra-commands 'avy-goto-word-0))
 #+end_src
 
 ** Tab Bar mode
@@ -448,9 +450,10 @@ TODO: Стоит посмотреть ещё комманды которые п�
     (autoload! "avy"
       '(avy-goto-char-2 nil t)
       '(avy-goto-word-0 nil t))
+    (bind-key "C-'" 'avy-goto-char-2 global-map)
+    (bind-key "C-'" 'avy-goto-char-2 text-mode-map)
     (bind-key "C-'" 'avy-goto-char-2 prog-mode-map)
-    (after! 'org-mode
-      (bind-key* "C-'" 'avy-goto-word-0 org-mode-map)))
+    (bind-key* "C-'" 'avy-goto-word-0 org-mode-map))
 #+end_src
 
 ** Ace-Window
@@ -557,6 +560,7 @@ Tree Sitter в GNU Emacs - это головная боль. Местами он
         '((go "https://github.com/tree-sitter/tree-sitter-go")
           (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
           (c "https://github.com/tree-sitter/tree-sitter-c")
+          (zig "https://github.com/maxxnino/tree-sitter-zig")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
           (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
           (python "https://github.com/tree-sitter/tree-sitter-python")
@@ -1025,39 +1029,17 @@ TODO: Clojure (Babashka or JVM)
     (add-hook 'emacs-lisp-mode-hook 'highlight-defined-mode))
 #+end_src
 
-*** Common Lisp
-
-TODO: Setup completion with Corfu
+*** Zig + Tree-Sitter
 
 #+begin_src emacs-lisp
-  (setq-default inferior-lisp-program (executable-find "sbcl"))
-  (elpaca 'sly)
+  (elpaca 'zig-ts-mode
+    (add-to-list 'auto-mode-alist '("\\.zig\\'" . zig-ts-mode)))
 #+end_src
 
 *** C + Tree-Sitter
 
 #+begin_src emacs-lisp
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-#+end_src
-
-*** C++ + Tree-Sitter
-
-#+begin_src emacs-lisp
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-#+end_src
-
-*** CMake + Tree-Sitter
-
-#+begin_src emacs-lisp
-  (add-to-list 'major-mode-remap-alist '(cmake-mode . cmake-ts-mode))
-#+end_src
-
-*** Meson (Without Tree-Sitter)
-
-#+begin_src emacs-lisp
-  (elpaca 'meson-mode
-    ;; NOTE: All necessary autoloads is loaded automatically from source code.
-    )
 #+end_src
 
 *** Go + Tree-Sitter
