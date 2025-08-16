@@ -2,6 +2,8 @@
 ;;
 ;;; Commentary:
 ;;
+;; TODO: Setup Org (Agenda, Roam, Pomodoro and etc).
+;;
 ;;; Code:
 
 (eval-when-compile
