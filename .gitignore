@@ -1,12 +1,8 @@
 *
 !early-init.el
 !init.el
-!config.org
+!readme.org
 !run.sh
-!README.org
-!lisp
+!.editorconfig
+!lisp/
 !lisp/*.el
-
-*.elc
-.\#*
-\#*\#

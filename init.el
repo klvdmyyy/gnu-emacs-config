@@ -1,156 +1,289 @@
-;;; init.el --- Initialization -*- no-byte-compile: t; lexical-binding: t; -*-
-;;
-;; Copyright (C) 2025 Klementiev Dmitry <klementievd08@yandex.ru>
-;;
-;; Author: Klementiev Dmitry <klementievd08@yandex.ru>
+;;; init.el --- Initialization file -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
 ;;; Code:
 
-;;================================================================
-;; My init configuration file
-;; --------------------------
-;; It's heavily inspired by following configurations:
-;; - Doom Emacs
-;; - minimal-emacs.d
-;; - Spacemacs
-;; - And other emacs distributions.
-;;
-;; NOT FOR EDIT. USE config.org INSTEAD
-;;================================================================
+(eval-when-compile
+  (require 'lazydo))
 
-(defun emacs-restore-gc-cons-threshold ()
-  "Restore `gc-cons-threshold'."
-  (setq gc-cons-threshold (* 16 1024 1024)))
+(defconst user-packages-dependencies
+  '(dash))
 
-(defun emacs-display-init-time ()
-  "Display Emacs init time."
-  (message "Emacs initialized in %.3f with %d garbage collections."
-           (float-time
-            (time-subtract
-             elpaca-after-init-time
-             before-init-time))
-           gcs-done))
+(defconst user-packages
+  '(vertico
+    orderless
+	consult
+    corfu
+	embark
+	embark-consult
+    smartparens
+	golden-ratio
+    ace-window
+	flycheck
+	magit))
 
-(add-hook 'elpaca-after-init-hook #'emacs-restore-gc-cons-threshold)
-(add-hook 'elpaca-after-init-hook #'emacs-display-init-time)
+(setopt package-archives
+        '(("gnu" . "https://elpa.gnu.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+          ;; ("melpa" . "https://melpa.org/packages/")
+          ))
 
-;;; Bootstrap Elpaca:
+(dolist (package (append user-packages-dependencies
+                         user-packages))
+  (unless (package-installed-p package)
+    (package-install package)))
 
-(defvar elpaca-installer-version 0.11)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                        :ref nil :depth 1 :inherit ignore
-                        :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                        :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (<= emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                  ,@(when-let* ((depth (plist-get order :depth)))
-                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                  ,(plist-get order :repo) ,repo))))
-                  ((zerop (call-process "git" nil buffer t "checkout"
-                                        (or (plist-get order :ref) "--"))))
-                  (emacs (concat invocation-directory invocation-name))
-                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                  ((require 'elpaca))
-                  ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (let ((load-source-file-function nil)) (load "./elpaca-autoloads"))))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
+;;; Emacs Lisp Autoindent Mode:
 
-;;; Count external packages loaded by Elpaca usage:
-
-;; TODO: This section need some fixes
-
-(defvar external-packages-list '())
-(defvar external-packages-loaded-count 0)
-(defvar external-packages-loaded '())
-
-(when (file-exists-p (expand-file-name "elpaca/builds" user-emacs-directory))
-  (let* ((external-start-time (current-time))
-	 (elpaca-load-path 
-          (cddr (directory-files (expand-file-name "elpaca/builds" user-emacs-directory) t))))
-    (dolist (path elpaca-load-path)
-      (let* ((files (directory-files path nil ".el\\'"))
-             (files (seq-map (lambda (file) (substring file 0 (- (length file) 3))) files))
-             (packages (seq-map #'intern files)))
-	(setq external-packages-list
-              (append
-               external-packages-list
-               packages))))))
-
-(defun external-packages-require (package &rest _)
-  (when (and (member package external-packages-list)
-             (not (member package external-packages-loaded)))
-    (add-to-list 'external-packages-loaded package)
-    (setq external-packages-loaded-count
-          (+ external-packages-loaded-count 1))))
-
-(advice-add 'require :after #'external-packages-require)
-(advice-add 'load :after #'external-packages-require)
-
-(add-hook 'elpaca-after-init-hook
-          (lambda ()
-            (message "Loaded %d external packages at startup: %s"
-                     external-packages-loaded-count
-                     external-packages-loaded)))
-
-;;; Compile and Load configuration file (Org Babel -> Emacs Lisp):
-
-;; Load `org-babel-load-file' function before usage
-(autoload 'org-babel-load-file "org")
-
-;; Other autoloads
-(autoload 'dired-remove-file "dired")
-(autoload 'dired-make-relative-symlink "dired")
-
-(defun init-emacs ()
+(defun emacs-lisp-indent-buffer ()
+  "Indent Emacs Lisp buffer from `point-min' to `point-max'."
   (interactive)
-  ;; PERF: We don't need to always load a Emacs.org file.
-  ;;   Just check if Emacs.elc is up-to-date. Keep good startup
-  ;;   time with org-babel based configuration.
-  (let* ((load-suffixes '(".elc" ".el"))
-         (config.org (expand-file-name "config.org" user-emacs-directory))
-         (README.org (expand-file-name "README.org" user-emacs-directory))
-         (config.el (expand-file-name (file-name-with-extension config.org "el") user-emacs-directory))
-         (config.elc (expand-file-name (file-name-with-extension config.el "elc") user-emacs-directory))
-         (byte-compile-verbose nil)
-         (byte-compile-warnings nil))
-    (if (and (file-exists-p config.elc)
-             (file-newer-than-file-p config.elc config.el)
-             (file-newer-than-file-p config.el config.org))
-        ;; Load compiled file
-        (load config.elc :no-error :no-message :no-suffix :must-suffix)
-      ;; Set second argument to t mean we byte-compile the file before loading
-      (org-babel-load-file config.org t))
-    
-    ;; Make relative symbolic link: README.org -> Emacs.org
-    (unless (and (file-exists-p README.org)
-                 (file-symlink-p README.org))
-      (dired-remove-file README.org)
-      (dired-make-relative-symlink config.org README.org))))
+  (indent-region (point-min) (point-max))
+  (untabify))
 
-;; Just initialize GNU Emacs
-(init-emacs)
+(define-minor-mode emacs-lisp-auto-indent-mode
+  "Minor mode for Emacs Lisp autoindentation before save."
+  :group 'emacs-lisp-auto-indent
+  (if emacs-lisp-auto-indent-mode
+      (add-hook 'before-save-hook 'emacs-lisp-indent-buffer)
+    (remove-hook 'before-save-hook 'emacs-lisp-indent-buffer)))
+
+(add-hook 'emacs-lisp-mode-hook 'emacs-lisp-auto-indent-mode)
+
+;;; Vertico:
+
+(hook! 'pre-command-hook 'vertico
+       :lazy-load t)
+
+(after! 'vertico
+  (vertico-mode 1))
+
+;;; Orderless:
+
+(hook! 'self-insert-command 'orderless
+       :lazy-load t)
+
+(after! 'orderless
+  (setq completion-styles '(orderless basic)))
+
+;;; Consult:
+
+(bind-keys ("s-B" . consult-buffer)
+           ([remap switch-to-buffer] . consult-buffer)
+           ([remap imenu] . consult-imenu)
+           ("C-s" . consult-line)
+           ([remap goto-line] . consult-goto-line))
+
+;;; Embark:
+
+(autoload! "embark"
+  '(embark-act nil t)
+  '(embark-dwim nil t)
+  '(embark-bindings nil t))
+
+(bind-keys ("C-." . embark-act)		   ; pick some comfortable binding
+           ("C-;" . embark-dwim)	   ; good alternative for M-.
+           ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
+
+(after! 'embark
+  ;; FIXME: `org-open-at-point-global' can't open link to heading (in TOC for example)
+  ;;
+  ;; I solve it just by replacing `org-open-at-point-global' by default
+  ;; `org-open-at-point' function when current major mode is Org
+  (define-advice org-open-at-point-global
+      (:around (orig-fun) current-mode-is-org)
+    (if (eq major-mode #'org-mode)
+        (funcall #'org-open-at-point)
+      (funcall orig-fun))))
+
+(after! 'embark-consult
+  (add-hook 'embark-collect-mode-hook 'consult-preview-at-point-mode))
+
+;;; Corfu:
+
+(hook! 'self-insert-command 'corfu
+       :lazy-load t)
+
+(after! 'corfu
+  (setq corfu-cycle t)
+  (setq tab-always-indent 'complete)
+  (global-corfu-mode 1)
+
+  (require 'corfu-popupinfo)
+  (corfu-popupinfo-mode 1)
+
+  (bind-keys* :map corfu-map
+              ("TAB" . corfu-complete)
+              ("M-d" . corfu-popupinfo-toggle)
+              :map corfu-popupinfo-map
+              ("M-n" . corfu-popupinfo-scroll-up)
+              ("M-p" . corfu-popupinfo-scroll-down)))
+
+;;; Smartparens:
+
+(autoload! "smartparens"
+  '(smartparens-mode nil t)
+  '(smartparens-strict-mode nil t))
+
+(add-hook 'prog-mode-hook 'smartparens-mode)
+(add-hook 'prog-mode-hook 'smartparens-strict-mode)
+
+(after! 'smartparens
+  (require 'smartparens-config)
+  (bind-keys :map smartparens-mode-map
+             ("M-s" . nil)
+             ("M-DEL" . sp-backward-unwrap-sexp)
+             ("C-<left>" . sp-forward-barf-sexp)
+             ("C-<right>" . sp-forward-slurp-sexp)))
+
+;;; Golden Ratio:
+
+(hook! 'split-window-below 'golden-ratio
+	   :lazy-load t)
+
+(hook! 'split-window-right 'golden-ratio
+	   :lazy-load t)
+
+(after! 'golden-ratio
+  (golden-ratio-mode 1)
+  (add-to-list 'golden-ratio-extra-commands 'ace-window)
+  (add-to-list 'golden-ratio-extra-commands 'avy-goto-char-2)
+  (add-to-list 'golden-ratio-extra-commands 'avy-goto-word-0))
+
+;;; Ace Window:
+
+(autoload 'ace-window "ace-window" nil t)
+(bind-key "M-o" 'ace-window)
+
+;;; Tree-Sitter:
+
+(defun treesit-install-all ()
+  "Install all language grammars.
+
+From `treesit-language-source-alist' variable
+by `treesit-install-language-grammar' function.
+
+This function install language grammar only when it unavailable."
+  (interactive)
+  (mapc
+   (lambda (lang)
+     (when (not (treesit-language-available-p lang))
+       (treesit-install-language-grammar lang)))
+   (mapcar #'car treesit-language-source-alist)))
+
+
+;; Tree Sitter source
+(setq treesit-language-source-alist
+      '((go "https://github.com/tree-sitter/tree-sitter-go")
+        (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+        (c "https://github.com/tree-sitter/tree-sitter-c")
+        ;; (zig "https://github.com/maxxnino/tree-sitter-zig")
+        ;; (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        ;; (meson "https://github.com/tree-sitter-grammars/tree-sitter-meson")
+        ;; (cmake "https://github.com/uyha/tree-sitter-cmake")
+		))
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (run-with-timer 1 nil 'treesit-install-all)))
+
+;;; LSP (Language Server Protocol):
+
+(when (daemonp)
+  (require 'eglot))
+
+;;; Flycheck:
+
+(add-hook 'after-init-hook 'global-flycheck-mode)
+
+;;; JSON + Tree-Sitter:
+
+(add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
+
+;;; Bash + Tree-Sitter:
+
+(add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
+
+(add-hook 'bash-ts-mode-hook 'eglot-ensure)
+
+;;; Python + Tree-Sitter:
+
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+
+(add-hook 'python-ts-mode-hook 'eglot-ensure)
+
+;;; C + Tree-Sitter:
+
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+
+(add-hook 'c-ts-mode-hook 'eglot-ensure)
+
+;;; Go + Tree-Sitter:
+
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+(add-to-list 'auto-mode-alist '("go.mod\\'" . go-mod-ts-mode))
+
+(add-hook 'go-ts-mode-hook 'eglot-ensure)
+
+;;; Eshell:
+
+(define-minor-mode eshell-mode-setup
+  "Set up environment on `eshell-mode' invocation."
+  :group 'eshell
+  (if eshell-mode-setup
+      (progn
+        ;; FIXME: eshell throw error at `completion-at-point' with `all-the-icons-completion-mode' enabled.
+        ;; This is just a temporary fix which disable it.
+        (when (boundp 'all-the-icons-completion-mode)
+          (all-the-icons-completion-mode 0))
+        (if (and (boundp 'envrc-global-mode) envrc-global-mode)
+            (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
+          (setenv "PAGER" ""))
+        (eshell/alias "l" "ls -al $1")
+        (eshell/alias "e" "find-file $1")
+        (eshell/alias "ee" "find-file-other-window $1")
+        (eshell/alias "d" "dired $1")
+        (eshell/alias "gd" "magit-diff-unstaged")
+        ;; (local-unset-key 'eshell/clear)
+        )
+    (when (boundp 'all-the-icons-completion-mode)
+      (all-the-icons-completion-mode 1))))
+
+(defun switch-to-prev-buffer-or-eshell (arg)
+  (interactive "P")
+  (if arg
+      (eshell arg)			; or `project-eshell-or-eshell'
+    (switch-to-buffer (other-buffer (current-buffer) 1))))
+
+(defun project-eshell-or-eshell (&optional arg)
+  (interactive "P")
+  (if (project-current)
+      (project-eshell)
+    (eshell arg)))
+
+(after! 'eshell
+  (require 'em-alias)
+  (require 'em-hist)
+
+  (add-hook 'eshell-mode-hook 'eshell-mode-setup)
+
+  (bind-key "s-e" 'switch-to-prev-buffer-or-eshell eshell-mode-map)
+  (autoload 'consult-history "consult")
+  (bind-key "M-r" 'consult-history eshell-hist-mode-map))
+
+(bind-key "s-e" 'project-eshell-or-eshell)
+
+;;; Magit:
+
+(when (daemonp)
+  (require 'magit))
+
+(bind-key "C-x g" 'magit)
 
 (provide 'init)
 

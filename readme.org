@@ -1,0 +1,3 @@
+#+title: My GNU Emacs configuration
+#+author: Klementiev Dmitry
+#+email: klementievd08@yandex.ru
