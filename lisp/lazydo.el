@@ -30,7 +30,8 @@
          ;; Simple args parsing
          (lazy-load (if (member :lazy-load args) (plist-get args :lazy-load) nil))
          (package (if (member :package args) (plist-get args :package) nil)))
-    (cond ((and (commandp hook) lazy-load)
+    ;; TODO: fboundp and commandp (Commands and Functions)
+    (cond ((and (fboundp hook) lazy-load)
            (let ((fnname (intern (concat "load-" (prin1-to-string function)))))
              `(define-advice ,hook
                   (:before (&rest _) ,fnname)
