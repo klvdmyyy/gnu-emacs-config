@@ -297,6 +297,56 @@ This function install language grammar only when it unavailable."
 
 (add-hook 'go-ts-mode-hook 'eglot-ensure)
 
+(defun project-go-test ()
+  "Run test in Go project."
+  (interactive)
+  (unless (project-current)
+    (error "Current project not found"))
+
+  (let* (;; Получаем корневую директорию проекта
+         (root (project-root (project-current)))
+
+         ;; 1) Собираем все возможные файлы проекта с расширением .go
+         ;; 2) Собираем директории каждого из этих файлов
+         ;; 3) Удаляем дубликаты
+         (dirs (delete-dups
+                (seq-map 'file-name-directory (directory-files-recursively root "\\.go\\'"))))
+
+         ;; 1) Запускаем тестирование в каждой директории, сохраняя результат в массив строк
+         ;; 2) Собираем массив строк в одну целую строку
+         (result-string
+          (apply 'concat
+                 (cons
+                  "-*- mode: fundamental; -*-\n"
+                  (seq-map
+                   (lambda (dir)
+                     (shell-command-to-string (concat "go test " dir " -cover")))
+                   dirs)))))
+    ;; Создаём буффер.
+    (let ((name (get-buffer-create (concat "*Go Project Test: " root))))
+      ;; Открываем буффер
+      (switch-to-buffer name)
+
+      ;; Записываем результаты тестирования
+      (insert result-string)
+
+      ;; Делаем буффер read-only
+      (setq-local buffer-read-only t)
+
+      ;; Назначаем базовые сочетания клавиш
+      (local-set-key "q" 'kill-current-buffer)
+      (local-set-key "p" 'previous-line)
+      (local-set-key "n" 'next-line)
+
+      ;; Для более удобного чтения результатов
+      (hl-line-mode 1)
+
+      ;; Возвращаемся в предыдущий буффер
+      (previous-buffer)
+
+      ;; Открываем уже готовый буффер с тестами в раздельном окне
+      (display-buffer-in-side-window name '()))))
+
 ;;; Eshell:
 
 (define-minor-mode eshell-mode-setup
