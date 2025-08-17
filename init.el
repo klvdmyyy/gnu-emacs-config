@@ -70,6 +70,12 @@
 
 ;;; Consult:
 
+(setq-default
+ ;; consult-async-input-debounce 0
+ ;; consult-async-input-throttle 0
+ ;; consult-async-refresh-delay 0
+ consult-async-min-input 3)
+
 (bind-keys ("s-B" . consult-buffer)
            ([remap switch-to-buffer] . consult-buffer)
            ([remap imenu] . consult-imenu)
