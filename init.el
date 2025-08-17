@@ -22,14 +22,15 @@
     smartparens
     golden-ratio
     ace-window
-    flycheck
+    sideline
+    sideline-eglot
+    sideline-flymake
     magit))
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
           ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-          ;; ("melpa" . "https://melpa.org/packages/")
-          ))
+          ("melpa" . "https://melpa.org/packages/")))
 
 (dolist (package (append user-packages-dependencies
                          user-packages))
@@ -44,6 +45,7 @@
   (indent-region (point-min) (point-max))
   (untabify (point-min) (point-max)))
 
+;; TODO: Make it emacs-lisp only local maybe. (Use formatting lsp+formatters instead.)
 (define-minor-mode emacs-lisp-auto-indent-mode
   "Minor mode for Emacs Lisp autoindentation before save."
   :group 'emacs-lisp-auto-indent
@@ -75,7 +77,8 @@
            ([remap switch-to-buffer] . consult-buffer)
            ([remap imenu] . consult-imenu)
            ("C-s" . consult-line)
-           ([remap goto-line] . consult-goto-line))
+           ([remap goto-line] . consult-goto-line)
+           ("M-g e" . consult-flymake))
 
 ;;; Embark:
 
@@ -199,9 +202,23 @@ This function install language grammar only when it unavailable."
 (when (daemonp)
   (require 'eglot))
 
-;;; Flycheck:
+;;; Sideline:
 
-(add-hook 'after-init-hook 'global-flycheck-mode)
+(setq-default sideline-backends-left '(sideline-flymake)
+              sideline-backends-right '(sideline-eglot))
+
+(after! 'sideline
+  (setq sideline-backends-left-skip-current-line t   ; don't display on current line (left)
+        sideline-backends-right-skip-current-line t  ; don't display on current line (right)
+        sideline-order-left 'down                    ; or 'up
+        sideline-order-right 'up                     ; or 'down
+        sideline-format-left "%s   "                 ; format for left aligment
+        sideline-format-right "   %s"                ; format for right aligment
+        sideline-priority 100                        ; overlays' priority
+        sideline-display-backend-name t))            ; display the backend name
+
+(add-hook 'prog-mode-hook 'flymake-mode)
+(add-hook 'flymake-mode-hook 'sideline-mode)
 
 ;;; JSON + Tree-Sitter:
 
@@ -226,6 +243,8 @@ This function install language grammar only when it unavailable."
 (add-hook 'c-ts-mode-hook 'eglot-ensure)
 
 ;;; Go + Tree-Sitter:
+
+(setq-default go-ts-mode-indent-offset 4)
 
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
 (add-to-list 'auto-mode-alist '("go.mod\\'" . go-mod-ts-mode))
