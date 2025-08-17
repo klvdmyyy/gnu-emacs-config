@@ -223,24 +223,25 @@ Bootstraping GNU Emacs. Optimizations and etc."
             300)
 
   (setq-default frame-title-format "Emacs Workflowww"
-				custom-file (expand-file-name "custom.el" user-emacs-directory)
-				cursor-type '(bar . 2)
-				;; cursor-type 'box
-				cursor-in-non-selected-windows nil
-				default-input-method "russian-computer"
-				tab-width 4)
+                custom-file (expand-file-name "custom.el" user-emacs-directory)
+                cursor-type '(bar . 2)
+                ;; cursor-type 'box
+                cursor-in-non-selected-windows nil
+                default-input-method "russian-computer"
+                tab-width 4)
 
   (add-hook 'after-init-hook
-			(lambda ()
-			  (blink-cursor-mode 0)
-			  (indent-tabs-mode 0)))
+            (lambda ()
+              (blink-cursor-mode 0)
+              (indent-tabs-mode 0)))
 
   (add-hook 'after-init-hook
-			(lambda ()
-			  (load custom-file :no-error :no-message :no-suffix :must-suffix)))
+            (lambda ()
+              (load custom-file :no-error :no-message :no-suffix :must-suffix)))
 
-  (add-hook 'text-mode-hook 'visual-line-mode)
-  (add-hook 'prog-mode-hook 'visual-line-mode)
+  ;; (add-hook 'text-mode-hook 'visual-line-mode)
+  ;; (add-hook 'prog-mode-hook 'visual-line-mode)
+  (add-hook 'after-init-hook 'global-visual-line-mode)
 
   ;; Just call all functions
   (bootstrap-startup-screen)
