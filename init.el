@@ -20,6 +20,7 @@
     embark
     embark-consult
     smartparens
+    visual-fill-column
     golden-ratio
     ace-window
     sideline
@@ -117,6 +118,36 @@
 
 ;;; Smartparens:
 
+(defconst default-pairs-list
+  '((?\( . ?\))
+    (?\[ . ?\])
+    (?\{ . ?\}))
+  "List of default pairs.")
+
+(defun open-pair-p (char)
+  "Return t if CHAR is opening pair."
+  (member char (mapcar (lambda (pairs) (car pairs)) default-pairs-list)))
+
+(defun close-pair-p (char)
+  "Return t if CHAR is closing pair."
+  (member char (mapcar (lambda (pairs) (cdr pairs)) default-pairs-list)))
+
+(defun indent-between-pairs ()
+  "Open a new brace or bracket expression, with relevant newlines and indent."
+  (interactive)
+  (if (and (open-pair-p (char-before))
+           (close-pair-p (char-after)))
+      (progn
+        (newline-and-indent)
+        (unless (eq (char-after) '?\n)
+          (newline)
+          (indent-according-to-mode)
+          (forward-line -1)
+          (indent-according-to-mode)))
+    (newline-and-indent)))
+
+(bind-key "RET" 'indent-between-pairs prog-mode-map)
+
 (autoload! "smartparens"
   '(smartparens-mode nil t)
   '(smartparens-strict-mode nil t))
@@ -131,6 +162,16 @@
              ("M-DEL" . sp-backward-unwrap-sexp)
              ("C-<left>" . sp-forward-barf-sexp)
              ("C-<right>" . sp-forward-slurp-sexp)))
+
+;;; Visual fill column:
+
+(add-hook 'prog-mode-hook 'visual-fill-column-mode)
+(add-hook 'text-mode-hook 'visual-fill-column-mode)
+
+(after! 'visual-fill-column
+  (setq visual-fill-column-center-text nil)
+  (setq visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
+  (setq visual-fill-column-width 160))
 
 ;;; Golden Ratio:
 
@@ -174,7 +215,7 @@ This function install language grammar only when it unavailable."
         (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
         (c "https://github.com/tree-sitter/tree-sitter-c")
         ;; (zig "https://github.com/maxxnino/tree-sitter-zig")
-        ;; (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
         (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
         (python "https://github.com/tree-sitter/tree-sitter-python")
         (bash "https://github.com/tree-sitter/tree-sitter-bash")
