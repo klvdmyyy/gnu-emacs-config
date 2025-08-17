@@ -255,6 +255,9 @@ This function install language grammar only when it unavailable."
         (if (and (boundp 'envrc-global-mode) envrc-global-mode)
             (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
           (setenv "PAGER" ""))
+        (eshell/alias "x" "exit")
+        ;; TODO: Make more convenient FZF (files, grep and etc).
+        (eshell/alias "fzf" "project-find-file")
         (eshell/alias "l" "ls -al $1")
         (eshell/alias "e" "find-file $1")
         (eshell/alias "ee" "find-file-other-window $1")
