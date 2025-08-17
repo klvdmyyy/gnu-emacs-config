@@ -24,38 +24,38 @@
                 ,@body))))))
 
 (defmacro hook! (hook function &rest args)
-  "TODO: Documentation of this thing."
+  "TODO: Documentation of this thing.  (HOOK FUNCTION ARGS)."
   (let* ((hook (eval `(,@hook)))
-	 (function (eval `(,@function)))
-	 ;; Simple args parsing
-	 (lazy-load (if (member :lazy-load args) (plist-get args :lazy-load) nil))
-	 (package (if (member :package args) (plist-get args :package) nil)))
+         (function (eval `(,@function)))
+         ;; Simple args parsing
+         (lazy-load (if (member :lazy-load args) (plist-get args :lazy-load) nil))
+         (package (if (member :package args) (plist-get args :package) nil)))
     (cond ((and (commandp hook) lazy-load)
-	   (let ((fnname (intern (concat "load-" (prin1-to-string function)))))
-	     `(define-advice ,hook
-		  (:before (&rest _) ,fnname)
-		(advice-remove ',hook #',(intern (concat (prin1-to-string hook)
-							 "@" (prin1-to-string fnname))))
-		(require ',function))))
+           (let ((fnname (intern (concat "load-" (prin1-to-string function)))))
+             `(define-advice ,hook
+                  (:before (&rest _) ,fnname)
+                (advice-remove ',hook #',(intern (concat (prin1-to-string hook)
+                                                         "@" (prin1-to-string fnname))))
+                (require ',function))))
 
-	  ((boundp hook)
-	   (if lazy-load
-	       (let ((fnname (intern (concat "load-" (prin1-to-string function)
-					     "-on-" (prin1-to-string hook)))))
-		 `(progn
-		    ,(unless (fboundp fnname)
-		       `(defun ,fnname (&rest _)
-			  (interactive)
-			  (require ',function)
-			  (remove-hook ',hook #',fnname)))
-		    (add-hook ',hook #',fnname)))
-	     `(progn
-		,(if package
-		     (autoload ',function ,(prin1-to-string package))
-		   '())
-		(add-hook ',hook ',function))))
+          ((boundp hook)
+           (if lazy-load
+               (let ((fnname (intern (concat "load-" (prin1-to-string function)
+                                             "-on-" (prin1-to-string hook)))))
+                 `(progn
+                    ,(unless (fboundp fnname)
+                       `(defun ,fnname (&rest _)
+                          (interactive)
+                          (require ',function)
+                          (remove-hook ',hook #',fnname)))
+                    (add-hook ',hook #',fnname)))
+             `(progn
+                ,(if package
+                     (autoload ',function ,(prin1-to-string package))
+                   '())
+                (add-hook ',hook ',function))))
 
-	  (t (error "Can't determine hook in `hook!' function: `%s'" hook)))))
+          (t (error "Can't determine hook in `hook!' function: `%s'" hook)))))
 
 (defun autoload! (package &rest autoloads)
   "Generate AUTOLOADS from PACKAGE by repeating `autoload' function."
