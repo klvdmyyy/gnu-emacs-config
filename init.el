@@ -15,15 +15,15 @@
 (defconst user-packages
   '(vertico
     orderless
-	consult
+    consult
     corfu
-	embark
-	embark-consult
+    embark
+    embark-consult
     smartparens
-	golden-ratio
+    golden-ratio
     ace-window
-	flycheck
-	magit))
+    flycheck
+    magit))
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -42,7 +42,7 @@
   "Indent Emacs Lisp buffer from `point-min' to `point-max'."
   (interactive)
   (indent-region (point-min) (point-max))
-  (untabify))
+  (untabify (point-min) (point-max)))
 
 (define-minor-mode emacs-lisp-auto-indent-mode
   "Minor mode for Emacs Lisp autoindentation before save."
@@ -84,8 +84,8 @@
   '(embark-dwim nil t)
   '(embark-bindings nil t))
 
-(bind-keys ("C-." . embark-act)		   ; pick some comfortable binding
-           ("C-;" . embark-dwim)	   ; good alternative for M-.
+(bind-keys ("C-." . embark-act)        ; pick some comfortable binding
+           ("C-;" . embark-dwim)       ; good alternative for M-.
            ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
 
 (after! 'embark
@@ -142,10 +142,10 @@
 ;;; Golden Ratio:
 
 (hook! 'split-window-below 'golden-ratio
-	   :lazy-load t)
+       :lazy-load t)
 
 (hook! 'split-window-right 'golden-ratio
-	   :lazy-load t)
+       :lazy-load t)
 
 (after! 'golden-ratio
   (golden-ratio-mode 1)
@@ -188,7 +188,7 @@ This function install language grammar only when it unavailable."
         (json "https://github.com/tree-sitter/tree-sitter-json")
         ;; (meson "https://github.com/tree-sitter-grammars/tree-sitter-meson")
         ;; (cmake "https://github.com/uyha/tree-sitter-cmake")
-		))
+        ))
 
 (add-hook 'after-init-hook
           (lambda ()
@@ -259,7 +259,7 @@ This function install language grammar only when it unavailable."
 (defun switch-to-prev-buffer-or-eshell (arg)
   (interactive "P")
   (if arg
-      (eshell arg)			; or `project-eshell-or-eshell'
+      (eshell arg)          ; or `project-eshell-or-eshell'
     (switch-to-buffer (other-buffer (current-buffer) 1))))
 
 (defun project-eshell-or-eshell (&optional arg)
