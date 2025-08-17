@@ -37,23 +37,13 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-;;; Emacs Lisp Autoindent Mode:
+;;; Formatting:
 
-(defun emacs-lisp-indent-buffer ()
-  "Indent Emacs Lisp buffer from `point-min' to `point-max'."
-  (interactive)
-  (indent-region (point-min) (point-max))
-  (untabify (point-min) (point-max)))
+(autoload 'format-on-save-mode "format-on-save"
+  "Format buffer before save."
+  t)
 
-;; TODO: Make it emacs-lisp only local maybe. (Use formatting lsp+formatters instead.)
-(define-minor-mode emacs-lisp-auto-indent-mode
-  "Minor mode for Emacs Lisp autoindentation before save."
-  :group 'emacs-lisp-auto-indent
-  (if emacs-lisp-auto-indent-mode
-      (add-hook 'before-save-hook 'emacs-lisp-indent-buffer)
-    (remove-hook 'before-save-hook 'emacs-lisp-indent-buffer)))
-
-(add-hook 'emacs-lisp-mode-hook 'emacs-lisp-auto-indent-mode)
+(add-hook 'prog-mode-hook 'format-on-save-mode)
 
 ;;; Vertico:
 
