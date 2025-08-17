@@ -3,6 +3,7 @@
 ;;; Commentary:
 ;;
 ;; TODO: Setup Org (Agenda, Roam, Pomodoro and etc).
+;; MAYBE: Setup `auto-insert-mode'.
 ;;
 ;;; Code:
 
