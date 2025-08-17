@@ -316,16 +316,26 @@ This function install language grammar only when it unavailable."
          ;; 2) Собираем массив строк в одну целую строку
          (result-string
           (apply 'concat
-                 (cons
-                  "-*- mode: fundamental; -*-\n"
-                  (seq-map
-                   (lambda (dir)
-                     (shell-command-to-string (concat "go test " dir " -cover")))
-                   dirs)))))
+                 (seq-map
+                  (lambda (dir)
+                    (shell-command-to-string (concat "go test " dir " -cover -v")))
+                  dirs))))
     ;; Создаём буффер.
-    (let ((name (get-buffer-create (concat "*Go Project Test: " root))))
+    (let* ((raw-name (concat "*Go Project Test: " root))
+           (existing-buffer (get-buffer raw-name))
+           (name (get-buffer-create raw-name)))
       ;; Открываем буффер
       (switch-to-buffer name)
+
+      (setq-local buffer-read-only nil)
+
+      (unless existing-buffer
+        (insert "-*- mode: fundamental; -*-\n"))
+
+      (when existing-buffer
+        (insert "\n\n"))
+
+      (insert (concat">>>>>>>>>> " (format-time-string "%Y-%m-%d %H:%M:%S") " <<<<<<<<<<\n"))
 
       ;; Записываем результаты тестирования
       (insert result-string)
@@ -334,7 +344,7 @@ This function install language grammar only when it unavailable."
       (setq-local buffer-read-only t)
 
       ;; Назначаем базовые сочетания клавиш
-      (local-set-key "q" 'kill-current-buffer)
+      ;; (local-set-key "q" 'kill-current-buffer)
       (local-set-key "p" 'previous-line)
       (local-set-key "n" 'next-line)
 
@@ -345,7 +355,8 @@ This function install language grammar only when it unavailable."
       (previous-buffer)
 
       ;; Открываем уже готовый буффер с тестами в раздельном окне
-      (display-buffer-in-side-window name '()))))
+      (unless existing-buffer
+        (display-buffer-in-side-window name '())))))
 
 ;;; Eshell:
 
