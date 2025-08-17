@@ -6,6 +6,9 @@
 ;;
 ;;; Code:
 
+(setq user-full-name "Klementiev Dmitry"
+      user-mail-address "klementievd08@yandex.ru")
+
 (eval-when-compile
   (require 'lazydo))
 
@@ -26,7 +29,10 @@
     sideline
     sideline-eglot
     sideline-flymake
-    magit))
+    magit
+    cape
+    yasnippet
+    yasnippet-capf))
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -342,6 +348,19 @@ This function install language grammar only when it unavailable."
   (require 'magit))
 
 (bind-key "C-x g" 'magit)
+
+;;; Cape:
+
+(add-hook 'completion-at-point-functions #'cape-file)
+(add-hook 'completion-at-point-functions #'cape-history)
+
+;;; Yasnippet + Yasnippet-Capf:
+
+(autoload 'yas-global-mode "yasnippet" nil t)
+(add-hook 'after-init-hook 'yas-global-mode)
+
+(autoload 'yasnippet-capf "yasnippet-capf" nil t)
+(add-hook 'completion-at-point-functions #'yasnippet-capf)
 
 (provide 'init)
 

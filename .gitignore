@@ -7,3 +7,5 @@
 !lisp/
 !lisp/*.el
 !test.el
+!snippets
+!snippets/**

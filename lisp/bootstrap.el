@@ -243,6 +243,9 @@ Bootstraping GNU Emacs. Optimizations and etc."
   ;; (add-hook 'prog-mode-hook 'visual-line-mode)
   (add-hook 'after-init-hook 'global-visual-line-mode)
 
+  (add-hook 'after-init-hook 'which-key-mode)
+  (add-hook 'after-init-hook 'recentf-mode)
+
   ;; Just call all functions
   (bootstrap-startup-screen)
   (bootstrap-startup-package)

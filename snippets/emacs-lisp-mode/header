@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: header
+# key: header
+# --
+;;; `(file-name-base (buffer-file-name))`.el --- $1 -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) `(format-time-string "%Y")` `user-full-name` <`user-mail-address`>
+;;
+;; Author:  `user-full-name`
+;; Email:   `user-mail-address`
+;; License: $2
+;; Date:    `(format-time-string "%Y-%m-%d %H:%M")`
+;;
+;;; Commentary:
+;;
+;; $3
+;;
+;;; Code:
+
+$0
+
+(provide '`(file-name-base (buffer-file-name))`)
+
+;;; `(file-name-base (buffer-file-name))`.el ends here

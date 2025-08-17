@@ -21,7 +21,7 @@
 
 (macroexpand
  '(feature! 'ide
-    (eglot-ensure)))
+            (eglot-ensure)))
 
 (enable-feature! 'ide)
 
