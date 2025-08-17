@@ -168,10 +168,13 @@
 (add-hook 'prog-mode-hook 'visual-fill-column-mode)
 (add-hook 'text-mode-hook 'visual-fill-column-mode)
 
+(setq-default fill-column 160
+              visual-fill-column-width 160)
+
 (after! 'visual-fill-column
   (setq visual-fill-column-center-text nil)
   (setq visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
-  (setq visual-fill-column-width 160))
+  )
 
 ;;; Golden Ratio:
 
