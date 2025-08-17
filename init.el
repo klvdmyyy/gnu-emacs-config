@@ -297,66 +297,9 @@ This function install language grammar only when it unavailable."
 
 (add-hook 'go-ts-mode-hook 'eglot-ensure)
 
-(defun project-go-test ()
-  "Run test in Go project."
-  (interactive)
-  (unless (project-current)
-    (error "Current project not found"))
-
-  (let* (;; Получаем корневую директорию проекта
-         (root (project-root (project-current)))
-
-         ;; 1) Собираем все возможные файлы проекта с расширением .go
-         ;; 2) Собираем директории каждого из этих файлов
-         ;; 3) Удаляем дубликаты
-         (dirs (delete-dups
-                (seq-map 'file-name-directory (directory-files-recursively root "\\.go\\'"))))
-
-         ;; 1) Запускаем тестирование в каждой директории, сохраняя результат в массив строк
-         ;; 2) Собираем массив строк в одну целую строку
-         (result-string
-          (apply 'concat
-                 (seq-map
-                  (lambda (dir)
-                    (shell-command-to-string (concat "go test " dir " -cover -v")))
-                  dirs))))
-    ;; Создаём буффер.
-    (let* ((raw-name (concat "*Go Project Test: " root))
-           (existing-buffer (get-buffer raw-name))
-           (name (get-buffer-create raw-name)))
-      ;; Открываем буффер
-      (switch-to-buffer name)
-
-      (setq-local buffer-read-only nil)
-
-      (unless existing-buffer
-        (insert "-*- mode: fundamental; -*-\n"))
-
-      (when existing-buffer
-        (insert "\n\n"))
-
-      (insert (concat">>>>>>>>>> " (format-time-string "%Y-%m-%d %H:%M:%S") " <<<<<<<<<<\n"))
-
-      ;; Записываем результаты тестирования
-      (insert result-string)
-
-      ;; Делаем буффер read-only
-      (setq-local buffer-read-only t)
-
-      ;; Назначаем базовые сочетания клавиш
-      ;; (local-set-key "q" 'kill-current-buffer)
-      (local-set-key "p" 'previous-line)
-      (local-set-key "n" 'next-line)
-
-      ;; Для более удобного чтения результатов
-      (hl-line-mode 1)
-
-      ;; Возвращаемся в предыдущий буффер
-      (previous-buffer)
-
-      ;; Открываем уже готовый буффер с тестами в раздельном окне
-      (unless existing-buffer
-        (display-buffer-in-side-window name '())))))
+(autoload 'go-testing-project "go-testing"
+  "Run testing in project for all Golang files."
+  t)
 
 ;;; Eshell:
 
