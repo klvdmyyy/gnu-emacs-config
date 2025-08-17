@@ -197,6 +197,9 @@
 (hook! 'split-window-right 'golden-ratio
        :lazy-load t)
 
+(hook! 'display-buffer-in-side-window 'golden-ratio
+       :lazy-load t)
+
 (after! 'golden-ratio
   (golden-ratio-mode 1)
   (add-to-list 'golden-ratio-extra-commands 'ace-window)
