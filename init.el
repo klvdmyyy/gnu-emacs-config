@@ -322,8 +322,9 @@ This function install language grammar only when it unavailable."
           (setenv "PAGER" ""))
         (eshell/alias "x" "exit")
         ;; TODO: Make more convenient FZF (files, grep and etc).
-        (eshell/alias "fzf" "project-find-file")
+        (eshell/alias "ff" "project-find-file")
         (eshell/alias "rg" "consult-ripgrep")
+		(eshell/alias "gg" "consult-git-grep")
         (eshell/alias "l" "ls -al $1")
         (eshell/alias "e" "find-file $1")
         (eshell/alias "ee" "find-file-other-window $1")
