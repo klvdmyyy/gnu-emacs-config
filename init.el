@@ -19,6 +19,7 @@
 (defconst user-packages
   '(vertico
     orderless
+	marginalia
     consult
     corfu
     embark
@@ -33,7 +34,8 @@
     magit
     cape
     yasnippet
-    yasnippet-capf))
+    yasnippet-capf
+	leetcode))
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -68,6 +70,14 @@
 
 (after! 'orderless
   (setq completion-styles '(orderless basic)))
+
+;;; Marginalia:
+
+(after! 'vertico
+  (require 'marginalia))
+
+(after! 'marginalia
+  (marginalia-mode 1))
 
 ;;; Consult:
 
@@ -372,6 +382,12 @@ This function install language grammar only when it unavailable."
 
 (autoload 'yasnippet-capf "yasnippet-capf" nil t)
 (add-hook 'completion-at-point-functions #'yasnippet-capf)
+
+;;; Leetcode Client:
+
+(autoload 'leetcode "leetcode"
+  "Open Leetcode client for Emacs."
+  t)
 
 (provide 'init)
 
