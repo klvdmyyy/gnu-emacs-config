@@ -1,5 +1,18 @@
-#+title: My GNU Emacs configuration
+#+title: Emacs Workflowww
 #+author: Klementiev Dmitry
 #+email: klementievd08@yandex.ru
 
-Максимально простая конфигурация GNU Emacs.
+My GNU Emacs based workflow.
+
+* Languages
+
+Preferred:
+- C language
+- Golang
+- Bash
+- Python
+
+
+Maybe add:
+- C++
+- Rust
