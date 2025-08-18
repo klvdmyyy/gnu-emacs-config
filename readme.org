@@ -7,12 +7,12 @@ My GNU Emacs based workflow.
 * Languages
 
 Preferred:
-- C language
 - Golang
-- Bash
 - Python
+- Bash
 
 
 Maybe add:
+- C language
 - C++
 - Rust

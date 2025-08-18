@@ -287,12 +287,6 @@ This function install language grammar only when it unavailable."
 
 (add-hook 'python-ts-mode-hook 'eglot-ensure)
 
-;;; C + Tree-Sitter:
-
-(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-
-(add-hook 'c-ts-mode-hook 'eglot-ensure)
-
 ;;; Go + Tree-Sitter:
 
 (setq-default go-ts-mode-indent-offset 4)
