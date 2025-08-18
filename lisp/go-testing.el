@@ -5,15 +5,50 @@
 ;; Author:  Klementiev Dmitry
 ;; Email:   klementievd08@yandex.ru
 ;; License: None
-;; Date:    2025-08-17 23:12
+;; Date:    2025-08-17 18:12
 ;;
 ;;; Commentary:
 ;;
 ;; Just better go testing mode.
 ;;
+;; FIXME: Font lock default for go-testing-mode doesn't works.
+;;
 ;;; Code:
 
-(defcustom go-testing-buffer-major-mode 'org-mode
+;;; Majore mode:
+
+(eval-when-compile
+  (require 'rx))
+
+(defface go-testing-pass-face '((t :foreground "green"))
+  "Go Testing PASS face."
+  :group 'go-testing)
+
+(defface go-testing-fail-face '((t :foreground "red"))
+  "Go Testing FAIL face."
+  :group 'go-testing)
+
+(defconst go-testing-font-lock-defaults
+  (let ((pass '("PASS"))
+        (fail '("FAIL")))
+    `((("RUN"  (0 go-testing-pass-face))
+       ("PASS" (0 go-testing-pass-face))
+       ("FAIL" (0 go-testing-fail-face))))))
+
+(defvar go-testing-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "q") 'kill-current-buffer)
+    (define-key map (kbd "p") 'previous-line)
+    (define-key map (kbd "n") 'next-line)
+    map))
+
+(define-derived-mode go-testing-mode special-mode "go-testing"
+  "Major mode for Go Testing output."
+  (setq font-lock-defaults go-testing-font-lock-defaults))
+
+;;; Testing functions:
+
+(defcustom go-testing-buffer-major-mode 'go-testing-mode
   "Major mode for Golang testing buffer."
   :group 'go-testing
   :type 'symbol)
@@ -47,36 +82,28 @@
          (existing-buffer (get-buffer name))
          (buffer (get-buffer-create name)))
     (switch-to-buffer buffer)
+    (erase-buffer)
 
     (setq-local buffer-read-only nil)
 
-    (if (not existing-buffer)
-        (insert (concat "-*- mode: "
-                        (string-remove-suffix
-                         "-mode"
-                         (prin1-to-string go-testing-buffer-major-mode))
-                        "; -*-\n\n"))
-      (insert "\n"))
+    ;; (if (not existing-buffer)
+    ;;     (insert (concat "-*- mode: "
+    ;;                     (string-remove-suffix
+    ;;                      "-mode"
+    ;;                      (prin1-to-string go-testing-buffer-major-mode))
+    ;;                     "; -*-\n\n"))
+    ;;   (insert "\n"))
 
     (insert
-     (concat "* " (format-time-string "%Y-%m-%d %H:%M:%S") "\n\n"))
+     (concat (format-time-string "%Y-%m-%d %H:%M:%S") "\n"
+			 "^^^^^^^^^^^^^^^^^^^" "\n\n"))
     (end-of-buffer)
 
-    (insert "#+begin_example\n")
-
     (insert (go-testing--run-all))
-
-    (insert "#+end_example\n")
 
     (setq-local buffer-read-only t)
     
     (funcall go-testing-buffer-major-mode)
-
-    (local-set-key "q" 'kill-current-buffer)
-    (local-set-key "p" 'previous-line)
-    (local-set-key "P" 'org-previous-visible-heading)
-    (local-set-key "n" 'next-line)
-    (local-set-key "N" 'org-next-visible-heading)
     
     (hl-line-mode 1)
 

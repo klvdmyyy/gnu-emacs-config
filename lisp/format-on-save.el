@@ -6,10 +6,15 @@
 ;;
 ;;; Code:
 
+;; Built-in formatting function for Emacs Lisp.
 (defun emacs-lisp-format-buffer ()
-  "Just indent and untabify Emacs Lisp buffer from `point-min' to `point-max'."
+  "Just indent Emacs Lisp buffer from `point-min' to `point-max'."
   (interactive)
-  (indent-region (point-min) (point-max))
+  (indent-region (point-min) (point-max)))
+
+(defun format-on-save-untabify-buffer ()
+  "Untabify current buffer."
+  (interactive)
   (untabify (point-min) (point-max)))
 
 (defcustom format-on-save-formatters
@@ -25,7 +30,15 @@
   :type 'alist)
 
 (defun format-on-save--format ()
-  "Format buffer by formatters."
+  "Format buffer by formatters.
+
+Also this function untabifys current buffer
+if spaces prefered."
+  ;; Always untabify buffers if spaces prefered.
+  (unless indent-tabs-mode
+    (funcall format-on-save-untabify-buffer))
+
+  ;; Format buffer.
   (cond
    ;; Formatting functions from alist.
    ((alist-get major-mode format-on-save-formatters)

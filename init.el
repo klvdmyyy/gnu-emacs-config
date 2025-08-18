@@ -233,6 +233,7 @@ This function install language grammar only when it unavailable."
       '((go "https://github.com/tree-sitter/tree-sitter-go")
         (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
         (c "https://github.com/tree-sitter/tree-sitter-c")
+        (rust "https://github.com/tree-sitter/tree-sitter-rust")
         ;; (zig "https://github.com/maxxnino/tree-sitter-zig")
         (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
         (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")

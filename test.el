@@ -25,6 +25,8 @@
 
 (enable-feature! 'ide)
 
+(format-time-string "%Y-%m-%d %H:%M" nil t)
+
 (provide 'test)
 
 ;;; test.el ends here
