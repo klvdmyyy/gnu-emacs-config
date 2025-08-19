@@ -303,6 +303,17 @@ This function install language grammar only when it unavailable."
 
 ;;; Eshell:
 
+(defun my-eshell-prompt ()
+  "My custom prompt for Emacs shell."
+  (concat "\n("
+		  user-login-name
+		  ") "
+		  (eshell/pwd)
+		  "\n$ "))
+
+(setopt eshell-prompt-function
+		#'my-eshell-prompt)
+
 (define-minor-mode eshell-mode-setup
   "Set up environment on `eshell-mode' invocation."
   :group 'eshell
@@ -315,6 +326,9 @@ This function install language grammar only when it unavailable."
         (if (and (boundp 'envrc-global-mode) envrc-global-mode)
             (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
           (setenv "PAGER" ""))
+		;; Use `eshell/clear-scrollback' instead of `eshell/clear'
+		(eshell/alias "clear" "clear-scrollback")
+		(eshell/alias "cl" "clear-scrollback")
         (eshell/alias "x" "exit")
         ;; TODO: Make more convenient FZF (files, grep and etc).
         (eshell/alias "ff" "project-find-file")
