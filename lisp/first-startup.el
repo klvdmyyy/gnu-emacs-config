@@ -23,7 +23,10 @@
 (defun first-startup--lock ()
   "Lock startup."
   (require 'dired-aux)
-  (dired-create-empty-file first-startup--lock-file))
+  ;; If we have more than one instances of Emacs it can
+  ;; cause a error.
+  (unless (file-exists-p first-startup--lock-file)
+	(dired-create-empty-file first-startup--lock-file)))
 
 (defun first-startup-p ()
   "Return non-nil if user start Emacs at first time.
