@@ -36,7 +36,8 @@
     yasnippet
     yasnippet-capf
 	dired-gitignore
-	leetcode))
+	leetcode
+	nerd-icons))
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -303,13 +304,54 @@ This function install language grammar only when it unavailable."
 
 ;;; Eshell:
 
+(defmacro with-face (STR &rest PROPS)
+  "Return STR propertized with PROPS."
+  (declare (indent defun))
+  `(propertize ,STR 'face (list ,@PROPS)))
+
+(defun eshell/shortened-pwd ()
+  "Return the shortened PWD.
+
+~/.config/emacs -> ~/.c/emacs
+
+~/.config/emacs/lisp -> ~/.c/e/lisp"
+  (let ((splited (string-split
+				  (file-name-directory (abbreviate-file-name (eshell/pwd)))
+				  "/")))
+	(concat
+	 (string-join
+	  (seq-map
+	   (lambda (name)
+		 (if (<= (length name) 2)
+			 name
+		   (if (string-equal (substring name 0 1) ".")
+			   (substring name 0 2)
+			 (substring name 0 1))))
+	   splited)
+	  "/")
+	 (file-name-base (eshell/pwd)))))
+
+(defun eshell/pp-last-status ()
+  (let ((status (number-to-string eshell-last-command-status)))
+	(if (string-equal status "0")
+		(with-face (concat (nerd-icons-faicon "nf-fa-check") " " status)
+		  :foreground "#63c990"
+		  :weight 'bold)
+	  (with-face (concat (nerd-icons-faicon "nf-fa-xmark") " " status)
+		:foreground "#c75f5f"
+		:weight 'bold))))
+
 (defun my-eshell-prompt ()
   "My custom prompt for Emacs shell."
-  (concat "\n("
-		  user-login-name
-		  ") "
-		  (eshell/pwd)
-		  "\n$ "))
+  (concat
+   "\n"
+   "("
+   user-login-name
+   ") "
+   (eshell/shortened-pwd) " "
+   (concat "[" (format-time-string "%H:%M:%S") "] ")
+   (eshell/pp-last-status)
+   "\n$ "))
 
 (setopt eshell-prompt-function
 		#'my-eshell-prompt)
@@ -328,7 +370,7 @@ This function install language grammar only when it unavailable."
           (setenv "PAGER" ""))
 		;; Use `eshell/clear-scrollback' instead of `eshell/clear'
 		(eshell/alias "clear" "clear-scrollback")
-		(eshell/alias "cl" "clear-scrollback")
+		;; (eshell/alias "cl" "clear-scrollback")
         (eshell/alias "x" "exit")
         ;; TODO: Make more convenient FZF (files, grep and etc).
         (eshell/alias "ff" "project-find-file")

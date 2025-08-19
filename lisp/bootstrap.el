@@ -4,6 +4,35 @@
 ;;
 ;;; Code:
 
+;; TODO: Move it from `bootstrap.el'
+(defsubst process-await (process)
+  "Sleep untile PROCESS is exit."
+  (while (process-live-p process)
+	t))
+
+(defsubst install-adwaita-mono-nerd ()
+  "."
+  (let ((name "Adwaita Mono")
+		(src "https://github.com/nazmulidris/adwaita-mono-nerd-font")
+		(git (executable-find "git"))
+		(curl (executable-find "curl"))
+		(unzip (executable-find "unzip"))
+		(font-dir "~/.local/share/fonts/"))
+	(unless (file-exists-p font-dir)
+	  (mkdir font-dir t))
+
+	(setq
+	 adwaitamono-nerd-font-installation-process
+	 (start-process-shell-command
+	  "adwaitamono-nerd-font-installation"
+	  "adwaitamono-nerd-font-installation"
+	  (concat git " clone " src " /tmp/emacs-font-installation"
+			  " --depth 1"
+			  " && "
+			  "mv /tmp/emacs-font-installation/* " font-dir
+			  " && "
+			  "rm -rf /tmp/emacs-font-installation && fc-cache -fv")))))
+
 (defcustom bootstrap-no-startup-screen t
   "Don't show any startup screen.
 
@@ -87,7 +116,7 @@ It can slow down startup time."
 ;;; UI:
 
 (defvar bootstrap-theme 'modus-operandi)
-(defvar bootstrap-font "Adwaita Mono")
+(defvar bootstrap-font "AdwaitaMono Nerd Font")
 
 (defun load-face-attributes (name height)
   (let ((choosen-font name)
@@ -111,7 +140,7 @@ It can slow down startup time."
                 (lambda (frame)
                   (with-selected-frame frame
                     (load-face-attributes bootstrap-font 130))))
-    (add-hook 'after-init-hook
+    (add-hook 'emacs-startup-hook
               (lambda ()
                 (load-face-attributes bootstrap-font 130))))
 
@@ -208,9 +237,22 @@ this stage of initialization."
 (defun emacs-bootstrap (&rest _)
   "Early stage function.
 
-Bootstraping GNU Emacs. Optimizations and etc."
+Bootstraping GNU Emacs.  Optimizations and etc."
   ;; Silent native compilation
   (setq-default native-comp-async-report-warnings-errors 'silent)
+
+  (add-to-list 'load-path
+               (expand-file-name "lisp/" user-emacs-directory))
+
+  (require 'first-startup)
+
+  ;; Install and setup font asynchronously.
+  (when (first-startup-p)
+	(install-adwaita-mono-nerd)
+
+	(define-advice load-face-attributes
+		(:before (&rest _) await-font)
+	  (process-await adwaitamono-nerd-font-installation-process)))
 
   (add-hook 'after-init-hook
             (lambda ()
@@ -265,9 +307,8 @@ Bootstraping GNU Emacs. Optimizations and etc."
              (mkdir (cdr alist) t))
            backup-directory-alist)
 
-  (add-to-list 'load-path
-               (expand-file-name "lisp/" user-emacs-directory))
-
+  ;; Make it asynchronously =)
+  ;; (like font installation)
   (package-activate-all))
 
 (provide 'bootstrap)
