@@ -35,6 +35,7 @@
     cape
     yasnippet
     yasnippet-capf
+	dired-gitignore
 	leetcode))
 
 (setopt package-archives
@@ -317,6 +318,7 @@ This function install language grammar only when it unavailable."
         (eshell/alias "x" "exit")
         ;; TODO: Make more convenient FZF (files, grep and etc).
         (eshell/alias "ff" "project-find-file")
+		(eshell/alias "fd" "find-dired $PWD \"\"")
         (eshell/alias "rg" "consult-ripgrep")
 		(eshell/alias "gg" "consult-git-grep")
         (eshell/alias "l" "ls -al $1")
@@ -359,6 +361,15 @@ This function install language grammar only when it unavailable."
   (require 'magit))
 
 (bind-key "C-x g" 'magit)
+
+;;; Dired:
+
+;; (setq-default dired-omit-files "\\`\\.git\\'")
+;; (add-hook 'dired-mode-hook 'dired-omit-mode)
+
+(add-hook 'dired-mode-hook 'dired-gitignore-mode)
+(after! 'dired-gitignore
+  (bind-key "C-d" 'dired-gitignore-mode dired-mode-map))
 
 ;;; Cape:
 
