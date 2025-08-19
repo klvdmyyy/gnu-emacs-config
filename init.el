@@ -242,14 +242,14 @@ This function install language grammar only when it unavailable."
 (setq treesit-language-source-alist
       '((go "https://github.com/tree-sitter/tree-sitter-go")
         (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
-        (c "https://github.com/tree-sitter/tree-sitter-c")
-        (rust "https://github.com/tree-sitter/tree-sitter-rust")
+        ;; (c "https://github.com/tree-sitter/tree-sitter-c")
+        ;; (rust "https://github.com/tree-sitter/tree-sitter-rust")
         ;; (zig "https://github.com/maxxnino/tree-sitter-zig")
-        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-        (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-        (python "https://github.com/tree-sitter/tree-sitter-python")
+        ;; (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+        ;; (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+        ;; (python "https://github.com/tree-sitter/tree-sitter-python")
         (bash "https://github.com/tree-sitter/tree-sitter-bash")
-        (json "https://github.com/tree-sitter/tree-sitter-json")
+        ;; (json "https://github.com/tree-sitter/tree-sitter-json")
         ;; (meson "https://github.com/tree-sitter-grammars/tree-sitter-meson")
         ;; (cmake "https://github.com/uyha/tree-sitter-cmake")
         ))
@@ -281,21 +281,11 @@ This function install language grammar only when it unavailable."
 (add-hook 'prog-mode-hook 'flymake-mode)
 (add-hook 'flymake-mode-hook 'sideline-mode)
 
-;;; JSON + Tree-Sitter:
-
-(add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
-
 ;;; Bash + Tree-Sitter:
 
 (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
 
 (add-hook 'bash-ts-mode-hook 'eglot-ensure)
-
-;;; Python + Tree-Sitter:
-
-(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-
-(add-hook 'python-ts-mode-hook 'eglot-ensure)
 
 ;;; Go + Tree-Sitter:
 
@@ -384,6 +374,11 @@ This function install language grammar only when it unavailable."
 (add-hook 'completion-at-point-functions #'yasnippet-capf)
 
 ;;; Leetcode Client:
+
+(setq-default leetcode-directory "~/leetcode"
+			  leetcode-save-solutions t
+			  leetcode-prefer-language "golang"
+			  leetcode-prefer-sql "mysql")
 
 (autoload 'leetcode "leetcode"
   "Open Leetcode client for Emacs."

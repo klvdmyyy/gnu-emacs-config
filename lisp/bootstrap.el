@@ -239,9 +239,9 @@ Bootstraping GNU Emacs. Optimizations and etc."
             (lambda ()
               (load custom-file :no-error :no-message :no-suffix :must-suffix)))
 
-  ;; (add-hook 'text-mode-hook 'visual-line-mode)
-  ;; (add-hook 'prog-mode-hook 'visual-line-mode)
-  (add-hook 'after-init-hook 'global-visual-line-mode)
+  (add-hook 'text-mode-hook 'visual-line-mode)
+  (add-hook 'prog-mode-hook 'visual-line-mode)
+  ;; (add-hook 'after-init-hook 'global-visual-line-mode)
 
   (add-hook 'after-init-hook 'which-key-mode)
   (add-hook 'after-init-hook 'recentf-mode)

@@ -6,13 +6,16 @@ My GNU Emacs based workflow.
 
 * Languages
 
-Preferred:
+Supported:
 - Golang
-- Python
 - Bash
 
 
-Maybe add:
+Todo:
 - C language
+- Python
+
+
+Maybe add:
 - C++
 - Rust
