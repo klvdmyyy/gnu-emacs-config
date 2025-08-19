@@ -20,20 +20,33 @@
 (eval-when-compile
   (require 'rx))
 
-(defface go-testing-pass-face '((t :foreground "green"))
+(defface go-testing-header-face
+  '((t :height 180 :weight bold))
+  "Go Testing RUN face."
+  :group 'go-testing)
+
+(defface go-testing-pass-face
+  '((t :foreground "green"
+	   :weight bold))
   "Go Testing PASS face."
   :group 'go-testing)
 
-(defface go-testing-fail-face '((t :foreground "red"))
+(defface go-testing-fail-face
+  '((t :foreground "red"
+	   :bold t))
   "Go Testing FAIL face."
   :group 'go-testing)
 
-(defconst go-testing-font-lock-defaults
-  (let ((pass '("PASS"))
+(defvar go-testing-font-lock-defaults
+  (let ((keywords '("RUN" "coverage"))
+		(pass '("PASS"))
         (fail '("FAIL")))
-    `((("RUN"  (0 go-testing-pass-face))
-       ("PASS" (0 go-testing-pass-face))
-       ("FAIL" (0 go-testing-fail-face))))))
+    `((,(rx-to-string `(: (or ,@keywords))) 0 font-lock-keyword-face)
+	  ("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]"
+	   0 'go-testing-header-face t)
+	  ("[0-9][0-9]\\.[0-9]%" 0 font-lock-variable-name-face)
+	  ("PASS" 0 'go-testing-pass-face t)
+      ("FAIL" 0 'go-testing-fail-face t))))
 
 (defvar go-testing-mode-map
   (let ((map (make-sparse-keymap)))
@@ -42,9 +55,9 @@
     (define-key map (kbd "n") 'next-line)
     map))
 
-(define-derived-mode go-testing-mode special-mode "go-testing"
+(define-derived-mode go-testing-mode special-mode "Go Testing"
   "Major mode for Go Testing output."
-  (setq font-lock-defaults go-testing-font-lock-defaults))
+  (setq font-lock-defaults '(go-testing-font-lock-defaults)))
 
 ;;; Testing functions:
 
@@ -95,8 +108,9 @@
     ;;   (insert "\n"))
 
     (insert
-     (concat (format-time-string "%Y-%m-%d %H:%M:%S") "\n"
-			 "^^^^^^^^^^^^^^^^^^^" "\n\n"))
+     (concat (format-time-string "%Y-%m-%d %H:%M:%S")
+			 ;; "\n" "^^^^^^^^^^^^^^^^^^^"
+			 "\n\n"))
     (end-of-buffer)
 
     (insert (go-testing--run-all))
