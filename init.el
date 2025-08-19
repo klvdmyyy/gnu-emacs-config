@@ -7,8 +7,8 @@
 ;;
 ;;; Code:
 
-(setq user-full-name "Klementiev Dmitry"
-      user-mail-address "klementievd08@yandex.ru")
+(setopt user-full-name "Klementiev Dmitry"
+		user-mail-address "klementievd08@yandex.ru")
 
 (eval-when-compile
   (require 'lazydo))
@@ -196,8 +196,8 @@
               visual-fill-column-width 160)
 
 (after! 'visual-fill-column
-  (setq visual-fill-column-center-text nil)
-  (setq visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
+  (setopt visual-fill-column-center-text nil
+		  visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
   )
 
 ;;; Golden Ratio:
