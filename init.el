@@ -225,6 +225,13 @@
 (autoload 'ace-window "ace-window" nil t)
 (bind-key "M-o" 'ace-window)
 
+(after! 'ace-window
+  ;; Possible values:
+  ;; - global
+  ;; - frame
+  ;; - visible (visible frames)
+  (setq aw-scope 'visible))
+
 ;;; Tree-Sitter:
 
 (defun treesit-install-all ()
