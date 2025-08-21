@@ -4,6 +4,8 @@
 ;;
 ;; Данный пакет позволяет упростить менеджмент автоматического форматирования.
 ;;
+;; FIXME: clang-format doesn't work properly.
+;;
 ;;; Code:
 
 ;; Built-in formatting function for Emacs Lisp.
