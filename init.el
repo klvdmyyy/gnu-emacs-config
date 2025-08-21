@@ -304,6 +304,8 @@ This function install language grammar only when it unavailable."
 
 ;;; Eshell:
 
+(autoload 'nerd-icons-faicon "nerd-icons")
+
 (defmacro with-face (STR &rest PROPS)
   "Return STR propertized with PROPS."
   (declare (indent defun))
