@@ -313,7 +313,7 @@ This function install language grammar only when it unavailable."
 
 ;;; Eshell:
 
-(autoload 'nerd-icons-faicon "nerd-icons")
+(autoload 'nerd-icons-faicon "nerd-icons" nil nil)
 
 (defmacro with-face (STR &rest PROPS)
   "Return STR propertized with PROPS."
@@ -327,7 +327,9 @@ This function install language grammar only when it unavailable."
 
 ~/.config/emacs/lisp -> ~/.c/e/lisp"
   (let ((splited (string-split
-				  (file-name-directory (abbreviate-file-name (eshell/pwd)))
+				  ;; TEMP: Temporary fix because `file-name-directory' sometimes
+				  ;; can provide nil value. (for example with "~" abbreviated directory)
+				  (or (file-name-directory (abbreviate-file-name (eshell/pwd))) "")
 				  "/")))
 	(concat
 	 (string-join
@@ -340,7 +342,8 @@ This function install language grammar only when it unavailable."
 			 (substring name 0 1))))
 	   splited)
 	  "/")
-	 (file-name-base (eshell/pwd)))))
+	 (file-name-base (abbreviate-file-name
+					  (eshell/pwd))))))
 
 (defun eshell/pp-last-status ()
   (let ((status (number-to-string eshell-last-command-status)))
