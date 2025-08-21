@@ -4,6 +4,11 @@
 ;;
 ;;; Code:
 
+;; TODO: Parse themes from variable(not constant) like this one.
+(defconst user-themes '((default-light . modus-operandi-tinted)
+						(default-dark  . modus-vivendi-tinted))
+  "User themes.")
+
 ;; TODO: Move it from `bootstrap.el'
 (defsubst process-await (process)
   "Sleep untile PROCESS is exit."
@@ -115,7 +120,7 @@ It can slow down startup time."
 
 ;;; UI:
 
-(defvar bootstrap-theme 'modus-operandi)
+(defvar bootstrap-theme 'modus-vivendi-tinted)
 (defvar bootstrap-font "AdwaitaMono Nerd Font")
 
 (defun load-face-attributes (name height)

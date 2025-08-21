@@ -14,7 +14,8 @@
   (require 'lazydo))
 
 (defconst user-packages-dependencies
-  '(dash))
+  '(dash)
+  "Dependencies for `user-packages'.")
 
 (defconst user-packages
   '(vertico
@@ -37,7 +38,8 @@
     yasnippet-capf
 	dired-gitignore
 	leetcode
-	nerd-icons))
+	nerd-icons)
+  "Packages for user configuration.")
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
