@@ -58,6 +58,7 @@
 
           (t (error "Can't determine hook in `hook!' function: `%s'" hook)))))
 
+;; TODO: Remove it =)
 (defun autoload! (package &rest autoloads)
   "Generate AUTOLOADS from PACKAGE by repeating `autoload' function."
   (declare (indent defun))
