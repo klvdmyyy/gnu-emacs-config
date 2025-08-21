@@ -8,7 +8,8 @@
   (load (expand-file-name "lisp/bootstrap" user-emacs-directory)
         :no-error :no-message nil :must-suffix)
 
-  (setq bootstrap-maximize-frame-at-startup t)
+  (load (expand-file-name "early-config" user-emacs-directory)
+		:no-error :no-message nil :must-suffix)
 
   (emacs-bootstrap))
 
