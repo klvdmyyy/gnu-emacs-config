@@ -255,6 +255,7 @@ Bootstraping GNU Emacs.  Optimizations and etc."
   (when (first-startup-p)
 	(install-adwaita-mono-nerd)
 
+	;; Wait font installation before setting up faces.
 	(define-advice load-face-attributes
 		(:before (&rest _) await-font)
 	  (process-await adwaitamono-nerd-font-installation-process)))
