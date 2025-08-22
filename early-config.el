@@ -16,7 +16,8 @@
 
 ;; Some optimizations disabled by default.
 (setopt bootstrap-maximize-frame-at-startup t
-		bootstrap-optimize-loading t)
+		bootstrap-optimize-loading t
+		bootstrap-enable-tab-bar-mode t)
 
 ;;; Modus theme customization:
 

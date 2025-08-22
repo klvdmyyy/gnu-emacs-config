@@ -87,6 +87,16 @@ It can slow down startup time."
   :type 'boolean
   :group 'bootstrap)
 
+(defcustom bootstrap-enable-tab-bar-mode nil
+  "Enables `tab-bar-mode' at startup.
+
+This option provides default `tab-bar-mode' without
+any configuration because I just love how it looks by default.
+
+You can configure it somewhere else."
+  :type 'boolean
+  :group 'bootstrap)
+
 ;;; Startup screen:
 
 (defun bootstrap-startup-screen ()
@@ -131,6 +141,7 @@ It can slow down startup time."
     (set-face-attribute 'variable-pitch nil :font choosen-font :height font-height :weight 'regular)))
 
 (defun bootstrap-startup-ui ()
+  ;; Setup theme.
   (if (daemonp)
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
@@ -140,6 +151,7 @@ It can slow down startup time."
               (lambda ()
                 (load-theme bootstrap-theme :no-confirm))))
 
+  ;; Setup fonts.
   (if (daemonp)
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
@@ -148,6 +160,14 @@ It can slow down startup time."
     (add-hook 'emacs-startup-hook
               (lambda ()
                 (load-face-attributes bootstrap-font 130))))
+
+  ;; Setup tab bars.
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (with-selected-frame frame
+                    (tab-bar-mode 1))))
+    (add-hook 'emacs-startup-hook 'tab-bar-mode))
 
   (when bootstrap-no-menu-bar
     (push '(menu-bar-lines . 0) default-frame-alist)

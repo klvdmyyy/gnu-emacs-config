@@ -4,6 +4,7 @@
 ;;
 ;; TODO: Setup Org (Agenda, Roam, Pomodoro and etc).
 ;; MAYBE: Setup `auto-insert-mode'.
+;; TODO: Setup avy (`avy-goto-char-2' and `avy-goto-word-0')
 ;;
 ;;; Code:
 
