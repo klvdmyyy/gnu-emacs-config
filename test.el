@@ -21,11 +21,17 @@
 
 (macroexpand
  '(feature! 'ide
-    (eglot-ensure)))
+			(eglot-ensure)))
 
 (enable-feature! 'ide)
 
 (format-time-string "%Y-%m-%d %H:%M" nil t)
+
+;;; Org Resume/CV
+
+(require 'ox-extra)
+
+(ox-extras-activate '(latex-header-blocks ignore-headlines))
 
 (provide 'test)
 

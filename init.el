@@ -2,9 +2,13 @@
 ;;
 ;;; Commentary:
 ;;
+;; TODO: Setup Dashboard with links to useful notes.
 ;; TODO: Setup Org (Agenda, Roam, Pomodoro and etc).
+;; MAYBE: Setup denote !?
 ;; MAYBE: Setup `auto-insert-mode'.
 ;; TODO: Setup avy (`avy-goto-char-2' and `avy-goto-word-0')
+;; TODO: Setup LaTeX editing.
+;; TODO: Setup reStructuredText editing.
 ;;
 ;;; Code:
 
@@ -39,7 +43,12 @@
     yasnippet-capf
 	dired-gitignore
 	leetcode
-	nerd-icons)
+	nerd-icons
+
+	;; auctex
+	
+	;; org-contrib
+	)
   "Packages for user configuration.")
 
 (setopt package-archives
@@ -454,6 +463,10 @@ This function install language grammar only when it unavailable."
 
 (autoload 'yasnippet-capf "yasnippet-capf" nil t)
 (add-hook 'completion-at-point-functions #'yasnippet-capf)
+
+;;; Auctex:
+
+;; TODO
 
 ;;; Leetcode Client:
 
