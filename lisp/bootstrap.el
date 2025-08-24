@@ -290,7 +290,7 @@ Bootstraping GNU Emacs.  Optimizations and etc."
                        gcs-done))
             300)
 
-  (setq-default frame-title-format "Emacs Workflowww"
+  (setq-default frame-title-format "Lisprvanna" ; Ok. =)
                 custom-file (expand-file-name "custom.el" user-emacs-directory)
                 cursor-type '(bar . 2)
                 ;; cursor-type 'box
