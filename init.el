@@ -2,8 +2,13 @@
 ;;
 ;;; Commentary:
 ;;
+;; TODO: Modulize configuration
 ;; TODO: Setup Dashboard with links to useful notes.
 ;; TODO: Setup Org (Agenda, Roam, Pomodoro and etc).
+;; TODO: Setup more LaTeX integration.
+;; TODO: Better setup AsciiDoc
+;; TODO: Setup reStructuredText (RST) and Sphinx
+;; TODO: Setup Markdown
 ;; MAYBE: Setup denote !?
 ;; MAYBE: Setup `auto-insert-mode'.
 ;; TODO: Setup avy (`avy-goto-char-2' and `avy-goto-word-0')
@@ -44,13 +49,7 @@
 	dired-gitignore
 	leetcode
 	nerd-icons
-
-	adoc-mode
-
-	;; auctex
-	
-	;; org-contrib
-	)
+	adoc-mode)
   "Packages for user configuration.")
 
 (setopt package-archives
@@ -465,10 +464,6 @@ This function install language grammar only when it unavailable."
 
 (autoload 'yasnippet-capf "yasnippet-capf" nil t)
 (add-hook 'completion-at-point-functions #'yasnippet-capf)
-
-;;; Auctex:
-
-;; TODO
 
 ;;; Leetcode Client:
 
