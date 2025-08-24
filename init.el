@@ -17,9 +17,11 @@
 ;;
 ;;; Code:
 
+;; Setup user information
 (setopt user-full-name "Klementiev Dmitry"
 		user-mail-address "klementievd08@yandex.ru")
 
+;; Require lazy loading
 (eval-when-compile
   (require 'lazydo))
 
@@ -28,29 +30,46 @@
   "Dependencies for `user-packages'.")
 
 (defconst user-packages
-  '(vertico
+  '(;; Minibuffer things
+	vertico
     orderless
 	marginalia
     consult
+
+	;; Completion/Editing
     corfu
     embark
     embark-consult
     smartparens
+
+	;; Visual/Navigation
     visual-fill-column
     golden-ratio
     ace-window
+
+	;; Other UI
     sideline
     sideline-eglot
     sideline-flymake
+	nerd-icons							; For cool icons
+
+	;; Git
     magit
+	dired-gitignore
+	
+	;; Autocompletion things
     cape
     yasnippet
     yasnippet-capf
-	dired-gitignore
-	leetcode
-	nerd-icons
-	adoc-mode)
+
+	;; Markup languages. Note taking
+	adoc-mode
+
+	;; Other tools
+	leetcode)
   "Packages for user configuration.")
+
+;;; Install packages:
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
