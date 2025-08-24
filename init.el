@@ -45,6 +45,8 @@
 	leetcode
 	nerd-icons
 
+	adoc-mode
+
 	;; auctex
 	
 	;; org-contrib

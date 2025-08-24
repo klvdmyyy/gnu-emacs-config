@@ -1,7 +1,7 @@
 *
 !early-init.el
 !init.el
-!readme.org
+!readme.adoc
 !todolist.org
 !run.sh
 !.editorconfig
@@ -10,5 +10,6 @@
 !test.el
 !snippets
 !snippets/**
+!Makefile
 
 !early-config.el
