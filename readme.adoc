@@ -20,3 +20,15 @@ Currently I working only with following tools:
 Sometimes I writing in *Org Mode* (for myself only). I would like to learn *LaTeX* and *AsciiDoc* first.
 
 NOTE: Also I can add following markup languages in the future: reStructuredText, Markdown
+
+
+== System Dependencies
+
+* `mu`          - Mail client
+* `ripgrep`     - Faster grep alternative
+* `python`      - Python =)
+* `git`         - Main VCS
+* `asciidoctor` - AsciiDoc Ctor
+* `go`          - It's my main language
+* `lualatex`    - PDFs writing
+* `make`        - M-x compile
