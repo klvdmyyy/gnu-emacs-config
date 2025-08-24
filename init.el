@@ -81,6 +81,23 @@
   (unless (package-installed-p package)
     (package-install package)))
 
+;;; My custom commands:
+
+(defun leetcode-solved-problems-count ()
+  "Return count of solved leetcode problems.
+
+This function just watching how many files in `leetcode-directory'.
+
+IMPORTANT: If you have incorrect solution for problem it also counted."
+  (interactive)
+  (message
+   "%d"
+   (length
+	(seq-filter
+	 (lambda (f)
+	   (not (eq (nth 0 (string-to-list f)) ?\.)))
+	 (directory-files leetcode-directory)))))
+
 ;;; Formatting:
 
 (autoload 'format-on-save-mode "format-on-save"
