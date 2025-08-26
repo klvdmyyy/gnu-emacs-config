@@ -28,6 +28,17 @@
 		  (3 . (1.2))
 		  (t . (1.1))))
 
+;;; Setup Rust toolchain only for EShell:
+
+(setenv "PATH"
+		(concat
+		 (getenv "PATH")
+		 ":~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"))
+
+(add-hook 'eshell-cmd-load-hook
+		  (lambda ()
+			(eshell/export (concat "PATH=" (getenv "PATH")))))
+
 (provide 'early-config)
 
 ;;; early-config.el ends here
