@@ -6,37 +6,37 @@
 
 ;; TODO: Parse themes from variable(not constant) like this one.
 (defconst user-themes '((default-light . modus-operandi)
-						(default-dark  . modus-vivendi))
+                        (default-dark  . modus-vivendi))
   "User themes.")
 
 ;; TODO: Move it from `bootstrap.el'
 (defsubst process-await (process)
   "Sleep untile PROCESS is exit."
   (while (process-live-p process)
-	t))
+    t))
 
 (defsubst install-adwaita-mono-nerd ()
   "."
   (let ((name "Adwaita Mono")
-		(src "https://github.com/nazmulidris/adwaita-mono-nerd-font")
-		(git (executable-find "git"))
-		(curl (executable-find "curl"))
-		(unzip (executable-find "unzip"))
-		(font-dir "~/.local/share/fonts/"))
-	(unless (file-exists-p font-dir)
-	  (mkdir font-dir t))
+        (src "https://github.com/nazmulidris/adwaita-mono-nerd-font")
+        (git (executable-find "git"))
+        (curl (executable-find "curl"))
+        (unzip (executable-find "unzip"))
+        (font-dir "~/.local/share/fonts/"))
+    (unless (file-exists-p font-dir)
+      (mkdir font-dir t))
 
-	(setq
-	 adwaitamono-nerd-font-installation-process
-	 (start-process-shell-command
-	  "adwaitamono-nerd-font-installation"
-	  "adwaitamono-nerd-font-installation"
-	  (concat git " clone " src " /tmp/emacs-font-installation"
-			  " --depth 1"
-			  " && "
-			  "mv /tmp/emacs-font-installation/* " font-dir
-			  " && "
-			  "rm -rf /tmp/emacs-font-installation && fc-cache -fv")))))
+    (setq
+     adwaitamono-nerd-font-installation-process
+     (start-process-shell-command
+      "adwaitamono-nerd-font-installation"
+      "adwaitamono-nerd-font-installation"
+      (concat git " clone " src " /tmp/emacs-font-installation"
+              " --depth 1"
+              " && "
+              "mv /tmp/emacs-font-installation/* " font-dir
+              " && "
+              "rm -rf /tmp/emacs-font-installation && fc-cache -fv")))))
 
 (defcustom bootstrap-no-startup-screen t
   "Don't show any startup screen.
@@ -273,12 +273,12 @@ Bootstraping GNU Emacs.  Optimizations and etc."
 
   ;; Install and setup font asynchronously.
   (when (first-startup-p)
-	(install-adwaita-mono-nerd)
+    (install-adwaita-mono-nerd)
 
-	;; Wait font installation before setting up faces.
-	(define-advice load-face-attributes
-		(:before (&rest _) await-font)
-	  (process-await adwaitamono-nerd-font-installation-process)))
+    ;; Wait font installation before setting up faces.
+    (define-advice load-face-attributes
+        (:before (&rest _) await-font)
+      (process-await adwaitamono-nerd-font-installation-process)))
 
   (add-hook 'after-init-hook
             (lambda ()
@@ -306,6 +306,12 @@ Bootstraping GNU Emacs.  Optimizations and etc."
   (add-hook 'after-init-hook
             (lambda ()
               (load custom-file :no-error :no-message :no-suffix :must-suffix)))
+
+  ;; Use spaces instead of tabs.
+  ;; NOTE: Remove this LOC if you need to
+  ;; use tabs instead. It's hardcoded to
+  ;; `prog-mode'.
+  (add-hook 'prog-mode-hook (lambda () (indent-tabs-mode 0)))
 
   (add-hook 'text-mode-hook 'visual-line-mode)
   (add-hook 'prog-mode-hook 'visual-line-mode)

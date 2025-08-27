@@ -16,28 +16,21 @@
 
 ;; Some optimizations disabled by default.
 (setopt bootstrap-maximize-frame-at-startup t
-		bootstrap-optimize-loading t
-		bootstrap-enable-tab-bar-mode t)
+        bootstrap-optimize-loading t
+        bootstrap-enable-tab-bar-mode t)
 
 ;;; Modus theme customization:
 
 ;; Setup headings.
 (setopt modus-themes-headings
-		'((1 . (1.4))
-		  (2 . (1.3))
-		  (3 . (1.2))
-		  (t . (1.1))))
+        '((1 . (1.4))
+          (2 . (1.3))
+          (3 . (1.2))
+          (t . (1.1))))
 
-;;; Setup Rust toolchain only for EShell:
+;;; Add cargo binary dir to `exec-path' (Rust support):
 
-(setenv "PATH"
-		(concat
-		 (getenv "PATH")
-		 ":~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin"))
-
-(add-hook 'eshell-cmd-load-hook
-		  (lambda ()
-			(eshell/export (concat "PATH=" (getenv "PATH")))))
+(add-to-list 'exec-path "~/.cargo/bin")
 
 (provide 'early-config)
 

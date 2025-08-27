@@ -19,7 +19,7 @@
 
 ;; Setup user information
 (setopt user-full-name "Klementiev Dmitry"
-		user-mail-address "klementievd08@yandex.ru")
+        user-mail-address "klementievd08@yandex.ru")
 
 ;; Require lazy loading
 (eval-when-compile
@@ -31,42 +31,42 @@
 
 (defconst user-packages
   '(;; Minibuffer things
-	vertico
+    vertico
     orderless
-	marginalia
+    marginalia
     consult
 
-	;; Completion/Editing
+    ;; Completion/Editing
     corfu
     embark
     embark-consult
     smartparens
 
-	;; Visual/Navigation
+    ;; Visual/Navigation
     visual-fill-column
     golden-ratio
     ace-window
 
-	;; Other UI
+    ;; Other UI
     sideline
     sideline-eglot
     sideline-flymake
-	nerd-icons							; For cool icons
+    nerd-icons                          ; For cool icons
 
-	;; Git
+    ;; Git
     magit
-	dired-gitignore
-	
-	;; Autocompletion things
+    dired-gitignore
+    
+    ;; Autocompletion things
     cape
     yasnippet
     yasnippet-capf
 
-	;; Markup languages. Note taking
-	adoc-mode
+    ;; Markup languages. Note taking
+    adoc-mode
 
-	;; Other tools
-	leetcode)
+    ;; Other tools
+    leetcode)
   "Packages for user configuration.")
 
 ;;; Install packages:
@@ -93,10 +93,10 @@ IMPORTANT: If you have incorrect solution for problem it also counted."
   (message
    "%d"
    (length
-	(seq-filter
-	 (lambda (f)
-	   (not (eq (nth 0 (string-to-list f)) ?\.)))
-	 (directory-files leetcode-directory)))))
+    (seq-filter
+     (lambda (f)
+       (not (eq (nth 0 (string-to-list f)) ?\.)))
+     (directory-files leetcode-directory)))))
 
 ;;; Formatting:
 
@@ -247,7 +247,7 @@ IMPORTANT: If you have incorrect solution for problem it also counted."
 
 (after! 'visual-fill-column
   (setopt visual-fill-column-center-text nil
-		  visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
+          visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
   )
 
 ;;; Golden Ratio:
@@ -301,7 +301,7 @@ This function install language grammar only when it unavailable."
       '((go "https://github.com/tree-sitter/tree-sitter-go")
         (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
         ;; (c "https://github.com/tree-sitter/tree-sitter-c")
-        ;; (rust "https://github.com/tree-sitter/tree-sitter-rust")
+        (rust "https://github.com/tree-sitter/tree-sitter-rust")
         ;; (zig "https://github.com/maxxnino/tree-sitter-zig")
         ;; (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
         ;; (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
@@ -358,6 +358,11 @@ This function install language grammar only when it unavailable."
   "Run testing in project for all Golang files."
   t)
 
+;;; Rustic:
+
+(setq-default rustic-indent-offset 4
+              rustic-lsp-client 'eglot)
+
 ;;; Eshell:
 
 (autoload 'nerd-icons-faicon "nerd-icons" nil nil)
@@ -374,33 +379,33 @@ This function install language grammar only when it unavailable."
 
 ~/.config/emacs/lisp -> ~/.c/e/lisp"
   (let ((splited (string-split
-				  ;; TEMP: Temporary fix because `file-name-directory' sometimes
-				  ;; can provide nil value. (for example with "~" abbreviated directory)
-				  (or (file-name-directory (abbreviate-file-name (eshell/pwd))) "")
-				  "/")))
-	(concat
-	 (string-join
-	  (seq-map
-	   (lambda (name)
-		 (if (<= (length name) 2)
-			 name
-		   (if (string-equal (substring name 0 1) ".")
-			   (substring name 0 2)
-			 (substring name 0 1))))
-	   splited)
-	  "/")
-	 (file-name-base (abbreviate-file-name
-					  (eshell/pwd))))))
+                  ;; TEMP: Temporary fix because `file-name-directory' sometimes
+                  ;; can provide nil value. (for example with "~" abbreviated directory)
+                  (or (file-name-directory (abbreviate-file-name (eshell/pwd))) "")
+                  "/")))
+    (concat
+     (string-join
+      (seq-map
+       (lambda (name)
+         (if (<= (length name) 2)
+             name
+           (if (string-equal (substring name 0 1) ".")
+               (substring name 0 2)
+             (substring name 0 1))))
+       splited)
+      "/")
+     (file-name-base (abbreviate-file-name
+                      (eshell/pwd))))))
 
 (defun eshell/pp-last-status ()
   (let ((status (number-to-string eshell-last-command-status)))
-	(if (string-equal status "0")
-		(with-face (concat (nerd-icons-faicon "nf-fa-check") " " status)
-		  :foreground "#63c990"
-		  :weight 'bold)
-	  (with-face (concat (nerd-icons-faicon "nf-fa-xmark") " " status)
-		:foreground "#c75f5f"
-		:weight 'bold))))
+    (if (string-equal status "0")
+        (with-face (concat (nerd-icons-faicon "nf-fa-check") " " status)
+          :foreground "#63c990"
+          :weight 'bold)
+      (with-face (concat (nerd-icons-faicon "nf-fa-xmark") " " status)
+        :foreground "#c75f5f"
+        :weight 'bold))))
 
 (defun my-eshell-prompt ()
   "My custom prompt for Emacs shell."
@@ -415,7 +420,7 @@ This function install language grammar only when it unavailable."
    "\n$ "))
 
 (setopt eshell-prompt-function
-		#'my-eshell-prompt)
+        #'my-eshell-prompt)
 
 (define-minor-mode eshell-mode-setup
   "Set up environment on `eshell-mode' invocation."
@@ -429,15 +434,15 @@ This function install language grammar only when it unavailable."
         (if (and (boundp 'envrc-global-mode) envrc-global-mode)
             (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
           (setenv "PAGER" ""))
-		;; Use `eshell/clear-scrollback' instead of `eshell/clear'
-		(eshell/alias "clear" "clear-scrollback")
-		;; (eshell/alias "cl" "clear-scrollback")
+        ;; Use `eshell/clear-scrollback' instead of `eshell/clear'
+        (eshell/alias "clear" "clear-scrollback")
+        ;; (eshell/alias "cl" "clear-scrollback")
         (eshell/alias "x" "exit")
         ;; TODO: Make more convenient FZF (files, grep and etc).
         (eshell/alias "ff" "project-find-file")
-		(eshell/alias "fd" "find-dired $PWD \"\"")
+        (eshell/alias "fd" "find-dired $PWD \"\"")
         (eshell/alias "rg" "consult-ripgrep")
-		(eshell/alias "gg" "consult-git-grep")
+        (eshell/alias "gg" "consult-git-grep")
         (eshell/alias "l" "ls -al $1")
         (eshell/alias "e" "find-file $1")
         (eshell/alias "ee" "find-file-other-window $1")
@@ -504,9 +509,9 @@ This function install language grammar only when it unavailable."
 ;;; Leetcode Client:
 
 (setq-default leetcode-directory "~/leetcode"
-			  leetcode-save-solutions t
-			  leetcode-prefer-language "golang"
-			  leetcode-prefer-sql "mysql")
+              leetcode-save-solutions t
+              leetcode-prefer-language "golang"
+              leetcode-prefer-sql "mysql")
 
 (autoload 'leetcode "leetcode"
   "Open Leetcode client for Emacs."

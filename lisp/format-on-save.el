@@ -38,7 +38,7 @@ Also this function untabifys current buffer
 if spaces prefered."
   ;; Always untabify buffers if spaces prefered.
   (unless indent-tabs-mode
-    (funcall format-on-save-untabify-buffer))
+    (funcall 'format-on-save-untabify-buffer))
 
   ;; Format buffer.
   (cond
