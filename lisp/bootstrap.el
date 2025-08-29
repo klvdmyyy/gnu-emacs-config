@@ -297,6 +297,8 @@ Bootstraping GNU Emacs.  Optimizations and etc."
                 cursor-in-non-selected-windows nil
                 default-input-method "russian-computer"
                 tab-width 4
+                ;; TODO: Find more convenient way to prefer spaces
+                ;; instead of tabs.
                 indent-tabs-mode nil)
 
   (add-hook 'after-init-hook
