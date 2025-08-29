@@ -297,8 +297,7 @@ Bootstraping GNU Emacs.  Optimizations and etc."
                 cursor-in-non-selected-windows nil
                 default-input-method "russian-computer"
                 tab-width 4
-                ;; indent-tabs-mode nil
-                )
+                indent-tabs-mode nil)
 
   (add-hook 'after-init-hook
             (lambda ()
