@@ -9,7 +9,7 @@
         :no-error :no-message nil :must-suffix)
 
   (load (expand-file-name "early-config" user-emacs-directory)
-		:no-error :no-message nil :must-suffix)
+        :no-error :no-message nil :must-suffix)
 
   (emacs-bootstrap))
 
