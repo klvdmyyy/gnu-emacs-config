@@ -14,6 +14,11 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 
+(defun format-on-save-tabify-buffer ()
+  "Tabify current buffer."
+  (interactive)
+  (tabify (point-min) (point-max)))
+
 (defun format-on-save-untabify-buffer ()
   "Untabify current buffer."
   (interactive)
@@ -31,13 +36,24 @@
   :group 'format-on-save
   :type 'alist)
 
+(defcustom format-on-save-tabified-major-modes
+  '(makefile-mode
+    nasm-mode
+    asm-mode)
+  "Hard-tabified major modes."
+  :group 'format-on-save
+  :type 'list
+  :safe 'listp)
+
 (defun format-on-save--format ()
   "Format buffer by formatters.
 
 Also this function untabifys current buffer
 if spaces prefered."
   ;; Always untabify buffers if spaces prefered.
-  (unless indent-tabs-mode
+  (if (or indent-tabs-mode
+          (member major-mode format-on-save-tabified-major-modes))
+      (funcall 'format-on-save-tabify-buffer)
     (funcall 'format-on-save-untabify-buffer))
 
   ;; Format buffer.

@@ -66,7 +66,10 @@
     adoc-mode
 
     ;; Other tools
-    leetcode)
+    leetcode
+
+    ;; Low-Level programming.
+    nasm-mode)
   "Packages for user configuration.")
 
 ;;; Install packages:
@@ -280,6 +283,9 @@ IMPORTANT: If you have incorrect solution for problem it also counted."
   (setq aw-scope 'visible))
 
 ;;; Tree-Sitter:
+
+;; Make tree-sitter more colorfully =)
+(setopt treesit-font-lock-level 4)
 
 (defun treesit-install-all ()
   "Install all language grammars.

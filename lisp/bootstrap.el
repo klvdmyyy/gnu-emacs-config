@@ -296,7 +296,9 @@ Bootstraping GNU Emacs.  Optimizations and etc."
                 ;; cursor-type 'box
                 cursor-in-non-selected-windows nil
                 default-input-method "russian-computer"
-                tab-width 4)
+                tab-width 4
+                ;; indent-tabs-mode nil
+                )
 
   (add-hook 'after-init-hook
             (lambda ()
@@ -306,12 +308,6 @@ Bootstraping GNU Emacs.  Optimizations and etc."
   (add-hook 'after-init-hook
             (lambda ()
               (load custom-file :no-error :no-message :no-suffix :must-suffix)))
-
-  ;; Use spaces instead of tabs.
-  ;; NOTE: Remove this LOC if you need to
-  ;; use tabs instead. It's hardcoded to
-  ;; `prog-mode'.
-  (add-hook 'prog-mode-hook (lambda () (indent-tabs-mode 0)))
 
   (add-hook 'text-mode-hook 'visual-line-mode)
   (add-hook 'prog-mode-hook 'visual-line-mode)
