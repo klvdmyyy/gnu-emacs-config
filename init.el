@@ -489,6 +489,16 @@ This function install language grammar only when it unavailable."
 (autoload 'yasnippet-capf "yasnippet-capf" nil t)
 (add-hook 'completion-at-point-functions #'yasnippet-capf)
 
+;;; Spelling:
+
+(add-hook 'text-mode-hook 'flyspell-mode)
+
+(after! 'ispell
+  (setopt ispell-program-name (executable-find "hunspell"))
+  (setopt ispell-dictionary "en_US,ru_RU")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,ru_RU"))
+
 ;;; Leetcode Client:
 
 (setq-default leetcode-directory "~/leetcode"

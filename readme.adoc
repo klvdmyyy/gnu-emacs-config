@@ -54,3 +54,5 @@ All my LaTeX documentation compiled by `pdflatex`. I use `lualatex` only for Res
 * `go`          - It's my main language
 * `lualatex`    - PDFs writing
 * `make`        - M-x compile
+* `hunspell`    - Interactive spelling
+* `hunspell-ru` - Russian dictionaries for hunspell
