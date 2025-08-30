@@ -44,7 +44,6 @@
 
     ;; Visual/Navigation
     visual-fill-column
-    golden-ratio
     ace-window
 
     ;; Other UI
@@ -252,23 +251,6 @@ IMPORTANT: If you have incorrect solution for problem it also counted."
   (setopt visual-fill-column-center-text nil
           visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
   )
-
-;;; Golden Ratio:
-
-(hook! 'split-window-below 'golden-ratio
-       :lazy-load t)
-
-(hook! 'split-window-right 'golden-ratio
-       :lazy-load t)
-
-(hook! 'display-buffer-in-side-window 'golden-ratio
-       :lazy-load t)
-
-(after! 'golden-ratio
-  (golden-ratio-mode 1)
-  (add-to-list 'golden-ratio-extra-commands 'ace-window)
-  (add-to-list 'golden-ratio-extra-commands 'avy-goto-char-2)
-  (add-to-list 'golden-ratio-extra-commands 'avy-goto-word-0))
 
 ;;; Ace Window:
 
