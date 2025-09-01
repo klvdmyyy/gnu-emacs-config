@@ -3,7 +3,38 @@ My Emacs Workflow
 
 Welcome to my Emacs-based workflow.
 
+* `Supported Languages`_
+* `Supported Markup Languages`_
+* `LaTeX tools`_
 * `System Dependencies`_
+
+Supported Languages
+-------------------------
+
+* Go
+* Bash
+
+Supported Markup Languages
+----------------------------------
+
+* LaTeX
+* reStructuredText
+
+Also I use **Org Mode** sometimes and would like to setup Markdown, Sphinx, more Org Mode and read about TeXinfo.
+
+LaTeX tools
+--------------
+
+For latex I have following tools:
+
+* ``pdflatex`` - Default thing for me
+* ``lualatex`` - Use it for system-wide fonts only =)
+* ``xelatex``  - lualatex alternative which I don't use
+
+
+All my LaTeX documentation compiled by ``pdflatex``. I use ``lualatex`` only for Resume/CV pdf compilation (because I use system-wide fonts with russian language support).
+
+Also you can read about producing multi-page documentation from LaTeX.
 
 System Dependencies
 -------------------------
