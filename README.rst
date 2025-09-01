@@ -3,10 +3,26 @@ My Emacs Workflow
 
 Welcome to my Emacs-based workflow.
 
+* `Main goals of my configuration`_
+* `Why Emacs instead of VSCode, Zed or (Neo)Vim?`_
 * `Supported Languages`_
 * `Supported Markup Languages`_
 * `LaTeX tools`_
 * `System Dependencies`_
+
+Main goals of my configuration
+---------------------------------------
+
+* Support of things I need
+* Fast enough for me and my machine
+* Easy to read configuration
+
+Why Emacs instead of VSCode, Zed or (Neo)Vim?
+-----------------------------------------------------------
+
+1. I love Emacs key-bindings
+2. I love Emacs Lisp
+3. I love Emacs' extensibility. I can do everything in my Emacs
 
 Supported Languages
 -------------------------
@@ -15,10 +31,11 @@ Supported Languages
 * Bash
 
 TODO:
-* Python
 * Protobuf
 * Dockerfile
 * YAML
+* C
+* Python
 
 Supported Markup Languages
 ----------------------------------
