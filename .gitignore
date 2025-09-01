@@ -1,7 +1,7 @@
 *
 !early-init.el
 !init.el
-!readme.adoc
+!README.rst
 !todolist.org
 !run.sh
 !.editorconfig
