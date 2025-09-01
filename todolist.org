@@ -44,6 +44,10 @@
 
 - [X] AsciiDoc (adoc)
 - [ ] LaTeX
-- [ ] Org
 - [ ] Markdown
+- [ ] Org
 - [ ] reStructuredText (rst) + Sphinx
+
+* TODO Переделать bootstrap.el
+
+Сейчас это не самое оптимальное, что можно было бы сделать =). В качестве примера стоит посмотреть на ~minimal-emacs.d~ от ~jamescherti~.

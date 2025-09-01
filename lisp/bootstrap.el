@@ -72,11 +72,6 @@ It can slow down startup time."
   :type 'boolean
   :group 'bootstrap)
 
-(defcustom bootstrap-optimize-gc t
-  "A little GC optimizations."
-  :type 'boolean
-  :group 'bootstrap)
-
 (defcustom bootstrap-optimize-file-name-handler-alist t
   "Enable optimizations for `file-name-handler-alist'."
   :type 'boolean
@@ -194,11 +189,6 @@ You can configure it somewhere else."
 
 (defun emacs-restore-gc ()
   (setq gc-cons-threshold (* 16 1024 1024)))
-
-(defun bootstrap-startup-gc ()
-  (when bootstrap-optimize-gc
-    (setq gc-cons-threshold most-positive-fixnum)
-    (add-hook 'emacs-startup-hook #'emacs-restore-gc 200)))
 
 ;;; `file-name-handler-alist' optimization:
 
@@ -322,7 +312,7 @@ Bootstraping GNU Emacs.  Optimizations and etc."
   (bootstrap-startup-package)
   (bootstrap-startup-ui)
   (bootstrap-startup-frame)
-  (bootstrap-startup-gc)
+  (add-hook 'emacs-startup 'emacs-restore-gc 200)
   (bootstrap-startup-file-name-handler-alist)
   (bootstrap-startup-loading)
 
