@@ -151,8 +151,88 @@ Press _l_ to zoom out
 
 ;;; Utilities
 
+(define-minor-mode eshell-mode-setup
+  "Setting up environment on `eshell-mode' invocation."
+  :group 'eshell
+  (if eshell-mode-setup
+      (progn
+	(if (and (boundp 'envrc-global-mode) envrc-global-mode)
+	    (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
+	  (setenv "PAGER" ""))
+	(eshell/alias "x" "exit")
+	(eshell/alias "ff" "project-find-file")
+	(eshell/alias "fd" "find-dired $PWD \"\"")
+	(eshell/alias "rg" "consult-ripgrep")
+	(eshell/alias "gg" "consult-git-grep")
+	(eshell/alias "l" "ls -al $1")
+	(eshell/alias "e" "find-file $1")
+	(eshell/alias "ee" "find-file-other-window $1")
+	(eshell/alias "d" "dired $1")
+	(eshell/alias "gd" "magit-diff-unstaged")
+	(eshell/alias "clear" "clear-scrollback"))
+    t))
+
+(defun project-eshell-or-eshell (&optional arg)
+  (interactive "P")
+  (if (project-current)
+      (project-eshell)
+    (eshell arg)))
+
+(defun switch-to-prev-buffer-or-eshell (arg)
+  (interactive "P")
+  (if arg
+      (eshell arg)          ; or `project-eshell-or-eshell'
+    (switch-to-buffer (other-buffer (current-buffer) 1))))
+
+(defun eshell/shortened-pwd ()
+  "Return the shortened PWD.
+
+~/.config/emacs -> ~/.c/emacs
+
+~/.config/emacs/lisp -> ~/.c/e/lisp"
+  (let ((splited (string-split
+                  ;; TEMP: Temporary fix because `file-name-directory' sometimes
+                  ;; can provide nil value. (for example with "~" abbreviated directory)
+                  (or (file-name-directory (abbreviate-file-name (eshell/pwd))) "")
+                  "/")))
+    (concat
+     (string-join
+      (seq-map
+       (lambda (name)
+         (if (<= (length name) 2)
+             name
+           (if (string-equal (substring name 0 1) ".")
+               (substring name 0 2)
+             (substring name 0 1))))
+       splited)
+      "/")
+     (file-name-base (abbreviate-file-name
+                      (eshell/pwd))))))
+
+(defun my-eshell-prompt ()
+  "My custom prompt for Emacs' eshell."
+  (concat
+   "\n"
+   "(" user-login-name ") "
+   (eshell/shortened-pwd) " "
+   (concat "[" (format-time-string "%H:%M:%S") "] ")
+   ;; TODO: Pretty Printed Last Status (from archive branch of repository)
+   ;; (eshell/pp-last-status)
+   "\n$ "))
+
 (use-package eshell
-  :ensure nil)
+  :ensure nil
+  :hook ((eshell-mode . eshell-mode-setup))
+  :custom
+  (eshell-prompt-function #'my-eshell-prompt)
+  :bind (("C-c e" . project-eshell-or-eshell)
+	 :map eshell-mode-map
+	 ("C-c e" . switch-to-prev-buffer-or-eshell)
+	 :map eshell-hist-mode-map
+	 ("M-r" . consult-history))
+  :config
+  (require 'em-alias)
+  (require 'em-hist))
 
 ;; FIXME:
 ;; I must update transient manually through the `package-upgrade'
