@@ -17,7 +17,8 @@ in emacs' `use-package'.")
 (unless git-installed
   (error "Git executable can't be found on your computer. It is necessary for package installation!"))
 
-(defvar notes-known-keywords '("ideas")
+(defvar notes-known-keywords '("ideas"
+			       "personal")
   "Known keywords/tags for note taking. (Denote/Org Roam)
 
 Just would be passed into `denote-known-keywords' variable.")
