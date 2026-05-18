@@ -94,7 +94,8 @@ Press <f2> to change text scale locally."
   :ensure t
   :vc (:url "https://github.com/minad/consult" :rev "3.4")
   :bind (("C-s" . consult-line)
-	 ("C-x b" . consult-buffer)))
+	 ("C-x b" . consult-buffer)
+	 ("M-g M-g" . consult-goto-line)))
 
 (use-package marginalia
   :if git-installed
@@ -215,8 +216,9 @@ Press _l_ to zoom out
 	 ("C-c n r" . denote-rename-file)
 	 ("C-c n l" . denote-link)
 	 ("C-c n b" . denote-backlinks)
-	 ("C-c n d" . denote-dired)
-	 ("C-c n g" . denote-grep))
+	 ;; NOTE: using `consult-denote' instead
+	 ;; ("C-c n g" . denote-grep)
+	 ("C-c n d" . denote-dired))
   :config
   ;; Automatically rename Denote buffers when opening them so that
   ;; instead of their long file name they have, for example, a literal
@@ -228,6 +230,16 @@ Press _l_ to zoom out
   (denote-prompts '(title keywords subdirectory))
   (denote-directory "~/Denotes")
   (denote-known-keywords notes-known-keywords))
+
+(use-package consult-denote
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/protesilaos/consult-denote" :rev "0.4.2")
+  :bind
+  (("C-c n f" . consult-denote-find)
+   ("C-c n g" . consult-denote-grep))
+  :config
+  (consult-denote-mode 1))
 
 ;; Local variables:
 ;; byte-compile-warnings: (not obsolete free-vars)
