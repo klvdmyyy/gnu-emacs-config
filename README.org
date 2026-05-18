@@ -1,0 +1,2 @@
+#+title: Emacs configuration
+#+author: Klementiev Dmitry <klementievd08@yandex.ru>

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: swap
-# key: swap
-# expand-env: ((yas-indent-line 'fixed))
-# --
-$1, $2 = $2, $1$0

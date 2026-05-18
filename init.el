@@ -1,515 +1,235 @@
-;;; init.el --- Initialization file -*- lexical-binding: t; -*-
+;;; init.el --- Init -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
 ;;
-;; TODO: Modulize configuration
-;; TODO: Setup Dashboard with links to useful notes.
-;; TODO: Setup Org (Agenda, Roam, Pomodoro and etc).
-;; TODO: Setup more LaTeX integration.
-;; TODO: Better setup AsciiDoc
-;; TODO: Setup reStructuredText (RST) and Sphinx
-;; TODO: Setup Markdown
-;; MAYBE: Setup denote !?
-;; MAYBE: Setup `auto-insert-mode'.
-;; TODO: Setup avy (`avy-goto-char-2' and `avy-goto-word-0')
-;; TODO: Setup LaTeX editing.
-;; TODO: Setup reStructuredText editing.
-;;
 ;;; Code:
 
-;; Setup user information
-(setopt user-full-name "Klementiev Dmitry"
-        user-mail-address "klementievd08@yandex.ru")
+(defvar default-text-scale 10
+  "Text scale used by default.
+See `global-text-scale-adjust' function which called with this variable
+in emacs' `use-package'.")
 
-;; Require lazy loading
-(eval-when-compile
-  (require 'lazydo))
+(defvar git-installed (and (executable-find "git")
+			   t)
+  "Value is nil if git executable not find on your computer.")
 
-(defconst user-packages-dependencies
-  '(dash)
-  "Dependencies for `user-packages'.")
+;; Print the error if git isn't installed
+(unless git-installed
+  (error "Git executable can't be found on your computer. It is necessary for package installation!"))
 
-(defconst user-packages
-  '(;; Minibuffer things
-    vertico
-    orderless
-    marginalia
-    consult
+(defvar notes-known-keywords '("ideas")
+  "Known keywords/tags for note taking. (Denote/Org Roam)
 
-    ;; Completion/Editing
-    corfu
-    embark
-    embark-consult
-    smartparens
+Just would be passed into `denote-known-keywords' variable.")
 
-    ;; Visual/Navigation
-    visual-fill-column
-    ace-window
+;;; Emacs
 
-    ;; Other UI
-    sideline
-    sideline-eglot
-    sideline-flymake
-    nerd-icons                          ; For cool icons
-
-    ;; Git
-    magit
-    dired-gitignore
-    
-    ;; Autocompletion things
-    cape
-    yasnippet
-    yasnippet-capf
-
-    ;; Markup languages. Note taking
-    adoc-mode
-
-    ;; Other tools
-    leetcode
-
-    ;; Low-Level programming.
-    nasm-mode)
-  "Packages for user configuration.")
-
-;;; Install packages:
-
-(setopt package-archives
-        '(("gnu" . "https://elpa.gnu.org/packages/")
-          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-          ("melpa" . "https://melpa.org/packages/")))
-
-(dolist (package (append user-packages-dependencies
-                         user-packages))
-  (unless (package-installed-p package)
-    (package-install package)))
-
-;;; My custom commands:
-
-(defun leetcode-solved-problems-count ()
-  "Return count of solved leetcode problems.
-
-This function just watching how many files in `leetcode-directory'.
-
-IMPORTANT: If you have incorrect solution for problem it also counted."
+(defun open-user-emacs-directory ()
+  "Opens the `user-emacs-directory' by using
+`find-file' function."
   (interactive)
-  (message
-   "%d"
-   (length
-    (seq-filter
-     (lambda (f)
-       (not (eq (nth 0 (string-to-list f)) ?\.)))
-     (directory-files leetcode-directory)))))
+  (find-file user-emacs-directory))
 
-;;; Formatting:
+(defun setup-default-text-scale ()
+  "Setting up default text scale.
+See `default-text-scale' variable.
 
-(autoload 'format-on-save-mode "format-on-save"
-  "Format buffer before save."
-  t)
 
-(add-hook 'prog-mode-hook 'format-on-save-mode)
-
-;;; Vertico:
-
-(hook! 'pre-command-hook 'vertico
-       :lazy-load t)
-
-(after! 'vertico
-  (vertico-mode 1))
-
-;;; Orderless:
-
-(hook! 'self-insert-command 'orderless
-       :lazy-load t)
-
-(after! 'orderless
-  (setq completion-styles '(orderless basic)))
-
-;;; Marginalia:
-
-(after! 'vertico
-  (require 'marginalia))
-
-(after! 'marginalia
-  (marginalia-mode 1))
-
-;;; Consult:
-
-(setq-default
- ;; consult-async-input-debounce 0
- ;; consult-async-input-throttle 0
- ;; consult-async-refresh-delay 0
- consult-async-min-input 3)
-
-(bind-keys ("s-B" . consult-buffer)
-           ([remap switch-to-buffer] . consult-buffer)
-           ([remap imenu] . consult-imenu)
-           ("C-s" . consult-line)
-           ([remap goto-line] . consult-goto-line)
-           ("M-g e" . consult-flymake))
-
-;;; Embark:
-
-(autoload! "embark"
-  '(embark-act nil t)
-  '(embark-dwim nil t)
-  '(embark-bindings nil t))
-
-(bind-keys ("C-." . embark-act)        ; pick some comfortable binding
-           ("C-;" . embark-dwim)       ; good alternative for M-.
-           ("C-h B" . embark-bindings)) ; alternative for `describe-bindings'
-
-(after! 'embark
-  ;; FIXME: `org-open-at-point-global' can't open link to heading (in TOC for example)
-  ;;
-  ;; I solve it just by replacing `org-open-at-point-global' by default
-  ;; `org-open-at-point' function when current major mode is Org
-  (define-advice org-open-at-point-global
-      (:around (orig-fun) current-mode-is-org)
-    (if (eq major-mode #'org-mode)
-        (funcall #'org-open-at-point)
-      (funcall orig-fun))))
-
-(after! 'embark-consult
-  (add-hook 'embark-collect-mode-hook 'consult-preview-at-point-mode))
-
-;;; Corfu:
-
-(hook! 'self-insert-command 'corfu
-       :lazy-load t)
-
-(after! 'corfu
-  (setq corfu-cycle t)
-  (setq tab-always-indent 'complete)
-  (global-corfu-mode 1)
-
-  (require 'corfu-popupinfo)
-  (corfu-popupinfo-mode 1)
-
-  (bind-keys* :map corfu-map
-              ("TAB" . corfu-complete)
-              ("M-d" . corfu-popupinfo-toggle)
-              :map corfu-popupinfo-map
-              ("M-n" . corfu-popupinfo-scroll-up)
-              ("M-p" . corfu-popupinfo-scroll-down)))
-
-;;; Smartparens:
-
-(defconst default-pairs-list
-  '((?\( . ?\))
-    (?\[ . ?\])
-    (?\{ . ?\}))
-  "List of default pairs.")
-
-(defun open-pair-p (char)
-  "Return t if CHAR is opening pair."
-  (member char (mapcar (lambda (pairs) (car pairs)) default-pairs-list)))
-
-(defun close-pair-p (char)
-  "Return t if CHAR is closing pair."
-  (member char (mapcar (lambda (pairs) (cdr pairs)) default-pairs-list)))
-
-(defun indent-between-pairs ()
-  "Open a new brace or bracket expression, with relevant newlines and indent."
+Press <f2> to change text scale locally."
   (interactive)
-  (if (and (open-pair-p (char-before))
-           (close-pair-p (char-after)))
-      (progn
-        (newline-and-indent)
-        (unless (eq (char-after) '?\n)
-          (newline)
-          (indent-according-to-mode)
-          (forward-line -1)
-          (indent-according-to-mode)))
-    (newline-and-indent)))
-
-(bind-key "RET" 'indent-between-pairs prog-mode-map)
-
-(autoload! "smartparens"
-  '(smartparens-mode nil t)
-  '(smartparens-strict-mode nil t))
-
-(add-hook 'prog-mode-hook 'smartparens-mode)
-(add-hook 'prog-mode-hook 'smartparens-strict-mode)
-
-(after! 'smartparens
-  (require 'smartparens-config)
-  (bind-keys :map smartparens-mode-map
-             ("M-s" . nil)
-             ("M-DEL" . sp-backward-unwrap-sexp)
-             ("C-<left>" . sp-forward-barf-sexp)
-             ("C-<right>" . sp-forward-slurp-sexp)))
-
-;;; Visual fill column:
-
-(add-hook 'prog-mode-hook 'visual-fill-column-mode)
-(add-hook 'text-mode-hook 'visual-fill-column-mode)
-
-(setq-default fill-column 160
-              visual-fill-column-width 160)
-
-(after! 'visual-fill-column
-  (setopt visual-fill-column-center-text nil
-          visual-fill-column-enable-sensible-window-split t) ; Split windows vertically
-  )
-
-;;; Ace Window:
-
-(autoload 'ace-window "ace-window" nil t)
-(bind-key "M-o" 'ace-window)
-
-(after! 'ace-window
-  ;; Possible values:
-  ;; - global
-  ;; - frame
-  ;; - visible (visible frames)
-  (setq aw-scope 'visible))
-
-;;; Tree-Sitter:
-
-;; Make tree-sitter more colorfully =)
-(setopt treesit-font-lock-level 4)
-
-(defun treesit-install-all ()
-  "Install all language grammars.
-
-From `treesit-language-source-alist' variable
-by `treesit-install-language-grammar' function.
-
-This function install language grammar only when it unavailable."
-  (interactive)
-  (mapc
-   (lambda (lang)
-     (when (not (treesit-language-available-p lang))
-       (treesit-install-language-grammar lang)))
-   (mapcar #'car treesit-language-source-alist)))
-
-
-;; Tree Sitter source
-(setq treesit-language-source-alist
-      '((go "https://github.com/tree-sitter/tree-sitter-go")
-        (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
-        ;; (c "https://github.com/tree-sitter/tree-sitter-c")
-        ;; (rust "https://github.com/tree-sitter/tree-sitter-rust")
-        ;; (zig "https://github.com/maxxnino/tree-sitter-zig")
-        ;; (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
-        ;; (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
-        ;; (python "https://github.com/tree-sitter/tree-sitter-python")
-        (bash "https://github.com/tree-sitter/tree-sitter-bash")
-        ;; (json "https://github.com/tree-sitter/tree-sitter-json")
-        ;; (meson "https://github.com/tree-sitter-grammars/tree-sitter-meson")
-        ;; (cmake "https://github.com/uyha/tree-sitter-cmake")
-        ))
-
-(add-hook 'after-init-hook
-          (lambda ()
-            (run-with-timer 1 nil 'treesit-install-all)))
-
-;;; LSP (Language Server Protocol):
-
-(when (daemonp)
-  (require 'eglot))
-
-;;; Sideline:
-
-(setq-default sideline-backends-left '(sideline-flymake)
-              sideline-backends-right '(sideline-eglot))
-
-(after! 'sideline
-  (setq sideline-backends-left-skip-current-line t   ; don't display on current line (left)
-        sideline-backends-right-skip-current-line t  ; don't display on current line (right)
-        sideline-order-left 'down                    ; or 'up
-        sideline-order-right 'up                     ; or 'down
-        sideline-format-left "%s   "                 ; format for left aligment
-        sideline-format-right "   %s"                ; format for right aligment
-        sideline-priority 100                        ; overlays' priority
-        sideline-display-backend-name t))            ; display the backend name
-
-(add-hook 'prog-mode-hook 'flymake-mode)
-(add-hook 'flymake-mode-hook 'sideline-mode)
-
-;;; Bash + Tree-Sitter:
-
-(add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode))
-
-(add-hook 'bash-ts-mode-hook 'eglot-ensure)
-
-;;; Go + Tree-Sitter:
-
-(setq-default go-ts-mode-indent-offset 4)
-
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
-(add-to-list 'auto-mode-alist '("go.mod\\'" . go-mod-ts-mode))
-
-(add-hook 'go-ts-mode-hook 'eglot-ensure)
-
-(autoload 'go-testing-project "go-testing"
-  "Run testing in project for all Golang files."
-  t)
-
-;;; Eshell:
-
-(autoload 'nerd-icons-faicon "nerd-icons" nil nil)
-
-(defmacro with-face (STR &rest PROPS)
-  "Return STR propertized with PROPS."
-  (declare (indent defun))
-  `(propertize ,STR 'face (list ,@PROPS)))
-
-(defun eshell/shortened-pwd ()
-  "Return the shortened PWD.
-
-~/.config/emacs -> ~/.c/emacs
-
-~/.config/emacs/lisp -> ~/.c/e/lisp"
-  (let ((splited (string-split
-                  ;; TEMP: Temporary fix because `file-name-directory' sometimes
-                  ;; can provide nil value. (for example with "~" abbreviated directory)
-                  (or (file-name-directory (abbreviate-file-name (eshell/pwd))) "")
-                  "/")))
-    (concat
-     (string-join
-      (seq-map
-       (lambda (name)
-         (if (<= (length name) 2)
-             name
-           (if (string-equal (substring name 0 1) ".")
-               (substring name 0 2)
-             (substring name 0 1))))
-       splited)
-      "/")
-     (file-name-base (abbreviate-file-name
-                      (eshell/pwd))))))
-
-(defun eshell/pp-last-status ()
-  (let ((status (number-to-string eshell-last-command-status)))
-    (if (string-equal status "0")
-        (with-face (concat (nerd-icons-faicon "nf-fa-check") " " status)
-          :foreground "#63c990"
-          :weight 'bold)
-      (with-face (concat (nerd-icons-faicon "nf-fa-xmark") " " status)
-        :foreground "#c75f5f"
-        :weight 'bold))))
-
-(defun my-eshell-prompt ()
-  "My custom prompt for Emacs shell."
-  (concat
-   "\n"
-   "("
-   user-login-name
-   ") "
-   (eshell/shortened-pwd) " "
-   (concat "[" (format-time-string "%H:%M:%S") "] ")
-   (eshell/pp-last-status)
-   "\n$ "))
-
-(setopt eshell-prompt-function
-        #'my-eshell-prompt)
-
-(define-minor-mode eshell-mode-setup
-  "Set up environment on `eshell-mode' invocation."
-  :group 'eshell
-  (if eshell-mode-setup
-      (progn
-        ;; FIXME: eshell throw error at `completion-at-point' with `all-the-icons-completion-mode' enabled.
-        ;; This is just a temporary fix which disable it.
-        (when (boundp 'all-the-icons-completion-mode)
-          (all-the-icons-completion-mode 0))
-        (if (and (boundp 'envrc-global-mode) envrc-global-mode)
-            (add-hook 'envrc-mode-hook (lambda () (setenv "PAGER" "")))
-          (setenv "PAGER" ""))
-        ;; Use `eshell/clear-scrollback' instead of `eshell/clear'
-        (eshell/alias "clear" "clear-scrollback")
-        ;; (eshell/alias "cl" "clear-scrollback")
-        (eshell/alias "x" "exit")
-        ;; TODO: Make more convenient FZF (files, grep and etc).
-        (eshell/alias "ff" "project-find-file")
-        (eshell/alias "fd" "find-dired $PWD \"\"")
-        (eshell/alias "rg" "consult-ripgrep")
-        (eshell/alias "gg" "consult-git-grep")
-        (eshell/alias "l" "ls -al $1")
-        (eshell/alias "e" "find-file $1")
-        (eshell/alias "ee" "find-file-other-window $1")
-        (eshell/alias "d" "dired $1")
-        (eshell/alias "gd" "magit-diff-unstaged")
-        ;; (local-unset-key 'eshell/clear)
-        )
-    (when (boundp 'all-the-icons-completion-mode)
-      (all-the-icons-completion-mode 1))))
-
-(defun switch-to-prev-buffer-or-eshell (arg)
-  (interactive "P")
-  (if arg
-      (eshell arg)          ; or `project-eshell-or-eshell'
-    (switch-to-buffer (other-buffer (current-buffer) 1))))
-
-(defun project-eshell-or-eshell (&optional arg)
-  (interactive "P")
-  (if (project-current)
-      (project-eshell)
-    (eshell arg)))
-
-(after! 'eshell
-  (require 'em-alias)
-  (require 'em-hist)
-
-  (add-hook 'eshell-mode-hook 'eshell-mode-setup)
-
-  (bind-key "s-e" 'switch-to-prev-buffer-or-eshell eshell-mode-map)
-  (autoload 'consult-history "consult")
-  (bind-key "M-r" 'consult-history eshell-hist-mode-map))
-
-(bind-key "s-e" 'project-eshell-or-eshell)
-
-;;; Magit:
-
-(when (daemonp)
-  (require 'magit))
-
-(bind-key "C-x g" 'magit)
-
-;;; Dired:
-
-;; (setq-default dired-omit-files "\\`\\.git\\'")
-;; (add-hook 'dired-mode-hook 'dired-omit-mode)
-
-(add-hook 'dired-mode-hook 'dired-gitignore-mode)
-(after! 'dired-gitignore
-  (bind-key "C-d" 'dired-gitignore-mode dired-mode-map))
-
-;;; Cape:
-
-(add-hook 'completion-at-point-functions #'cape-file)
-(add-hook 'completion-at-point-functions #'cape-history)
-
-;;; Yasnippet + Yasnippet-Capf:
-
-(autoload 'yas-global-mode "yasnippet" nil t)
-(add-hook 'after-init-hook 'yas-global-mode)
-
-(autoload 'yasnippet-capf "yasnippet-capf" nil t)
-(add-hook 'completion-at-point-functions #'yasnippet-capf)
-
-;;; Spelling:
-
-(add-hook 'text-mode-hook 'flyspell-mode)
-
-(after! 'ispell
-  (setopt ispell-program-name (executable-find "hunspell"))
-  (setopt ispell-dictionary "en_US,ru_RU")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,ru_RU"))
-
-;;; Leetcode Client:
-
-(setq-default leetcode-directory "~/leetcode"
-              leetcode-save-solutions t
-              leetcode-prefer-language "golang"
-              leetcode-prefer-sql "mysql")
-
-(autoload 'leetcode "leetcode"
-  "Open Leetcode client for Emacs."
-  t)
-
-(provide 'init)
+  (global-text-scale-adjust default-text-scale))
+
+(use-package emacs
+  :bind (("C-c C-c" . open-user-emacs-directory))
+  :hook ((emacs-startup . setup-default-text-scale))
+  :custom
+  (default-input-method "russian-computer")
+  (ring-bell-function 'ignore)
+
+  ;; Don't make *~ backup files.
+  (make-backup-files nil)
+  :config
+  ;; Disable cursor blinking
+  (blink-cursor-mode -1))
+
+;;; Package management
+
+(use-package package
+  :ensure nil
+  :init (package-activate-all))
+
+;;; UI/UX
+
+;; Setup modus themes
+(use-package modus-themes
+  :custom
+  (modus-themes-headings
+   '((1 . (1.4))
+     (2 . (1.3))
+     (3 . (1.2))
+     (t . (1.1)))))
+
+;; Load theme
+(use-package ef-themes
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/protesilaos/ef-themes" :rev "2.1.0")
+  :hook (emacs-startup . ef-themes-take-over-modus-themes-mode)
+  :config
+  ;; (modus-themes-load-theme 'ef-elea-dark)
+  ;; (modus-themes-load-theme 'ef-dark)
+  (modus-themes-load-theme 'ef-owl))
+
+;;; Completion
+
+(use-package vertico
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/minad/vertico" :rev "2.8")
+  :hook (emacs-startup . vertico-mode))
+
+(use-package consult
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/minad/consult" :rev "3.4")
+  :bind (("C-s" . consult-line)
+	 ("C-x b" . consult-buffer)))
+
+(use-package marginalia
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/minad/marginalia" :rev "2.10")
+  :after vertico
+  :hook (vertico-mode . marginalia-mode))
+
+;; Optionally use the `orderless' completion style.
+(use-package orderless
+  :if git-installed
+  :vc (:url "https://github.com/oantolin/orderless" :rev "1.6")
+  :custom
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
+  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil) ;; Disable defaults, use our settings
+  (completion-pcm-leading-wildcard t)) ;; Emacs 31: partial-completion behaves like substring
+
+;;; Key bindings
+
+(use-package hydra
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/abo-abo/hydra" :rev "0.15.0")
+  :bind (("<f2>" . hydra-zoom/body))
+  :config
+  (defhydra hydra-zoom (global-map "<f2>")
+    "
+Press _g_ to zoom in
+Press _l_ to zoom out
+"
+    ("g" text-scale-increase nil)
+    ("l" text-scale-decrease nil)))
+
+;;; Org Mode
+
+(use-package org
+  :ensure nil
+  :hook ((org-mode . org-indent-mode)))
+
+(use-package org-capture
+  :ensure nil)
+
+(use-package org-agenda
+  :ensure nil
+  :bind (("C-c a" . org-agenda))
+  :custom
+  (org-agenda-files
+   '()))
+
+;;; Utilities
+
+(use-package eshell
+  :ensure nil)
+
+;; FIXME:
+;; I must update transient manually through the `package-upgrade'
+;; before magit installation to use it.
+(use-package magit
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/magit/magit" :rev "v4.5.0" :lisp-dir "lisp")
+  :bind (("C-x g" . magit-status)))
+
+;;; Utilities: Dependencies
+
+(use-package dash
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/magnars/dash.el" :rev "2.20.0"))
+
+(use-package transient
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/magit/transient" :rev "v0.13.3" :lisp-dir "lisp"))
+
+;;; Editing
+
+(use-package multiple-cursors
+  :ensure t
+  :vc (:url "https://github.com/magnars/multiple-cursors.el" :rev "1.5.0")
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+	 ("C->" . mc/mark-next-like-this)
+	 ("C-<" . mc/mark-previous-like-this)
+	 ("C-c C-<" . mc/mark-all-like-this)))
+
+(use-package elec-pair
+  :ensure nil
+  :hook ((prog-mode . electric-pair-mode)))
+
+(use-package electric
+  :ensure nil
+  :hook ((prog-mode . electric-indent-mode)))
+
+(use-package smartparens
+  ;; FIXME: It breaking multiple cursor plugin (I don't know why)
+  :disabled t
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/fuco1/smartparens" :rev "1.11.0")
+  :hook ((prog-mode . smartparens-mode)
+	 (emacs-lisp-mode . smartparens-strict-mode))
+  :config
+  ;; Load default config
+  (require 'smartparens-config))
+
+;;; Denote
+
+(use-package denote
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/protesilaos/denote" :rev "4.1.3")
+  :hook (dired-mode . denote-dired-mode)
+  :bind (("C-c n n" . denote)
+	 ("C-c n r" . denote-rename-file)
+	 ("C-c n l" . denote-link)
+	 ("C-c n b" . denote-backlinks)
+	 ("C-c n d" . denote-dired)
+	 ("C-c n g" . denote-grep))
+  :config
+  ;; Automatically rename Denote buffers when opening them so that
+  ;; instead of their long file name they have, for example, a literal
+  ;; "[D]" followed by the file's title.  Read the docstring of
+  ;; `denote-rename-buffer-format' for how to modify this.
+  (denote-rename-buffer-mode 1)
+  
+  :custom
+  (denote-prompts '(title keywords subdirectory))
+  (denote-directory "~/Denotes")
+  (denote-known-keywords notes-known-keywords))
+
+;; Local variables:
+;; byte-compile-warnings: (not obsolete free-vars)
+;; End:
 
 ;;; init.el ends here
