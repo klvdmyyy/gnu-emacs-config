@@ -40,9 +40,13 @@ Press <f2> to change text scale locally."
   (interactive)
   (global-text-scale-adjust default-text-scale))
 
+(defun load-custom-file ()
+  (load custom-file :no-error :no-message :no-suffix :must-suffix))
+
 (use-package emacs
   :bind (("C-c C-c" . open-user-emacs-directory))
-  :hook ((emacs-startup . setup-default-text-scale))
+  :hook ((emacs-startup . setup-default-text-scale)
+	 (after-init . load-custom-file))
   :custom
   (default-input-method "russian-computer")
   (ring-bell-function 'ignore)
@@ -151,6 +155,10 @@ Press _l_ to zoom out
 
 ;;; Utilities
 
+(use-package project
+  :ensure nil
+  :bind (("C-c f" . project-find-file)))
+
 (define-minor-mode eshell-mode-setup
   "Setting up environment on `eshell-mode' invocation."
   :group 'eshell
@@ -212,7 +220,7 @@ Press _l_ to zoom out
 (defun my-eshell-prompt ()
   "My custom prompt for Emacs' eshell."
   (concat
-   "\n"
+   ;; "\n"
    "(" user-login-name ") "
    (eshell/shortened-pwd) " "
    (concat "[" (format-time-string "%H:%M:%S") "] ")
@@ -320,6 +328,14 @@ Press _l_ to zoom out
    ("C-c n g" . consult-denote-grep))
   :config
   (consult-denote-mode 1))
+
+;; Languages
+
+(use-package cmake-mode
+  :if git-installed
+  :ensure t
+  :vc (:url "https://github.com/emacsmirror/cmake-mode" :rev "25340a7")
+  :mode ("CMakeLists.txt\\'" "\\.cmake\\'"))
 
 ;; Local variables:
 ;; byte-compile-warnings: (not obsolete free-vars)
