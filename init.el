@@ -251,6 +251,12 @@ Press _l_ to zoom out
   :vc (:url "https://github.com/magit/magit" :rev "v4.5.0" :lisp-dir "lisp")
   :bind (("C-x g" . magit-status)))
 
+;; (use-package magit-todos
+;;   :if git-installed
+;;   :ensure t
+;;   :vc (:url "https://github.com/alphapapa/magit-todos" :rev "v1.8.1")
+;;   :hook (magit-mode . magit-todos-mode))
+
 ;;; Utilities: Dependencies
 
 (use-package dash
