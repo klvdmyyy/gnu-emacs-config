@@ -46,14 +46,17 @@ Press <f2> to change text scale locally."
 (use-package emacs
   :bind (("C-c C-c" . open-user-emacs-directory))
   :hook ((emacs-startup . setup-default-text-scale)
-	 (after-init . load-custom-file))
+	 (after-init . load-custom-file)
+	 (prog-mode . display-line-numbers-mode))
   :custom
   (default-input-method "russian-computer")
   (ring-bell-function 'ignore)
+  (display-line-numbers-type 'relative)
 
   ;; Don't make *~ backup files.
   (make-backup-files nil)
   :config
+
   ;; Disable cursor blinking
   (blink-cursor-mode -1))
 
