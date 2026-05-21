@@ -242,6 +242,15 @@ Press _l_ to zoom out
   (require 'em-alias)
   (require 'em-hist))
 
+(use-package eat
+  :ensure t
+  :vc (:url "https://codeberg.org/akib/emacs-eat")
+  :hook ((eshell-load . eat-eshell-mode)
+	 (eshell-load . eat-eshell-visual-command-mode))
+  :bind (("C-c t" . eat))
+  :custom
+  (eat-kill-buffer-on-exit 1))
+
 ;; FIXME:
 ;; I must update transient manually through the `package-upgrade'
 ;; before magit installation to use it.
