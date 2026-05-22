@@ -60,6 +60,10 @@ Press <f2> to change text scale locally."
   ;; Disable cursor blinking
   (blink-cursor-mode -1))
 
+(use-package recentf
+  :ensure nil
+  :hook (emacs-startup . recentf-mode))
+
 ;;; Package management
 
 (use-package package
