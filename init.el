@@ -25,12 +25,6 @@ Just would be passed into `denote-known-keywords' variable.")
 
 ;;; Emacs
 
-(defun open-user-emacs-directory ()
-  "Opens the `user-emacs-directory' by using
-`find-file' function."
-  (interactive)
-  (find-file user-emacs-directory))
-
 (defun setup-default-text-scale ()
   "Setting up default text scale.
 See `default-text-scale' variable.
@@ -44,7 +38,6 @@ Press <f2> to change text scale locally."
   (load custom-file :no-error :no-message :no-suffix :must-suffix))
 
 (use-package emacs
-  :bind (("C-c C-c" . open-user-emacs-directory))
   :hook ((emacs-startup . setup-default-text-scale)
 	 (after-init . load-custom-file)
 	 (prog-mode . display-line-numbers-mode))
