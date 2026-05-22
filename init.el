@@ -250,6 +250,7 @@ Press _l_ to zoom out
   (require 'em-hist))
 
 (use-package eat
+  :if git-installed
   :ensure t
   :vc (:url "https://codeberg.org/akib/emacs-eat")
   :hook ((eshell-load . eat-eshell-mode)
