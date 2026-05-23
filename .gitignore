@@ -2,3 +2,6 @@
 !early-init.el
 !init.el
 !README*
+
+# Multiple cursors file. (I would like to keep it in Git repository)
+.mc-lists.el
