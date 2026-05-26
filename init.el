@@ -87,8 +87,9 @@ Press <f2> to change text scale locally."
   ;; (modus-themes-load-theme 'ef-elea-dark)
   ;; (modus-themes-load-theme 'ef-dark)
   ;; (modus-themes-load-theme 'ef-dream)
-  ;; (modus-themes-load-theme 'ef-owl)
-  (modus-themes-load-theme 'ef-eagle))
+  ;; (modus-themes-load-theme 'ef-eagle)
+  ;; (modus-themes-load-theme 'ef-night)
+  (modus-themes-load-theme 'ef-owl))
 
 ;;; Completion
 
