@@ -55,7 +55,10 @@ Press <f2> to change text scale locally."
 
 (use-package recentf
   :ensure nil
-  :hook (emacs-startup . recentf-mode))
+  :hook (emacs-startup . recentf-mode)
+  :custom
+  (recentf-max-menu-items 20)
+  (recentf-max-saved-items 40))
 
 ;;; Package management
 
@@ -84,7 +87,8 @@ Press <f2> to change text scale locally."
   ;; (modus-themes-load-theme 'ef-elea-dark)
   ;; (modus-themes-load-theme 'ef-dark)
   ;; (modus-themes-load-theme 'ef-dream)
-  (modus-themes-load-theme 'ef-owl))
+  ;; (modus-themes-load-theme 'ef-owl)
+  (modus-themes-load-theme 'ef-eagle))
 
 ;;; Completion
 
